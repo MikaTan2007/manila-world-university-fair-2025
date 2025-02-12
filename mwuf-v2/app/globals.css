@@ -4,4 +4,12 @@
 
 html {
   background-color: #165D21;
+  color: white;
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
