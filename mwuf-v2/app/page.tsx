@@ -1,12 +1,12 @@
 'use client';
 import Image from "next/image"
-import { Button } from "@/components/ui/button";
+import SignUpForm from "./components/signupform";
 
 
 export default function Home() {
   return (
     <div>
-      <div className="h-screen flex flex-col items-center pt-10">
+      <div className="flex flex-col items-center pt-10">
         <Image 
           className = ""
           src = "/images/mwuf_logo.png"
@@ -14,7 +14,9 @@ export default function Home() {
           height = {400}
           alt = "logo"
           />
-        <Button>Hello</Button>
+      </div>
+      <div className = "pt-10">
+        <SignUpForm></SignUpForm>
       </div>
       
     </div>
