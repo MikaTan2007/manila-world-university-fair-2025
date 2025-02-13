@@ -79,9 +79,9 @@ const SignUpForm: React.FC = () => {
                             </Button>
                         </div>
 
-                        <div className = "text-sm flex">
-                            {samePassword ? <CircleCheck color = "green" className = "size-5 animate-pulse"></CircleCheck> : <CircleX color = "red" className = "size-5 animate-pulse"></CircleX>}
-                            {samePassword ? <p className = "text-green-700 animate-pulse">Passwords match</p> : <p className = "text-red-500 animate-pulse">Passwords don't match</p>}
+                        <div className = "text-sm flex animate-pulse">
+                            {samePassword ? <CircleCheck color = "green" className = "size-5"></CircleCheck> : <CircleX color = "red" className = "size-5"></CircleX>}
+                            {samePassword ? <p className = "text-green-700 ml-1">Passwords match</p> : <p className = "text-red-600 ml-1">Passwords don't match</p>}
                         </div>
                     </div>
 
