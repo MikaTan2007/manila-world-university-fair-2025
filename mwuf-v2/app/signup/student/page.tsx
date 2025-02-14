@@ -1,4 +1,6 @@
+'use client';
 import Image from "next/image"
+import StudentSignUpForm from "@/app/components/studentsignupform";
 
 
 export default function StudentSignUp() {
@@ -15,7 +17,7 @@ export default function StudentSignUp() {
           />
       </div>
       <div className = "pt-10">
-        Student sign up
+        <StudentSignUpForm></StudentSignUpForm>
       </div>
       
     </div>
