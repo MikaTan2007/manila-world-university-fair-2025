@@ -14,6 +14,9 @@ import { Button } from "@/components/ui/button";
 
 import { DatePicker } from "./datepicker";
 import { GenderOption } from "./genderoption";
+import CountrySelect from "./country-select";
+import { GradYearOption } from "./graduation-year-select";
+
 
 
 const StudentSignUpForm: React.FC = () => {
@@ -40,6 +43,20 @@ const StudentSignUpForm: React.FC = () => {
                         <div className = "flex">
                             <DatePicker></DatePicker>
                             <GenderOption></GenderOption>
+                        </div>
+                        <div className = "flex">
+                            <CountrySelect></CountrySelect>
+                        </div>
+                    </div>
+                    <div className = "space-y-2">
+                        <Label htmlFor="general_information">
+                            Academic Information
+                        </Label>
+                        <div className = "flex">
+                            <Input id = "school" type="text" placeholder="Current School (ex. International School Manila)" required></Input>
+                        </div>
+                        <div className = "flex">
+                            <GradYearOption></GradYearOption>
                         </div>
                     </div>
                     <Button type = "submit" variant = "ghost" className = "w-full text-white bg-blue-400">
