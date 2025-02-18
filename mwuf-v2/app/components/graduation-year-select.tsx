@@ -13,7 +13,7 @@ import {
 export function GradYearOption() {
   return (
     <Select>
-      <SelectTrigger className="w-50">
+      <SelectTrigger className="w-60">
         <SelectValue placeholder="HS Graduation Year" />
       </SelectTrigger>
       <SelectContent>

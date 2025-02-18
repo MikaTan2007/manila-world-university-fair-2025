@@ -16,7 +16,7 @@ import { DatePicker } from "./datepicker";
 import { GenderOption } from "./genderoption";
 import CountrySelect from "./country-select";
 import { GradYearOption } from "./graduation-year-select";
-
+import { IdealMajor } from "./idealmajor";
 
 
 const StudentSignUpForm: React.FC = () => {
@@ -57,6 +57,7 @@ const StudentSignUpForm: React.FC = () => {
                         </div>
                         <div className = "flex">
                             <GradYearOption></GradYearOption>
+                            <IdealMajor></IdealMajor>
                         </div>
                     </div>
                     <Button type = "submit" variant = "ghost" className = "w-full text-white bg-blue-400">
