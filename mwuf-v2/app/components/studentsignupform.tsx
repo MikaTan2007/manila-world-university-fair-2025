@@ -17,6 +17,7 @@ import { GenderOption } from "./genderoption";
 import { GradYearOption } from "./graduation-year-select";
 import { IdealMajor } from "./idealmajor";
 import { CountrySelect } from "./country-select";
+import { IdealCountry } from "./idealcountry";
 
 
 const StudentSignUpForm: React.FC = () => {
@@ -61,6 +62,9 @@ const StudentSignUpForm: React.FC = () => {
                         </div>
                         <div className = "flex">
                             <IdealMajor></IdealMajor>
+                        </div>
+                        <div className = "flex">
+                            <IdealCountry></IdealCountry>
                         </div>
                     </div>
                     <Button type = "submit" variant = "ghost" className = "w-full text-white bg-blue-400">

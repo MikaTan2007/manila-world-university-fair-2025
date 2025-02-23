@@ -150,7 +150,7 @@ const majors = [
             className="w-[335px] justify-between"
           >
             <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-2 text-left">
-              {selectedValues.length > 0 ? displayString : "Select ideal major..."}
+              {selectedValues.length > 0 ? displayString : "Interested Majors (multiple allowed)"}
             </div>
             <ChevronsUpDown className="opacity-50 shrink-0" />
           </Button>
