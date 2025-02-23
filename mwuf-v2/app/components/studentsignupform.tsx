@@ -53,10 +53,13 @@ const StudentSignUpForm: React.FC = () => {
                             Academic Information
                         </Label>
                         <div className = "flex">
-                            <Input id = "school" type="text" placeholder="Current School (ex. International School Manila)" required></Input>
+                            <Input id = "school" type="text" placeholder="Current School" required></Input>
+                            <GradYearOption></GradYearOption>
                         </div>
                         <div className = "flex">
-                            <GradYearOption></GradYearOption>
+                            
+                        </div>
+                        <div className = "flex">
                             <IdealMajor></IdealMajor>
                         </div>
                     </div>

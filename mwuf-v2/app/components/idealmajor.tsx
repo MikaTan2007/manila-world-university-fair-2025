@@ -19,33 +19,113 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-]
+const majors = [
+    { value: "computer-science", label: "Computer Science" },
+    { value: "business-administration", label: "Business Administration" },
+    { value: "psychology", label: "Psychology" },
+    { value: "nursing", label: "Nursing" },
+    { value: "biology", label: "Biology" },
+    { value: "electrical-engineering", label: "Electrical Engineering" },
+    { value: "mechanical-engineering", label: "Mechanical Engineering" },
+    { value: "civil-engineering", label: "Civil Engineering" },
+    { value: "accounting", label: "Accounting" },
+    { value: "finance", label: "Finance" },
+    { value: "marketing", label: "Marketing" },
+    { value: "economics", label: "Economics" },
+    { value: "political-science", label: "Political Science" },
+    { value: "communications", label: "Communications" },
+    { value: "english-literature", label: "English Literature" },
+    { value: "history", label: "History" },
+    { value: "mathematics", label: "Mathematics" },
+    { value: "physics", label: "Physics" },
+    { value: "chemistry", label: "Chemistry" },
+    { value: "environmental-science", label: "Environmental Science" },
+    { value: "sociology", label: "Sociology" },
+    { value: "anthropology", label: "Anthropology" },
+    { value: "philosophy", label: "Philosophy" },
+    { value: "art-history", label: "Art History" },
+    { value: "graphic-design", label: "Graphic Design" },
+    { value: "architecture", label: "Architecture" },
+    { value: "urban-planning", label: "Urban Planning" },
+    { value: "education", label: "Education" },
+    { value: "special-education", label: "Special Education" },
+    { value: "health-sciences", label: "Health Sciences" },
+    { value: "public-health", label: "Public Health" },
+    { value: "kinesiology", label: "Kinesiology" },
+    { value: "nutrition", label: "Nutrition" },
+    { value: "pharmacy", label: "Pharmacy" },
+    { value: "dentistry", label: "Dentistry" },
+    { value: "medicine", label: "Medicine" },
+    { value: "veterinary-science", label: "Veterinary Science" },
+    { value: "agricultural-science", label: "Agricultural Science" },
+    { value: "forestry", label: "Forestry" },
+    { value: "marine-biology", label: "Marine Biology" },
+    { value: "geology", label: "Geology" },
+    { value: "astronomy", label: "Astronomy" },
+    { value: "data-science", label: "Data Science" },
+    { value: "information-technology", label: "Information Technology" },
+    { value: "software-engineering", label: "Software Engineering" },
+    { value: "cybersecurity", label: "Cybersecurity" },
+    { value: "artificial-intelligence", label: "Artificial Intelligence" },
+    { value: "biotechnology", label: "Biotechnology" },
+    { value: "biomedical-engineering", label: "Biomedical Engineering" },
+    { value: "chemical-engineering", label: "Chemical Engineering" },
+    { value: "industrial-engineering", label: "Industrial Engineering" },
+    { value: "aerospace-engineering", label: "Aerospace Engineering" },
+    { value: "robotics", label: "Robotics" },
+    { value: "music", label: "Music" },
+    { value: "theater-arts", label: "Theater Arts" },
+    { value: "film-studies", label: "Film Studies" },
+    { value: "journalism", label: "Journalism" },
+    { value: "public-relations", label: "Public Relations" },
+    { value: "international-relations", label: "International Relations" },
+    { value: "criminal-justice", label: "Criminal Justice" },
+    { value: "law", label: "Law" },
+    { value: "social-work", label: "Social Work" },
+    { value: "human-resources", label: "Human Resources" },
+    { value: "supply-chain-management", label: "Supply Chain Management" },
+    { value: "hospitality-management", label: "Hospitality Management" },
+    { value: "tourism", label: "Tourism" },
+    { value: "event-management", label: "Event Management" },
+    { value: "fashion-design", label: "Fashion Design" },
+    { value: "interior-design", label: "Interior Design" },
+    { value: "culinary-arts", label: "Culinary Arts" },
+    { value: "sports-management", label: "Sports Management" },
+    { value: "exercise-science", label: "Exercise Science" },
+    { value: "neuroscience", label: "Neuroscience" },
+    { value: "cognitive-science", label: "Cognitive Science" },
+    { value: "linguistics", label: "Linguistics" },
+    { value: "religious-studies", label: "Religious Studies" },
+    { value: "gender-studies", label: "Gender Studies" },
+    { value: "ethnic-studies", label: "Ethnic Studies" },
+    { value: "global-studies", label: "Global Studies" },
+    { value: "sustainability-studies", label: "Sustainability Studies" },
+    { value: "entrepreneurship", label: "Entrepreneurship" },
+    { value: "innovation-management", label: "Innovation Management" },
+    { value: "real-estate", label: "Real Estate" },
+    { value: "statistics", label: "Statistics" },
+    { value: "applied-mathematics", label: "Applied Mathematics" },
+    { value: "actuarial-science", label: "Actuarial Science" },
+    { value: "geography", label: "Geography" },
+    { value: "meteorology", label: "Meteorology" },
+    { value: "oceanography", label: "Oceanography" },
+    { value: "wildlife-conservation", label: "Wildlife Conservation" },
+    { value: "zoology", label: "Zoology" },
+    { value: "microbiology", label: "Microbiology" },
+    { value: "genetics", label: "Genetics" },
+    { value: "biochemistry", label: "Biochemistry" },
+    { value: "forensic-science", label: "Forensic Science" },
+    { value: "criminology", label: "Criminology" },
+    { value: "public-policy", label: "Public Policy" },
+    { value: "nonprofit-management", label: "Nonprofit Management" },
+    { value: "library-science", label: "Library Science" },
+    { value: "museum-studies", label: "Museum Studies" },
+  ];
 
 export function IdealMajor() {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
-
+ 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -53,34 +133,34 @@ export function IdealMajor() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[400px] justify-between"
         >
           {value
-            ? frameworks.find((framework) => framework.value === value)?.label
-            : "Ideal Major"}
+            ? majors.find((major) => major.value === value)?.label
+            : "Select ideal major..."}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder="Search major..." className="h-9" />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandEmpty>No major found.</CommandEmpty>
             <CommandGroup>
-              {frameworks.map((framework) => (
+              {majors.map((major) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
+                  key={major.value}
+                  value={major.value}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue)
                     setOpen(false)
                   }}
                 >
-                  {framework.label}
+                  {major.label}
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      value === major.value ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>
