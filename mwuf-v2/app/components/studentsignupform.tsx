@@ -14,9 +14,9 @@ import { Button } from "@/components/ui/button";
 
 import { DatePicker } from "./datepicker";
 import { GenderOption } from "./genderoption";
-import CountrySelect from "./country-select";
 import { GradYearOption } from "./graduation-year-select";
 import { IdealMajor } from "./idealmajor";
+import { CountrySelect } from "./country-select";
 
 
 const StudentSignUpForm: React.FC = () => {

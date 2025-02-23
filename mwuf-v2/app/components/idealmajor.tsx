@@ -147,7 +147,7 @@ const majors = [
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[325px] justify-between"
+            className="w-[335px] justify-between"
           >
             <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-2 text-left">
               {selectedValues.length > 0 ? displayString : "Select ideal major..."}
