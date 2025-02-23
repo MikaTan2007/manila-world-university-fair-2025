@@ -122,53 +122,64 @@ const majors = [
     { value: "museum-studies", label: "Museum Studies" },
   ];
 
-export function IdealMajor() {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
- 
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[400px] justify-between"
-        >
-          {value
-            ? majors.find((major) => major.value === value)?.label
-            : "Select ideal major..."}
-          <ChevronsUpDown className="opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandInput placeholder="Search major..." className="h-9" />
-          <CommandList>
-            <CommandEmpty>No major found.</CommandEmpty>
-            <CommandGroup>
-              {majors.map((major) => (
-                <CommandItem
-                  key={major.value}
-                  value={major.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false)
-                  }}
-                >
-                  {major.label}
-                  <Check
-                    className={cn(
-                      "ml-auto",
-                      value === major.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  )
-}
+  export function IdealMajor() {
+    const [open, setOpen] = React.useState(false);
+    const [selectedValues, setSelectedValues] = React.useState<string[]>([]);
+  
+    const handleSelect = (currentValue: string) => {
+      setSelectedValues(prev => {
+        if (prev.includes(currentValue)) {
+          return prev.filter(value => value !== currentValue);
+        }
+        return [...prev, currentValue];
+      });
+    };
+  
+    const displayString = selectedValues
+      .map(value => majors.find(major => major.value === value)?.label)
+      .filter(Boolean)
+      .join(", ");
+  
+    return (
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-[325px] justify-between"
+          >
+            <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-2 text-left">
+              {selectedValues.length > 0 ? displayString : "Select ideal major..."}
+            </div>
+            <ChevronsUpDown className="opacity-50 shrink-0" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[400px] p-0">
+          <Command>
+            <CommandInput placeholder="Search major..." className="h-9" />
+            <CommandList>
+              <CommandEmpty>No major found.</CommandEmpty>
+              <CommandGroup>
+                {majors.map((major) => (
+                  <CommandItem
+                    key={major.value}
+                    value={major.value}
+                    onSelect={() => handleSelect(major.value)}
+                  >
+                    {major.label}
+                    <Check
+                      className={cn(
+                        "ml-auto",
+                        selectedValues.includes(major.value) ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    );
+  }
