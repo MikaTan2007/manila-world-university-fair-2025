@@ -14,9 +14,28 @@ import { Button } from "@/components/ui/button";
 
 //Components
 import { UniCountry } from "./unicountry-select";
+import { UniRegion } from "./uniregion";
 
 
 const UniversitySignUpForm: React.FC = () => {
+    const [cityInputs, setCityInputs] = useState([{id:1}]);
+
+    const addCityInput = () => {
+        setCityInputs((prevInputs) => {
+            const updatedInputs = [...prevInputs];
+            updatedInputs.push({ id: prevInputs.length + 1 });
+            return updatedInputs;
+        });
+    };
+
+    const removeCityInput = () => {
+        setCityInputs((prevInputs) => {
+            const updatedInputs = [...prevInputs];
+            updatedInputs.pop();
+            return updatedInputs;
+        });
+    };
+
     return(
         <Card className = "mx-auto max-w-sm">
             <CardHeader className = "space-y-1">
@@ -35,10 +54,38 @@ const UniversitySignUpForm: React.FC = () => {
                             <Input id = "uni_name" type="text" placeholder="University Name" required></Input>
                         </div>
                         <div className = "flex">
-                            <UniCountry></UniCountry>
+                            <UniRegion></UniRegion>
                         </div>
                         <div className = "flex">
-                            <Input id = "city_name" type="text" placeholder="City" required></Input>
+                            <UniCountry></UniCountry>
+                        </div>
+                        {cityInputs.map((input) => (
+                                <div key={input.id}>
+                                    <Input
+                                        id={`city_name_${input.id}`}
+                                        type="text"
+                                        placeholder="City"
+                                        required
+                                    />
+                                </div>
+                        ))}
+                        <div className = "flex">
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                onClick={addCityInput}
+                                className="w-full"
+                            >
+                                Add City
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                onClick={removeCityInput}
+                                className="w-full"
+                            >
+                                Remove City
+                            </Button>
                         </div>
                     </div>
                     <div className = "space-y-2">
