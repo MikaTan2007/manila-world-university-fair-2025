@@ -1,7 +1,10 @@
+'use client';
 import Image from "next/image"
+import UniversitySignUpForm from "@/app/components/university_sign_up/universitysignupform";
 
 
-export default function UniversitySignUp() {
+
+export default function StudentSignUp() {
   return (
     <div>
       <div className="flex flex-col items-center pt-10">
@@ -15,7 +18,7 @@ export default function UniversitySignUp() {
           />
       </div>
       <div className = "pt-10">
-        University sign up
+        <UniversitySignUpForm></UniversitySignUpForm>
       </div>
       
     </div>
