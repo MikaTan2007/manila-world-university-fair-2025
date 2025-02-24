@@ -72,7 +72,7 @@ const UniversitySignUpForm: React.FC = () => {
                         <div className = "flex">
                             <Button
                                 type="button"
-                                variant="ghost"
+                                variant="outline"
                                 onClick={addCityInput}
                                 className="w-full"
                             >
@@ -80,7 +80,7 @@ const UniversitySignUpForm: React.FC = () => {
                             </Button>
                             <Button
                                 type="button"
-                                variant="ghost"
+                                variant="outline"
                                 onClick={removeCityInput}
                                 className="w-full"
                             >
@@ -95,6 +95,15 @@ const UniversitySignUpForm: React.FC = () => {
                         <div className = "flex">
                             <Input id = "rep_first_name" type="text" placeholder="First Name" required></Input>
                             <Input id = "rep_last_name" type="text" placeholder="Last Name" required></Input>
+                        </div>
+                    </div>
+                    <div className = "space-y-2">
+                        <Label htmlFor="general_information">
+                            Contact Email
+                        </Label>
+                        <div className = "flex">
+                            
+                            <Input id = "email" type="email" placeholder="contactme@email.com" required></Input>
                         </div>
                     </div>
                     <Button type = "submit" variant = "ghost" className = "w-full text-white bg-blue-400">
