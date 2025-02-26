@@ -1,6 +1,6 @@
 'use client';
 import Image from "next/image"
-import UniversitySignUpForm from "@/app/components/university_sign_up/universitysignupform";
+import UniversitySignUpForm from "./components/universitysignupform";
 
 
 

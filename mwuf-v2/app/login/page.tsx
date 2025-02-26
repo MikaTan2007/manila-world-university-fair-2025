@@ -1,9 +1,9 @@
 'use client';
 import Image from "next/image"
-import StudentSignUpForm from "./components/studentsignupform";
 
 
-export default function StudentSignUp() {
+
+export default function Login() {
   return (
     <div>
       <div className="flex flex-col items-center pt-10">
@@ -17,7 +17,7 @@ export default function StudentSignUp() {
           />
       </div>
       <div className = "pt-10">
-        <StudentSignUpForm></StudentSignUpForm>
+        
       </div>
       
     </div>
