@@ -3,29 +3,22 @@ import { SetStateAction, useState, useEffect} from "react";
 import Link from "next/link";
 
 //Lucide
-import { EyeClosed, Eye, CircleCheck, CircleX } from "lucide-react";
+import { EyeClosed, Eye} from "lucide-react";
 
 //Shadcn
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const SignUpForm: React.FC = () => {
+const LoginForm: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setConfirmPassword] = useState(false);
 
     const [firstPassword, setFirstPassword] = useState("");
-    const [secondPassword, setSecondPassword] = useState("");
 
-    const [samePassword, setSamePassword] = useState(true);
 
     const handleFirstPasswordChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
         setFirstPassword(e.target.value);
-    }
-
-    const handleSecondPasswordChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
-        setSecondPassword(e.target.value);
     }
 
     const togglePasswordVisibility = () => {
@@ -33,23 +26,11 @@ const SignUpForm: React.FC = () => {
         
     }
 
-    const toggleConfirmPasswordVisibility = () => {
-        setConfirmPassword(!showConfirmPassword);
-    }
-
-    useEffect(() => {
-        if (firstPassword == secondPassword) {
-            setSamePassword(true)
-        } else {
-            setSamePassword(false);
-        }
-    }, [firstPassword, secondPassword]); 
-
     return(
         <Card className = "mx-auto max-w-sm">
             <CardHeader className = "space-y-1">
                 <CardTitle className = "text-2xl font-bold flex justify-center">
-                    Sign Up
+                    Login
                 </CardTitle>
             </CardHeader>
             
@@ -72,30 +53,18 @@ const SignUpForm: React.FC = () => {
                                 {showPassword ? <Eye></Eye> : <EyeClosed></EyeClosed>}
                             </Button>
                         </div>
-                        
-                        <div className = "flex">
-                            <Input value = {secondPassword} onChange = {handleSecondPasswordChange} className = "border-0" id = "password" type = {showConfirmPassword ? "text" : "password"} placeholder = "Confirm Password" required></Input>
-                            <Button onClick = {toggleConfirmPasswordVisibility} variant = "ghost" size = "icon">
-                                {showConfirmPassword ? <Eye></Eye> : <EyeClosed></EyeClosed>}
-                            </Button>
-                        </div>
-
-                        <div className = "text-sm flex animate-pulse">
-                            {samePassword ? <CircleCheck color = "green" className = "size-5"></CircleCheck> : <CircleX color = "red" className = "size-5"></CircleX>}
-                            {samePassword ? <p className = "text-green-700 ml-1">Passwords match</p> : <p className = "text-red-600 ml-1">Passwords don't match</p>}
-                        </div>
                     </div>
 
                     <Button type = "submit" variant = "ghost" className = "w-full text-white bg-blue-500">
-                        Sign Up as a Student
+                        Login as a Student
                     </Button>
 
                     <Button type = "submit" variant = "ghost" className = "w-full text-white bg-green-700">
-                        Sign Up as a University
+                        Login as a University
                     </Button>
 
                     <CardFooter className = "flex justify-center text-sm">
-                        <Button variant = "link"><Link href = "/login">Already have an account? Login here</Link></Button>
+                        <Button variant = "link"><Link href = "/">No account yet? Sign up here</Link></Button>
                     </CardFooter>
                     
                 </div>
@@ -104,4 +73,4 @@ const SignUpForm: React.FC = () => {
     )
 }
 
-export default SignUpForm
+export default LoginForm

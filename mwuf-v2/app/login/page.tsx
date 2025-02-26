@@ -1,5 +1,6 @@
 'use client';
 import Image from "next/image"
+import LoginForm from "./components/loginform";
 
 
 
@@ -17,7 +18,7 @@ export default function Login() {
           />
       </div>
       <div className = "pt-10">
-        
+        <LoginForm></LoginForm>
       </div>
       
     </div>
