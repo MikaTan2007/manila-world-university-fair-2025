@@ -1,6 +1,6 @@
 import {Schema, model, models} from 'mongoose';
 
-const UserSchema = new Schema(
+const StudentSchema = new Schema(
     {
         email: {
             type: String,
@@ -11,23 +11,23 @@ const UserSchema = new Schema(
             required: true},
         first_name: {
             type: String,
-            required: true
+            required: false
         },
         last_name: {
             type: String,
-            required: true
+            required: false
         },
         birthday: {
             type: Date,
-            required: true
+            required: false
         },
         gender: {
             type: String,
-            required: true
+            required: false
         },
         citizenship: {
             type: [String],
-            required: true,
+            required: false,
         }
 
     },
@@ -37,5 +37,5 @@ const UserSchema = new Schema(
     
 );
 
-const Student = models.User || model('Student', UserSchema);
+const Student = models.User || model('Student', StudentSchema);
 export default Student;

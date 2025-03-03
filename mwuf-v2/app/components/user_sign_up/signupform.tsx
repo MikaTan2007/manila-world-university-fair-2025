@@ -20,6 +20,10 @@ const SignUpForm: React.FC = () => {
 
     const [samePassword, setSamePassword] = useState(true);
 
+    //Setting the values
+    const [email, setEmail] = useState("");
+
+
     const handleFirstPasswordChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
         setFirstPassword(e.target.value);
     }
@@ -39,11 +43,48 @@ const SignUpForm: React.FC = () => {
 
     useEffect(() => {
         if (firstPassword == secondPassword) {
-            setSamePassword(true)
+            setSamePassword(true);
         } else {
             setSamePassword(false);
         }
     }, [firstPassword, secondPassword]); 
+
+    //MongoDB Submission
+
+    const handleStudentSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!samePassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        const studentData = {
+            email,
+            password: firstPassword,
+        }
+
+        try {
+            const response = await fetch("/api/students", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(studentData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert("User created successfully");
+                console.log(data);
+            } else {
+                alert("Error creating user");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error creating user");
+        }
+    }
 
     return(
         <Card className = "mx-auto max-w-sm">
@@ -59,7 +100,13 @@ const SignUpForm: React.FC = () => {
                         <Label htmlFor="email">
                             Email
                         </Label>
-                        <Input id = "email" type="email" placeholder="@example.com" required></Input>
+                        <Input 
+                            id = "email" 
+                            type="email" 
+                            placeholder="@example.com" 
+                            onChange={(e) => setEmail(e.target.value)}
+                            required>
+                        </Input>
                     </div>
 
                     <div className = "space-y-2">
@@ -86,7 +133,7 @@ const SignUpForm: React.FC = () => {
                         </div>
                     </div>
 
-                    <Button type = "submit" variant = "ghost" className = "w-full text-white bg-blue-500">
+                    <Button type = "submit" variant = "ghost" onClick = {handleStudentSubmit}className = "w-full text-white bg-blue-500">
                         Sign Up as a Student
                     </Button>
 
