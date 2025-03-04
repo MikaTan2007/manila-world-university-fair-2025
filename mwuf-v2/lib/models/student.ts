@@ -5,10 +5,12 @@ const StudentSchema = new Schema(
         email: {
             type: String,
             required: true,
-            unique: true},
+            unique: true
+        },
         password: {
             type: String,
-            required: true},
+            required: true
+        },
         first_name: {
             type: String,
             required: false
@@ -29,7 +31,6 @@ const StudentSchema = new Schema(
             type: [String],
             required: false,
         }
-
     },
     {
         timestamps: true

@@ -61,7 +61,7 @@ const SignUpForm: React.FC = () => {
 
         const studentData = {
             email,
-            password: firstPassword,
+            password: firstPassword
         }
 
         try {
@@ -78,11 +78,46 @@ const SignUpForm: React.FC = () => {
                 alert("User created successfully");
                 console.log(data);
             } else {
-                alert("Error creating user");
+                alert("Error creating Student");
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error creating user");
+            alert("Error creating Student");
+        }
+    }
+
+    const handleUniversitySubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!samePassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        const universityData = {
+            email,
+            password: firstPassword
+        }
+
+        try {
+            const response = await fetch("/api/universities", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(universityData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert("University created successfully");
+                console.log(data);
+            } else {
+                alert("Error creating unversity");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error creating university");
         }
     }
 
@@ -133,11 +168,11 @@ const SignUpForm: React.FC = () => {
                         </div>
                     </div>
 
-                    <Button type = "submit" variant = "ghost" onClick = {handleStudentSubmit}className = "w-full text-white bg-blue-500">
+                    <Button type = "submit" variant = "ghost" onClick = {handleStudentSubmit} className = "w-full text-white bg-blue-500">
                         Sign Up as a Student
                     </Button>
 
-                    <Button type = "submit" variant = "ghost" className = "w-full text-white bg-green-700">
+                    <Button type = "submit" variant = "ghost" onClick = {handleUniversitySubmit} className = "w-full text-white bg-green-700">
                         Sign Up as a University
                     </Button>
 
