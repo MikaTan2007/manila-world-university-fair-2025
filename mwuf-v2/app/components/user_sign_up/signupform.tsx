@@ -22,6 +22,12 @@ const SignUpForm: React.FC = () => {
 
     //Setting the values
     const [email, setEmail] = useState("");
+    const [emptyEmail, setEmptyEmail] = useState(true);
+
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+        setEmptyEmail(false);
+    }
 
 
     const handleFirstPasswordChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
@@ -50,12 +56,16 @@ const SignUpForm: React.FC = () => {
     }, [firstPassword, secondPassword]); 
 
     //MongoDB Submission
-
     const handleStudentSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        if (emptyEmail == true || email == "") {
+            setEmptyEmail(true);
+            setEmail("This field is required")
+            return;
+        }
+
         if (!samePassword) {
-            alert("Passwords do not match");
             return;
         }
 
@@ -89,8 +99,13 @@ const SignUpForm: React.FC = () => {
     const handleUniversitySubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        if (emptyEmail == true || email == "") {
+            setEmptyEmail(true);
+            setEmail("This field is required")
+            return;
+        }
+
         if (!samePassword) {
-            alert("Passwords do not match");
             return;
         }
 
@@ -135,13 +150,29 @@ const SignUpForm: React.FC = () => {
                         <Label htmlFor="email">
                             Email
                         </Label>
+
+                        {emptyEmail ? <Input 
+                            id = "email" 
+                            type="email" 
+                            placeholder="@example.com"
+                            value = {email} 
+                            onChange={handleEmailChange}
+                            
+                            className = "text-red-600"
+                            required>
+                        </Input>
+                        :
                         <Input 
                             id = "email" 
                             type="email" 
-                            placeholder="@example.com" 
-                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="@example.com"
+                            value = {email} 
+                            onChange={handleEmailChange}
                             required>
                         </Input>
+                        }
+
+                        
                     </div>
 
                     <div className = "space-y-2">
