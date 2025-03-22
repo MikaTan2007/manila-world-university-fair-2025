@@ -24,11 +24,13 @@ const SignUpForm: React.FC = () => {
     const [email, setEmail] = useState("");
     const [emptyEmail, setEmptyEmail] = useState(true);
 
+    //Password Empty Checking
+    const [emptyBothPassword, setemptyBothPassword] = useState(true)
+
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
         setEmptyEmail(false);
     }
-
 
     const handleFirstPasswordChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
         setFirstPassword(e.target.value);
@@ -53,6 +55,12 @@ const SignUpForm: React.FC = () => {
         } else {
             setSamePassword(false);
         }
+
+        if (firstPassword != "" && secondPassword != "") {
+            setemptyBothPassword(false);
+        } else {
+            setemptyBothPassword(true);
+        }
     }, [firstPassword, secondPassword]); 
 
     //MongoDB Submission
@@ -65,7 +73,11 @@ const SignUpForm: React.FC = () => {
             return;
         }
 
-        if (!samePassword) {
+        if (emptyBothPassword == true) {
+            return;
+        }
+
+        if (samePassword == false) {
             return;
         }
 
@@ -105,7 +117,11 @@ const SignUpForm: React.FC = () => {
             return;
         }
 
-        if (!samePassword) {
+        if (emptyBothPassword == true) {
+            return;
+        }
+
+        if (samePassword == false) {
             return;
         }
 
@@ -151,13 +167,13 @@ const SignUpForm: React.FC = () => {
                             Email
                         </Label>
 
-                        {emptyEmail ? <Input 
+                        {emptyEmail ? 
+                        <Input 
                             id = "email" 
                             type="email" 
                             placeholder="@example.com"
                             value = {email} 
                             onChange={handleEmailChange}
-                            
                             className = "text-red-600"
                             required>
                         </Input>
@@ -180,7 +196,15 @@ const SignUpForm: React.FC = () => {
                             Password
                         </Label>
                         <div className = "flex">
-                            <Input value = {firstPassword} onChange = {handleFirstPasswordChange} className="border-0" id = "password" type = {showPassword ? "text" : "password"} placeholder = "Input Password" required></Input>
+                            <Input 
+                                value = {firstPassword} 
+                                onChange = {handleFirstPasswordChange} 
+                                className="border-0" 
+                                id="password" 
+                                type={showPassword ? "text" : "password"} 
+                                placeholder="Input Password"
+                                required>
+                            </Input>
                             <Button onClick = {togglePasswordVisibility} variant = "ghost" size = "icon">
                                 {showPassword ? <Eye></Eye> : <EyeClosed></EyeClosed>}
                             </Button>
@@ -192,7 +216,16 @@ const SignUpForm: React.FC = () => {
                                 {showConfirmPassword ? <Eye></Eye> : <EyeClosed></EyeClosed>}
                             </Button>
                         </div>
-
+                        <div className = "text-sm flex animate-pulse">
+                            {emptyBothPassword ? <CircleX color = "red" className = "size-5"></CircleX> : <CircleCheck color = "green" className = "size-5"></CircleCheck> }
+                            {
+                                emptyBothPassword ? 
+                                <p className = "text-red-600 ml-1">Both password fields are required</p> 
+                                :
+                                <p className = "text-green-700 ml-1">Both password fields are filled</p> 
+                            }
+                        </div>
+                        
                         <div className = "text-sm flex animate-pulse">
                             {samePassword ? <CircleCheck color = "green" className = "size-5"></CircleCheck> : <CircleX color = "red" className = "size-5"></CircleX>}
                             {samePassword ? <p className = "text-green-700 ml-1">Passwords match</p> : <p className = "text-red-600 ml-1">Passwords don't match</p>}
