@@ -63,7 +63,7 @@ const SignUpForm: React.FC = () => {
         }
     }, [firstPassword, secondPassword]); 
 
-    //MongoDB Submission
+    //MongoDB student submission
     const handleStudentSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -108,6 +108,7 @@ const SignUpForm: React.FC = () => {
         }
     }
 
+    //MongoDB university submission
     const handleUniversitySubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
