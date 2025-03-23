@@ -81,12 +81,32 @@ const SignUpForm: React.FC = () => {
             return;
         }
 
-        const studentData = {
-            email,
-            password: firstPassword
+        try {
+            const checkEmailResponse = await fetch ("/api/students", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ checkEmail: true, email }),
+            });
+
+            const checkEmailData = await checkEmailResponse.json();
+
+            if (checkEmailData.exists == true) {
+                alert("Email already exists. Please use a different email.");
+                return;
+            }
+        } catch (error: any) {
+            alert("Error checking email. Please try again.");
+            return;
         }
 
         try {
+            const studentData = {
+                email,
+                password: firstPassword
+            }
+            
             const response = await fetch("/api/students", {
                 method: "POST",
                 headers: {

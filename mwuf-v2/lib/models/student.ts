@@ -38,5 +38,5 @@ const StudentSchema = new Schema(
     
 );
 
-const Student = models.User || model('Student', StudentSchema);
+const Student = models.Student || model("Student", StudentSchema);
 export default Student;
