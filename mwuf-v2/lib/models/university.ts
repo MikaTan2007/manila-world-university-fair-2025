@@ -45,5 +45,5 @@ const UniversitySchema = new Schema (
     }
 );
 
-const University = models.User || model('University', UniversitySchema);
+const University = models.University || model('University', UniversitySchema);
 export default University;
