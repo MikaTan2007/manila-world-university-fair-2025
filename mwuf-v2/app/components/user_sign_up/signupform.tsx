@@ -3,7 +3,7 @@ import { SetStateAction, useState, useEffect} from "react";
 import Link from "next/link";
 
 //Lucide
-import { EyeClosed, Eye, CircleCheck, CircleX } from "lucide-react";
+import { EyeClosed, Eye, CircleCheck, CircleX, Eraser } from "lucide-react";
 
 //Shadcn
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
@@ -27,8 +27,12 @@ const SignUpForm: React.FC = () => {
     //Password Empty Checking
     const [emptyBothPassword, setemptyBothPassword] = useState(true)
 
+    //Duplicate Email Checking
+    const [availableEmail, setAvailableEmail] = useState(true);
+
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
+        setAvailableEmail(true);
         setEmptyEmail(false);
     }
 
@@ -47,6 +51,12 @@ const SignUpForm: React.FC = () => {
 
     const toggleConfirmPasswordVisibility = () => {
         setConfirmPassword(!showConfirmPassword);
+    }
+
+    const clearEmail = () => {
+        setEmail("");
+        setAvailableEmail(true);
+        setEmptyEmail(true);
     }
 
     useEffect(() => {
@@ -93,7 +103,8 @@ const SignUpForm: React.FC = () => {
             const checkEmailData = await checkEmailResponse.json();
 
             if (checkEmailData.exists == true) {
-                alert("Email already exists. Please use a different email.");
+                setAvailableEmail(false);
+                setEmail("This email is already in use")
                 return;
             }
         } catch (error: any) {
@@ -187,27 +198,32 @@ const SignUpForm: React.FC = () => {
                         <Label htmlFor="email">
                             Email
                         </Label>
-
-                        {emptyEmail ? 
-                        <Input 
-                            id = "email" 
-                            type="email" 
-                            placeholder="@example.com"
-                            value = {email} 
-                            onChange={handleEmailChange}
-                            className = "text-red-600"
-                            required>
-                        </Input>
-                        :
-                        <Input 
-                            id = "email" 
-                            type="email" 
-                            placeholder="@example.com"
-                            value = {email} 
-                            onChange={handleEmailChange}
-                            required>
-                        </Input>
-                        }
+                        <div className = "flex">
+                            {(emptyEmail || !availableEmail) ? 
+                            <Input 
+                                id = "email" 
+                                type="email" 
+                                placeholder="@example.com"
+                                value = {email} 
+                                onChange={handleEmailChange}
+                                className = "text-red-600"
+                                required>
+                            </Input>
+                            :
+                            <Input 
+                                id = "email" 
+                                type="email" 
+                                placeholder="@example.com"
+                                value = {email} 
+                                onChange={handleEmailChange}
+                                required>
+                            </Input>
+                            }
+                            <Button onClick = {clearEmail} variant = "ghost" size = "icon">
+                                <Eraser></Eraser>
+                            </Button>
+                        </div>
+                        
 
                         
                     </div>
