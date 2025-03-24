@@ -128,7 +128,7 @@ const SignUpForm: React.FC = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                alert("User created successfully");
+                alert("Student created successfully");
                 console.log(data);
             } else {
                 alert("Error creating Student");
@@ -157,12 +157,33 @@ const SignUpForm: React.FC = () => {
             return;
         }
 
-        const universityData = {
-            email,
-            password: firstPassword
+        try {
+            const checkEmailResponse = await fetch ("/api/universities", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ checkEmail: true, email }),
+            });
+
+            const checkEmailData = await checkEmailResponse.json();
+
+            if (checkEmailData.exists == true) {
+                setAvailableEmail(false);
+                setEmail("This email is already in use")
+                return;
+            }
+        } catch (error: any) {
+            alert("Error checking email. Please try again.");
+            return;
         }
 
         try {
+            const universityData = {
+                email,
+                password: firstPassword
+            }
+            
             const response = await fetch("/api/universities", {
                 method: "POST",
                 headers: {
@@ -176,11 +197,11 @@ const SignUpForm: React.FC = () => {
                 alert("University created successfully");
                 console.log(data);
             } else {
-                alert("Error creating unversity");
+                alert("Error creating University");
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error creating university");
+            alert("Error creating University");
         }
     }
 
@@ -223,9 +244,6 @@ const SignUpForm: React.FC = () => {
                                 <Eraser></Eraser>
                             </Button>
                         </div>
-                        
-
-                        
                     </div>
 
                     <div className = "space-y-2">
