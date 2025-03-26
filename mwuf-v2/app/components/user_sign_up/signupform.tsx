@@ -1,6 +1,7 @@
-//React
+//React or Next
 import { SetStateAction, useState, useEffect} from "react";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
 
 //Lucide
 import { EyeClosed, Eye, CircleCheck, CircleX, Eraser } from "lucide-react";
@@ -12,6 +13,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const SignUpForm: React.FC = () => {
+    //Initialization of router
+    const router = useRouter();
+
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setConfirmPassword] = useState(false);
 
@@ -127,9 +131,7 @@ const SignUpForm: React.FC = () => {
             });
 
             if (response.ok) {
-                const data = await response.json();
-                alert("Student created successfully");
-                console.log(data);
+                router.push("/signup/student")
             } else {
                 alert("Error creating Student");
             }
@@ -193,9 +195,7 @@ const SignUpForm: React.FC = () => {
             });
 
             if (response.ok) {
-                const data = await response.json();
-                alert("University created successfully");
-                console.log(data);
+                router.push("/signup/university")
             } else {
                 alert("Error creating University");
             }
