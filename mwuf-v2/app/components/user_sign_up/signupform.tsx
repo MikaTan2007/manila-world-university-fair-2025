@@ -80,18 +80,24 @@ const SignUpForm: React.FC = () => {
     //MongoDB student submission
     const handleStudentSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        let hasError = false;
 
         if (emptyEmail == true || email == "") {
             setEmptyEmail(true);
             setEmail("This field is required")
-            return;
+            hasError = true;
         }
 
         if (emptyBothPassword == true) {
-            return;
+            hasError = true;
         }
 
         if (samePassword == false) {
+            hasError = true;
+        }
+
+        if (hasError == true) {
             return;
         }
 
@@ -145,17 +151,23 @@ const SignUpForm: React.FC = () => {
     const handleUniversitySubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        let hasError = false;
+
         if (emptyEmail == true || email == "") {
             setEmptyEmail(true);
             setEmail("This field is required")
-            return;
+            hasError = true;
         }
 
         if (emptyBothPassword == true) {
-            return;
+            hasError = true;
         }
 
         if (samePassword == false) {
+            hasError = true;
+        }
+
+        if (hasError == true) {
             return;
         }
 
