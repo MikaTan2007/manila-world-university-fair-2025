@@ -46,11 +46,28 @@ const StudentSignUpForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        let hasError = false;
+
         if (emptyFirstName == true || firstName == "") {
             setEmptyFirstName(true);
             setFirstName("Required Field")
+            hasError = true;
+        }
+
+        if (emptyLastName == true || lastName == "") {
+            setEmptyLastName(true);
+            setLastName("Required Field")
+            hasError = true;
+        }
+
+        if (hasError == true) {
             return;
         }
+
+        
+        
+
+
     }
 
     return(
@@ -93,10 +110,32 @@ const StudentSignUpForm: React.FC = () => {
                             </Input> 
                         }
 
+                        {(emptyLastName) ?
+
+                            <Input 
+                                id = "last_name" 
+                                type="text" 
+                                placeholder="Last Name" 
+                                required
+                                value = {lastName}
+                                className = "text-red-600"
+                                onChange = {handleLastNameChange}
+                            >
+                            </Input>
+                            :
+                            <Input 
+                                id = "last_name" 
+                                type="text" 
+                                placeholder="Last Name" 
+                                required
+                                value = {lastName}
+                                onChange = {handleLastNameChange}
+                            >
+                            </Input>
+                        }
+
                             
 
-
-                            <Input id = "last_name" type="text" placeholder="Last Name" required></Input>
                         </div>
                         <div className = "flex">
                             <DatePicker></DatePicker>
