@@ -1,5 +1,6 @@
-//React
+//React or Next
 import { SetStateAction, useState, useEffect} from "react";
+import {useRouter} from "next/navigation";
 
 //Shadcn
 import { Card, 
@@ -12,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+//Component Imports
 import { DatePicker } from "./datepicker";
 import { GenderOption } from "./genderoption";
 import { GradYearOption } from "./graduation-year-select";
@@ -21,6 +23,35 @@ import { IdealCountry } from "./idealcountry";
 
 
 const StudentSignUpForm: React.FC = () => {
+    //Initialization of router
+    const router = useRouter();
+
+    //First Name Variables
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+
+    const [emptyFirstName, setEmptyFirstName] = useState(true);
+    const [emptyLastName, setEmptyLastName] = useState(true);
+
+    const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFirstName(e.target.value);
+        setEmptyFirstName(false);
+    }
+
+    const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLastName(e.target.value);
+        setEmptyLastName(false);
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (emptyFirstName == true || firstName == "") {
+            setEmptyFirstName(true);
+            setFirstName("Required Field")
+            return;
+        }
+    }
 
     return(
         <Card className = "mx-auto max-w-sm">
@@ -38,7 +69,33 @@ const StudentSignUpForm: React.FC = () => {
                             General Information
                         </Label>
                         <div className = "flex">
-                            <Input id = "first_name" type="text" placeholder="First Name" required></Input>
+                        
+                        {(emptyFirstName) ?
+                            <Input 
+                                id = "first_name" 
+                                type="text" 
+                                placeholder="First Name" 
+                                required
+                                onChange = {handleFirstNameChange}
+                                className = "text-red-600"
+                                value = {firstName}
+                                >
+                            </Input> 
+                            :
+                            <Input 
+                                id = "first_name" 
+                                type="text" 
+                                placeholder="First Name" 
+                                required
+                                onChange = {handleFirstNameChange}
+                                value = {firstName}
+                                >
+                            </Input> 
+                        }
+
+                            
+
+
                             <Input id = "last_name" type="text" placeholder="Last Name" required></Input>
                         </div>
                         <div className = "flex">
@@ -67,7 +124,7 @@ const StudentSignUpForm: React.FC = () => {
                             <IdealCountry></IdealCountry>
                         </div>
                     </div>
-                    <Button type = "submit" variant = "ghost" className = "w-full text-white bg-blue-400">
+                    <Button type = "submit" onClick = {handleSubmit} variant = "ghost" className = "w-full text-white bg-blue-400">
                         Proceed
                     </Button>
                     <Button type = "submit" variant = "ghost" className = "w-full text-white bg-red-400">
