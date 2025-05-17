@@ -20,6 +20,7 @@ import { GradYearOption } from "./graduation-year-select";
 import { IdealMajor } from "./idealmajor";
 import { CountrySelect } from "./country-select";
 import { IdealCountry } from "./idealcountry";
+import { CircleX } from "lucide-react";
 
 
 const StudentSignUpForm: React.FC = () => {
@@ -44,37 +45,36 @@ const StudentSignUpForm: React.FC = () => {
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
         setEmptyFirstName(false);
+        setHasError(false);
     }
 
     const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLastName(e.target.value);
         setEmptyLastName(false);
+        setHasError(false);
     }
+
+    const [hasError, setHasError] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        let hasError = false;
-
         if (emptyFirstName == true || firstName == "") {
             setEmptyFirstName(true);
-            setFirstName("Required Field")
-            hasError = true;
+            setHasError(true);
         }
 
         if (emptyLastName == true || lastName == "") {
             setEmptyLastName(true);
-            setLastName("Required Field")
-            hasError = true;
+            setHasError(true);
         }
 
         if (dateChanged == false) {
-            hasError = true;
+            setHasError(true);
         }
 
         if (emptyGender == true) {
-            hasError = true;
-            console.log("Empty gender");
+            setHasError(true);
         }
 
         if (hasError == true) {
@@ -105,66 +105,43 @@ const StudentSignUpForm: React.FC = () => {
                         </Label>
                         <div className = "flex">
                         
-                        {(emptyFirstName) ?
-                            <Input 
-                                id = "first_name" 
-                                type="text" 
-                                placeholder="First Name" 
-                                required
-                                onChange = {handleFirstNameChange}
-                                className = "text-red-600"
-                                value = {firstName}
-                                >
-                            </Input> 
-                            :
-                            <Input 
-                                id = "first_name" 
-                                type="text" 
-                                placeholder="First Name" 
-                                required
-                                onChange = {handleFirstNameChange}
-                                value = {firstName}
-                                >
-                            </Input> 
-                        }
-
-                        {(emptyLastName) ?
-
-                            <Input 
-                                id = "last_name" 
-                                type="text" 
-                                placeholder="Last Name" 
-                                required
-                                value = {lastName}
-                                className = "text-red-600"
-                                onChange = {handleLastNameChange}
+                        <Input 
+                            id = "first_name" 
+                            type="text" 
+                            placeholder="First Name" 
+                            required
+                            onChange = {handleFirstNameChange}
+                            value = {firstName}
                             >
-                            </Input>
-                            :
-                            <Input 
-                                id = "last_name" 
-                                type="text" 
-                                placeholder="Last Name" 
-                                required
-                                value = {lastName}
-                                onChange = {handleLastNameChange}
-                            >
-                            </Input>
-                        }
+                        </Input> 
 
-                            
+                        <Input 
+                            id = "last_name" 
+                            type="text" 
+                            placeholder="Last Name" 
+                            required
+                            value = {lastName}
+                            onChange = {handleLastNameChange}
+                            >
+                        </Input>
 
                         </div>
                         <div className = "flex">
                             <DatePicker
                                 value = {dateofBirth}
-                                onChange = {setDateOfBirth}
+                                onChange = {(date) => {
+                                    setDateOfBirth(date);
+                                    setHasError(false);
+                                }}
                                 onDateChanged = {setDateChanged}
                             >
                             </DatePicker>
                             <GenderOption
                                 gender = {gender}
-                                setGender={setGender}
+                                setGender={(value) => {
+                                    setGender(value);
+                                    setHasError(false);
+                                }}
                                 onGenderChange={setEmptyGender}
                             ></GenderOption>
                         </div>
@@ -188,6 +165,11 @@ const StudentSignUpForm: React.FC = () => {
                         </div>
                         <div className = "flex">
                             <IdealCountry></IdealCountry>
+                        </div>
+
+                        <div className = "text-sm flex animate-pulse">
+                            {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
+                            {hasError && <p className = "text-red-600 ml-1">All fields are required</p>}
                         </div>
                     </div>
                     <Button type = "submit" onClick = {handleSubmit} variant = "ghost" className = "w-full text-white bg-blue-400">
