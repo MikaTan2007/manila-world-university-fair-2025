@@ -26,12 +26,16 @@ const StudentSignUpForm: React.FC = () => {
     //Initialization of router
     const router = useRouter();
 
-    //First Name Variables
+    //Name Variables
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
 
     const [emptyFirstName, setEmptyFirstName] = useState(true);
     const [emptyLastName, setEmptyLastName] = useState(true);
+
+    //Date
+    const [dateofBirth, setDateOfBirth] = useState<Date | undefined>(undefined);
+    const [dateChanged, setDateChanged] = useState(false);
 
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
@@ -60,10 +64,15 @@ const StudentSignUpForm: React.FC = () => {
             hasError = true;
         }
 
+        if (dateChanged == false) {
+            hasError = true;
+        }
+
         if (hasError == true) {
             return;
         }
 
+        console.log(dateofBirth);
         
         
 
@@ -138,7 +147,12 @@ const StudentSignUpForm: React.FC = () => {
 
                         </div>
                         <div className = "flex">
-                            <DatePicker></DatePicker>
+                            <DatePicker
+                                value = {dateofBirth}
+                                onChange = {setDateOfBirth}
+                                onDateChanged = {setDateChanged}
+                            >
+                            </DatePicker>
                             <GenderOption></GenderOption>
                         </div>
                         <div className = "flex">

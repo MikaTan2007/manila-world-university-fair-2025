@@ -4,7 +4,6 @@ import * as React from "react"
 import { format, getMonth, getYear, setMonth, setYear } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -14,17 +13,21 @@ import {
 } from "@/components/ui/popover"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-interface DatePicker {
+interface DatePickerProps {
+  value: Date | undefined;
+  onChange: (date:Date | undefined) => void;
   startYear?: number;
   endYear?: number;
+  onDateChanged?: (changed: boolean) => void;
 }
+
 export function DatePicker({
+  value,
+  onChange,
   startYear = getYear(new Date()) - 100,
   endYear = getYear(new Date()) + 100,
-}: DatePicker) {
-
-  const [date, setDate] = React.useState<Date>(new Date());
-
+  onDateChanged,
+}: DatePickerProps) {
   const [dateChanged, setDateChanged] = React.useState(false);
 
   const months = [
@@ -41,28 +44,32 @@ export function DatePicker({
     'November',
     'December',
   ];
+
   const years = Array.from(
     { length: endYear - startYear + 1 },
     (_, i) => startYear + i
   );
 
   const handleMonthChange = (month: string) => {
-    const newDate = setMonth(date, months.indexOf(month));
-    setDate(newDate);
+    if (!value) return;
+    const newDate = setMonth(value, months.indexOf(month));
+    onChange(newDate);
     setDateChanged(true);
+    onDateChanged?.(true);
   }
 
   const handleYearChange = (year: string) => {
-    const newDate = setYear(date, parseInt(year));
-    setDate(newDate)
+    if (!value) return;
+    const newDate = setYear(value, parseInt(year));
+    onChange(newDate);
     setDateChanged(true);
+    onDateChanged?.(true);
   }
 
   const handleSelect = (selectedData: Date | undefined) => {
-    if (selectedData) {
-      setDate(selectedData)
-      setDateChanged(true);
-    }
+    onChange(selectedData);
+    setDateChanged(true);
+    onDateChanged?.(true);
   }
 
   return (
@@ -73,14 +80,14 @@ export function DatePicker({
           className="w-60 justify-start text-left font-normal "
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {dateChanged ? format(date, "PPP") : <span>Date of Birth</span>}
+          {dateChanged && value ? format(value, "PPP") : <span>Date of Birth</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <div className="flex justify-between p-2">
           <Select
             onValueChange={handleMonthChange}
-            value={months[getMonth(date)]}
+            value={value ? months[getMonth(value)] : ""}
           >
             <SelectTrigger className="w-[110px]">
               <SelectValue placeholder="Month" />
@@ -93,7 +100,7 @@ export function DatePicker({
           </Select>
           <Select
             onValueChange={handleYearChange}
-            value={getYear(date).toString()}
+            value={value ? getYear(value).toString() : ""}
           >
             <SelectTrigger className="w-[110px]">
               <SelectValue placeholder="Year" />
@@ -108,11 +115,11 @@ export function DatePicker({
 
         <Calendar
           mode="single"
-          selected={date}
+          selected={value}
           onSelect={handleSelect}
           initialFocus
-          month={date}
-          onMonthChange={setDate}
+          month={value}
+          onMonthChange={d => onChange(d)}
         />
       </PopoverContent>
     </Popover>
