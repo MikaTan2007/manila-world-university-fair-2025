@@ -10,9 +10,27 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export function GenderOption() {
+interface GenderOptionProps {
+  gender: string;
+  setGender: (gender: string) => void;
+  onGenderChange?: (changed: boolean) => void;
+}
+
+export function GenderOption({
+  gender,
+  setGender,
+  onGenderChange
+} : GenderOptionProps) {
+
+  const handleGenderChange = (value: string) => {
+    setGender(value);
+    if (onGenderChange) {
+      onGenderChange(false);
+    }
+  }
+
   return (
-    <Select>
+    <Select value = {gender} onValueChange={handleGenderChange}>
       <SelectTrigger className="w-50">
         <SelectValue placeholder="Gender" />
       </SelectTrigger>

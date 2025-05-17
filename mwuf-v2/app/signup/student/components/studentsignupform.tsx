@@ -37,6 +37,10 @@ const StudentSignUpForm: React.FC = () => {
     const [dateofBirth, setDateOfBirth] = useState<Date | undefined>(undefined);
     const [dateChanged, setDateChanged] = useState(false);
 
+    //Gender
+    const [gender, setGender] = useState("");
+    const [emptyGender, setEmptyGender] = useState(true);
+
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
         setEmptyFirstName(false);
@@ -68,11 +72,16 @@ const StudentSignUpForm: React.FC = () => {
             hasError = true;
         }
 
+        if (emptyGender == true) {
+            hasError = true;
+            console.log("Empty gender");
+        }
+
         if (hasError == true) {
             return;
         }
 
-        console.log(dateofBirth);
+
         
         
 
@@ -153,7 +162,11 @@ const StudentSignUpForm: React.FC = () => {
                                 onDateChanged = {setDateChanged}
                             >
                             </DatePicker>
-                            <GenderOption></GenderOption>
+                            <GenderOption
+                                gender = {gender}
+                                setGender={setGender}
+                                onGenderChange={setEmptyGender}
+                            ></GenderOption>
                         </div>
                         <div className = "flex">
                             <CountrySelect></CountrySelect>
