@@ -42,6 +42,10 @@ const StudentSignUpForm: React.FC = () => {
     const [gender, setGender] = useState("");
     const [emptyGender, setEmptyGender] = useState(true);
 
+    //GradYear
+    const [gradYear, setGradYear] = useState("");
+    const [emptyGradYear, setEmptyGradYear] = useState(true);
+
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
         setEmptyFirstName(false);
@@ -74,6 +78,10 @@ const StudentSignUpForm: React.FC = () => {
         }
 
         if (emptyGender == true) {
+            setHasError(true);
+        }
+
+        if (emptyGradYear == true) {
             setHasError(true);
         }
 
@@ -155,7 +163,14 @@ const StudentSignUpForm: React.FC = () => {
                         </Label>
                         <div className = "flex">
                             <Input id = "school" type="text" placeholder="Current School" required></Input>
-                            <GradYearOption></GradYearOption>
+                            <GradYearOption
+                                gradYear = {gradYear}
+                                setGradYear={(value) => {
+                                    setGradYear(value);
+                                    setHasError(false);
+                                }}
+                                onGradYearChange={setEmptyGradYear}
+                            ></GradYearOption>
                         </div>
                         <div className = "flex">
                             

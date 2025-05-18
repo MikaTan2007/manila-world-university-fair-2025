@@ -10,9 +10,27 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export function GradYearOption() {
+interface GradYearOptionProps {
+  gradYear: string;
+  setGradYear: (gradYear: string) => void;
+  onGradYearChange?: (changed: boolean) => void;
+}
+
+export function GradYearOption({
+  gradYear,
+  setGradYear,
+  onGradYearChange
+} : GradYearOptionProps) {
+
+  const handleGradYearChange = (value: string) => {
+    setGradYear(value);
+    if (onGradYearChange) {
+      onGradYearChange(false);
+    }
+  }
+
   return (
-    <Select>
+    <Select value = {gradYear} onValueChange={handleGradYearChange}>
       <SelectTrigger className="w-25">
         <SelectValue placeholder="HS Graduation Year" />
       </SelectTrigger>
