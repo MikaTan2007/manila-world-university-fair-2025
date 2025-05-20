@@ -18,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { set } from "mongoose"
 
 const countries = [
   { value: "afghanistan", label: "Afghanistan" },
@@ -235,17 +236,19 @@ export function CountrySelect({
     setSelectedValues(citizenship);
   }, [citizenship]);
 
+  React.useEffect(() => {
+    if (JSON.stringify(selectedValues) !== JSON.stringify(citizenship)) {
+      setCitizenship(selectedValues);
+      onCitizenshipChange?.(false);
+    }
+  }, [selectedValues, citizenship, setCitizenship, onCitizenshipChange]);
+
   const handleSelect = (currentValue: string) => {
     setSelectedValues(prev => {
-      let newValues;
       if (prev.includes(currentValue)) {
-        newValues = prev.filter(value => value !== currentValue);
-      } else {
-        newValues = [...prev, currentValue];
+        return prev.filter(value => value !== currentValue)
       }
-      setCitizenship(newValues);
-      onCitizenshipChange?.(false);
-      return newValues;
+      return [...prev, currentValue]
     });
   };
   
