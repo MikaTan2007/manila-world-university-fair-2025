@@ -18,7 +18,7 @@ import { DatePicker } from "./datepicker";
 import { GenderOption } from "./genderoption";
 import { GradYearOption } from "./graduation-year-select";
 import { IdealMajor } from "./idealmajor";
-import { CountrySelect } from "./country-select";
+import { CountrySelect } from "./citizenship";
 import { IdealCountry } from "./idealcountry";
 import { CircleX } from "lucide-react";
 
