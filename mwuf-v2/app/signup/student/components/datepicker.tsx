@@ -51,16 +51,22 @@ export function DatePicker({
   );
 
   const handleMonthChange = (month: string) => {
-    if (!value) return;
-    const newDate = setMonth(value, months.indexOf(month));
+    let baseDate = value ?? new Date();
+    if (!value) {
+      baseDate = new Date(getYear(baseDate), months.indexOf(month), 1)
+    }
+    const newDate = setMonth(baseDate, months.indexOf(month));
     onChange(newDate);
     setDateChanged(true);
     onDateChanged?.(true);
   }
 
   const handleYearChange = (year: string) => {
-    if (!value) return;
-    const newDate = setYear(value, parseInt(year));
+    let baseDate = value ?? new Date();
+    if (!value) {
+      baseDate = new Date(parseInt(year), 0, 1);
+    }
+    const newDate = setYear(baseDate, parseInt(year));
     onChange(newDate);
     setDateChanged(true);
     onDateChanged?.(true);

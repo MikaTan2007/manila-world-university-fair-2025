@@ -46,6 +46,10 @@ const StudentSignUpForm: React.FC = () => {
     const [gradYear, setGradYear] = useState("");
     const [emptyGradYear, setEmptyGradYear] = useState(true);
 
+    //Citizenship
+    const [citizenship, setCitizenship] = useState<string[]>([]);
+    const [emptyCitizenship, setEmptyCitizenship] = useState(true);
+
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
         setEmptyFirstName(false);
@@ -85,15 +89,15 @@ const StudentSignUpForm: React.FC = () => {
             setHasError(true);
         }
 
+        if (emptyCitizenship == true) {
+            setHasError(true);
+        }
+
+        console.log(citizenship)
+
         if (hasError == true) {
             return;
         }
-
-
-        
-        
-
-
     }
 
     return(
@@ -154,7 +158,14 @@ const StudentSignUpForm: React.FC = () => {
                             ></GenderOption>
                         </div>
                         <div className = "flex">
-                            <CountrySelect></CountrySelect>
+                            <CountrySelect
+                                citizenship={citizenship}
+                                setCitizenship={(values) => {
+                                    setCitizenship(values);
+                                    setHasError(false);
+                                }}
+                                onCitizenshipChange={setEmptyCitizenship}
+                            />
                         </div>
                     </div>
                     <div className = "space-y-2">

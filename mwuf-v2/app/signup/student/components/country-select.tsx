@@ -217,64 +217,83 @@ const countries = [
   { value: "zimbabwe", label: "Zimbabwe" },
 ];
 
-  export function CountrySelect() {
-    const [open, setOpen] = React.useState(false);
-    const [selectedValues, setSelectedValues] = React.useState<string[]>([]);
+interface CountrySelectProps {
+  citizenship: string[],
+  setCitizenship: (citizenship: string[]) => void;
+  onCitizenshipChange?: (changed: boolean) => void;
+}
+
+export function CountrySelect({
+  citizenship,
+  setCitizenship,
+  onCitizenshipChange
+} : CountrySelectProps) {
+  const [open, setOpen] = React.useState(false);
+  const [selectedValues, setSelectedValues] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    setSelectedValues(citizenship);
+  }, [citizenship]);
+
+  const handleSelect = (currentValue: string) => {
+    setSelectedValues(prev => {
+      let newValues;
+      if (prev.includes(currentValue)) {
+        newValues = prev.filter(value => value !== currentValue);
+      } else {
+        newValues = [...prev, currentValue];
+      }
+      setCitizenship(newValues);
+      onCitizenshipChange?.(false);
+      return newValues;
+    });
+  };
   
-    const handleSelect = (currentValue: string) => {
-      setSelectedValues(prev => {
-        if (prev.includes(currentValue)) {
-          return prev.filter(value => value !== currentValue);
-        }
-        return [...prev, currentValue];
-      });
-    };
-  
-    const displayString = selectedValues
-      .map(value => countries.find(country => country.value === value)?.label)
-      .filter(Boolean)
-      .join(", ");
-  
-    return (
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className="w-[335px] justify-between"
-          >
-            <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-2 text-left">
-              {selectedValues.length > 0 ? displayString : "Citizenship (multiple allowed)"}
-            </div>
-            <ChevronsUpDown className="opacity-50 shrink-0" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[400px] p-0">
-          <Command>
-            <CommandInput placeholder="Search country..." className="h-9" />
-            <CommandList>
-              <CommandEmpty>No country found.</CommandEmpty>
-              <CommandGroup>
-                {countries.map((country) => (
-                  <CommandItem
-                    key={country.value}
-                    value={country.value}
-                    onSelect={() => handleSelect(country.value)}
-                  >
-                    {country.label}
-                    <Check
-                      className={cn(
-                        "ml-auto",
-                        selectedValues.includes(country.value) ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    );
-  }
+  const displayString = selectedValues
+    .map(value => countries.find(country => country.value === value)?.label)
+    .filter(Boolean)
+    .join(", ");
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-[335px] justify-between"
+        >
+          <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-2 text-left">
+            {selectedValues.length > 0 ? displayString : "Citizenship (multiple allowed)"}
+          </div>
+          <ChevronsUpDown className="opacity-50 shrink-0" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[400px] p-0">
+        <Command>
+          <CommandInput placeholder="Search country..." className="h-9" />
+          <CommandList>
+            <CommandEmpty>No country found.</CommandEmpty>
+            <CommandGroup>
+              {countries.map((country) => (
+                <CommandItem
+                  key={country.value}
+                  value={country.value}
+                  onSelect={() => handleSelect(country.value)}
+                >
+                  {country.label}
+                  <Check
+                    className={cn(
+                      "ml-auto",
+                      selectedValues.includes(country.value) ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
