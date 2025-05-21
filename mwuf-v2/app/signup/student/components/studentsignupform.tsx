@@ -19,7 +19,6 @@ import { GenderOption } from "./genderoption";
 import { GradYearOption } from "./graduation-year-select";
 import { IdealMajor } from "./idealmajor";
 import { CountrySelect } from "./citizenship";
-import { IdealCountry } from "./idealcountry";
 import { CircleX } from "lucide-react";
 
 
@@ -50,6 +49,11 @@ const StudentSignUpForm: React.FC = () => {
     const [citizenship, setCitizenship] = useState<string[]>([]);
     const [emptyCitizenship, setEmptyCitizenship] = useState(true);
 
+    //School Name
+    const [schoolName, setSchoolName] = useState("")
+    const [emptySchoolName, setEmptySchoolName] = useState(true);
+
+    //Handlers for first Name and Last Name
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
         setEmptyFirstName(false);
@@ -59,6 +63,13 @@ const StudentSignUpForm: React.FC = () => {
     const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLastName(e.target.value);
         setEmptyLastName(false);
+        setHasError(false);
+    }
+
+    //Handler for School Name
+    const handleSchoolNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSchoolName(e.target.value);
+        setEmptySchoolName(false);
         setHasError(false);
     }
 
@@ -93,7 +104,9 @@ const StudentSignUpForm: React.FC = () => {
             setHasError(true);
         }
 
-        console.log(citizenship)
+        if (emptySchoolName == true || schoolName == "") {
+            setHasError(true);
+        } 
 
         if (hasError == true) {
             return;
@@ -173,7 +186,15 @@ const StudentSignUpForm: React.FC = () => {
                             Academic Information
                         </Label>
                         <div className = "flex">
-                            <Input id = "school" type="text" placeholder="Current School" required></Input>
+                            <Input 
+                                id = "school" 
+                                type="text" 
+                                placeholder="Current School" 
+                                value = {schoolName}
+                                onChange={handleSchoolNameChange}
+                                required
+                            >
+                            </Input>
                             <GradYearOption
                                 gradYear = {gradYear}
                                 setGradYear={(value) => {
