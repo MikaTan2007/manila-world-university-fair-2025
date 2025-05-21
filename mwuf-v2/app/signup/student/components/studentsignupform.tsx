@@ -189,9 +189,6 @@ const StudentSignUpForm: React.FC = () => {
                         <div className = "flex">
                             <IdealMajor></IdealMajor>
                         </div>
-                        <div className = "flex">
-                            <IdealCountry></IdealCountry>
-                        </div>
 
                         <div className = "text-sm flex animate-pulse">
                             {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
