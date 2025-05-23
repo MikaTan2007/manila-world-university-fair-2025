@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/popover"
 
 const majors = [
+    { value: "other", label: "Other" },
     { value: "computer-science", label: "Computer Science" },
     { value: "business-administration", label: "Business Administration" },
     { value: "psychology", label: "Psychology" },
@@ -122,9 +123,30 @@ const majors = [
     { value: "museum-studies", label: "Museum Studies" },
   ];
 
-  export function IdealMajor() {
+  interface idealMajorProps {
+    idealMajor: string[],
+    setIdealMajor: (idealMajor : string[]) => void;
+    onIdealMajorChange?: (changed: boolean) => void;
+  }
+
+  export function IdealMajor({
+    idealMajor,
+    setIdealMajor,
+    onIdealMajorChange
+  } : idealMajorProps) {
     const [open, setOpen] = React.useState(false);
     const [selectedValues, setSelectedValues] = React.useState<string[]>([]);
+
+    React.useEffect(() => {
+      setSelectedValues(idealMajor)
+    }, [idealMajor]);
+
+    React.useEffect(() => {
+      if (JSON.stringify(selectedValues) !== JSON.stringify(idealMajor)) {
+        setIdealMajor(selectedValues);
+        onIdealMajorChange?.(false);
+      }
+    })
   
     const handleSelect = (currentValue: string) => {
       setSelectedValues(prev => {

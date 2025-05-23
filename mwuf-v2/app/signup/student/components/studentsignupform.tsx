@@ -50,8 +50,13 @@ const StudentSignUpForm: React.FC = () => {
     const [emptyCitizenship, setEmptyCitizenship] = useState(true);
 
     //School Name
-    const [schoolName, setSchoolName] = useState("")
+    const [schoolName, setSchoolName] = useState("");
     const [emptySchoolName, setEmptySchoolName] = useState(true);
+
+    //Ideal Major
+    const [idealMajor, setIdealMajor] = useState<string[]>([]);
+    const [emptyIdealMajor, setEmptyIdealMajor] = useState(true);
+
 
     //Handlers for first Name and Last Name
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,6 +112,10 @@ const StudentSignUpForm: React.FC = () => {
         if (emptySchoolName == true || schoolName == "") {
             setHasError(true);
         } 
+
+        if (emptyIdealMajor == true) {
+            setHasError(true);
+        }
 
         if (hasError == true) {
             return;
@@ -189,7 +198,7 @@ const StudentSignUpForm: React.FC = () => {
                             <Input 
                                 id = "school" 
                                 type="text" 
-                                placeholder="Current School" 
+                                placeholder="High School" 
                                 value = {schoolName}
                                 onChange={handleSchoolNameChange}
                                 required
@@ -208,7 +217,14 @@ const StudentSignUpForm: React.FC = () => {
                             
                         </div>
                         <div className = "flex">
-                            <IdealMajor></IdealMajor>
+                            <IdealMajor
+                                idealMajor={idealMajor}
+                                setIdealMajor={(values) => {
+                                    setIdealMajor(values)
+                                    setHasError(false);
+                                }}
+                                onIdealMajorChange={setEmptyIdealMajor}
+                            ></IdealMajor>
                         </div>
 
                         <div className = "text-sm flex animate-pulse">
