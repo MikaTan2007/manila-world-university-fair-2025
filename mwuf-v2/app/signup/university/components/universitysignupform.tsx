@@ -15,10 +15,25 @@ import { Button } from "@/components/ui/button";
 //Components
 import { UniCountry } from "./unicountry-select";
 import { UniRegion } from "./uniregion";
+import { CircleX } from "lucide-react";
 
 
 const UniversitySignUpForm: React.FC = () => {
+
+    //Name
+    const [uniName, setUniName] = useState("");
+    const [emptyUniName, setEmptyUniName] = useState(true);
+
+    //City
     const [cityInputs, setCityInputs] = useState([{id:1}]);
+
+    //Handlers
+    const handleUniNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUniName(e.target.value);
+        setEmptyUniName(false);
+        setHasError(false);
+    }
+    
 
     const addCityInput = () => {
         setCityInputs((prevInputs) => {
@@ -36,6 +51,21 @@ const UniversitySignUpForm: React.FC = () => {
         });
     };
 
+    const [hasError, setHasError] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (emptyUniName == true || uniName == "") {
+            setEmptyUniName(true);
+            setHasError(true);
+        }
+
+        if (hasError == true) {
+            return;
+        }
+    }
+
     return(
         <Card className = "mx-auto max-w-sm">
             <CardHeader className = "space-y-1">
@@ -51,7 +81,15 @@ const UniversitySignUpForm: React.FC = () => {
                             University Information
                         </Label>
                         <div className = "flex">
-                            <Input id = "uni_name" type="text" placeholder="University Name" required></Input>
+                            <Input 
+                                id = "uni_name" 
+                                type="text" 
+                                placeholder="University Name" 
+                                required
+                                onChange = {handleUniNameChange}
+                                value = {uniName}
+                            >
+                            </Input>
                         </div>
                         <div className = "flex">
                             <UniRegion></UniRegion>
@@ -106,7 +144,13 @@ const UniversitySignUpForm: React.FC = () => {
                             <Input id = "email" type="email" placeholder="contactme@email.com" required></Input>
                         </div>
                     </div>
-                    <Button type = "submit" variant = "ghost" className = "w-full text-white bg-blue-400">
+
+                    <div className = "text-sm flex animate-pulse">
+                            {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
+                            {hasError && <p className = "text-red-600 ml-1">All fields are required</p>}
+                    </div>
+                    
+                    <Button type = "submit" onClick = {handleSubmit} variant = "ghost" className = "w-full text-white bg-blue-400">
                         Proceed
                     </Button>
                     <Button type = "submit" variant = "ghost" className = "w-full text-white bg-red-400">
