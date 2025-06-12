@@ -20,11 +20,19 @@ import {
 } from "@/components/ui/popover"
 
 const region = [
-  { value: "north-america", label: "North America" },
-  { value: "south-america", label: "South America" },
-  { value: "asia", label: "Asia" },
+  { value: "africa", label: "Africa" },
+  { value: "caribbean", label: "Caribbean" },
+  { value: "central-america", label: "Central America" },
+  { value: "central-asia", label: "Central Asia" },
+  { value: "east-asia", label: "East Asia" },
   { value: "europe", label: "Europe" },
-  { value: "africa", label: "Africa" }
+  { value: "middle-east", label: "Middle East" },
+  { value: "north-america", label: "North America" },
+  { value: "oceania", label: "Oceania" },
+  { value: "south-america", label: "South America" },
+  { value: "south-asia", label: "South Asia" },
+  { value: "southeast-asia", label: "Southeast Asia" },
+  { value: "sub-saharan-africa", label: "Sub-Saharan Africa" },
 ];
 
 interface uniRegionProps {
