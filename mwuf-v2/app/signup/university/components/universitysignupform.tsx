@@ -31,6 +31,10 @@ const UniversitySignUpForm: React.FC = () => {
     const [uniRegion, setUniRegion] = useState<string[]>([]);
     const [emptyRegion, setEmptyRegion] = useState(true);
 
+    //Country
+    const [uniCountry, setUniCountry] = useState<string[]>([]);
+    const [emptyUniCountry, setEmptyUniCountry] = useState(true);
+
     //Uni Name Handler
     const handleUniNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUniName(e.target.value);
@@ -70,6 +74,12 @@ const UniversitySignUpForm: React.FC = () => {
         console.log(uniRegion)
 
         if (emptyRegion == true) {
+            setHasError(true);
+        }
+
+        console.log(uniCountry)
+
+        if (emptyUniCountry == true) {
             setHasError(true);
         }
 
@@ -114,7 +124,14 @@ const UniversitySignUpForm: React.FC = () => {
                             ></UniRegion>
                         </div>
                         <div className = "flex">
-                            <UniCountry></UniCountry>
+                            <UniCountry
+                                uniCountry={uniCountry}
+                                setUniCountry={(values) => {
+                                    setUniCountry(values)
+                                    setHasError(false);
+                                }}
+                                onUniCountryChange={setEmptyUniCountry}
+                            ></UniCountry>
                         </div>
                         {cityInputs.map((input) => (
                                 <div key={input.id}>

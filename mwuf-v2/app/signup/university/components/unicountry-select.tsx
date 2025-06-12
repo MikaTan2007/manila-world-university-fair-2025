@@ -217,9 +217,30 @@ const countries = [
   { value: "zimbabwe", label: "Zimbabwe" },
 ];
 
-  export function UniCountry() {
+interface uniCountryProps {
+  uniCountry: string[],
+  setUniCountry: (uniCountry: string[]) => void;
+  onUniCountryChange?: (changed: boolean) => void;
+}
+
+  export function UniCountry({
+    uniCountry,
+    setUniCountry,
+    onUniCountryChange
+  } : uniCountryProps) {
     const [open, setOpen] = React.useState(false);
     const [selectedValues, setSelectedValues] = React.useState<string[]>([]);
+
+    React.useEffect(() => {
+      setSelectedValues(uniCountry)
+    }, [uniCountry]);
+
+    React.useEffect(() => {
+      if (JSON.stringify(selectedValues) !== JSON.stringify(uniCountry)) {
+        setUniCountry(selectedValues);
+        onUniCountryChange?.(false);
+      }
+    })
   
     const handleSelect = (currentValue: string) => {
       setSelectedValues(prev => {
