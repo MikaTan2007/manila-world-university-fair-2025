@@ -27,9 +27,30 @@ const region = [
   { value: "africa", label: "Africa" }
 ];
 
-  export function UniRegion() {
+interface uniRegionProps {
+  uniRegion: string[],
+  setUniRegion: (uniRegion : string[]) => void;
+  onUniRegionChange?: (changed: boolean) => void;
+}
+
+  export function UniRegion({
+    uniRegion,
+    setUniRegion,
+    onUniRegionChange
+  } : uniRegionProps) {
     const [open, setOpen] = React.useState(false);
     const [selectedValues, setSelectedValues] = React.useState<string[]>([]);
+
+    React.useEffect(() => {
+      setSelectedValues(uniRegion)
+    }, [uniRegion]);
+
+    React.useEffect(() => {
+      if (JSON.stringify(selectedValues) !== JSON.stringify(uniRegion)) {
+        setUniRegion(selectedValues);
+        onUniRegionChange?.(false);
+      }
+    })
   
     const handleSelect = (currentValue: string) => {
       setSelectedValues(prev => {

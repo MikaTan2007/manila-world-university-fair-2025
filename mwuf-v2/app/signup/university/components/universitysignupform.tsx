@@ -27,14 +27,18 @@ const UniversitySignUpForm: React.FC = () => {
     //City
     const [cityInputs, setCityInputs] = useState([{id:1}]);
 
-    //Handlers
+    //Region
+    const [uniRegion, setUniRegion] = useState<string[]>([]);
+    const [emptyRegion, setEmptyRegion] = useState(true);
+
+    //Uni Name Handler
     const handleUniNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUniName(e.target.value);
         setEmptyUniName(false);
         setHasError(false);
     }
     
-
+    //City Handler
     const addCityInput = () => {
         setCityInputs((prevInputs) => {
             const updatedInputs = [...prevInputs];
@@ -51,6 +55,8 @@ const UniversitySignUpForm: React.FC = () => {
         });
     };
 
+    
+
     const [hasError, setHasError] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -58,6 +64,12 @@ const UniversitySignUpForm: React.FC = () => {
 
         if (emptyUniName == true || uniName == "") {
             setEmptyUniName(true);
+            setHasError(true);
+        }
+
+        console.log(uniRegion)
+
+        if (emptyRegion == true) {
             setHasError(true);
         }
 
@@ -92,7 +104,14 @@ const UniversitySignUpForm: React.FC = () => {
                             </Input>
                         </div>
                         <div className = "flex">
-                            <UniRegion></UniRegion>
+                            <UniRegion
+                                uniRegion={uniRegion}
+                                setUniRegion={(values) => {
+                                    setUniRegion(values)
+                                    setHasError(false);
+                                }}
+                                onUniRegionChange={setEmptyRegion}
+                            ></UniRegion>
                         </div>
                         <div className = "flex">
                             <UniCountry></UniCountry>
