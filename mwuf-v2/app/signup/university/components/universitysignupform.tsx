@@ -25,7 +25,8 @@ const UniversitySignUpForm: React.FC = () => {
     const [emptyUniName, setEmptyUniName] = useState(true);
 
     //City
-    const [cityInputs, setCityInputs] = useState([{id:1}]);
+    const [CityNumber, setCityNumber] = useState([{id:1}]);
+    const [cities, setCities] = useState<string[]>([]);
 
     //Region
     const [uniRegion, setUniRegion] = useState<string[]>([]);
@@ -44,7 +45,7 @@ const UniversitySignUpForm: React.FC = () => {
     
     //City Handler
     const addCityInput = () => {
-        setCityInputs((prevInputs) => {
+        setCityNumber((prevInputs) => {
             const updatedInputs = [...prevInputs];
             updatedInputs.push({ id: prevInputs.length + 1 });
             return updatedInputs;
@@ -52,14 +53,12 @@ const UniversitySignUpForm: React.FC = () => {
     };
 
     const removeCityInput = () => {
-        setCityInputs((prevInputs) => {
+        setCityNumber((prevInputs) => {
             const updatedInputs = [...prevInputs];
             updatedInputs.pop();
             return updatedInputs;
         });
     };
-
-    
 
     const [hasError, setHasError] = useState(false);
 
@@ -133,7 +132,7 @@ const UniversitySignUpForm: React.FC = () => {
                                 onUniCountryChange={setEmptyUniCountry}
                             ></UniCountry>
                         </div>
-                        {cityInputs.map((input) => (
+                        {CityNumber.map((input) => (
                                 <div key={input.id}>
                                     <Input
                                         id={`city_name_${input.id}`}
