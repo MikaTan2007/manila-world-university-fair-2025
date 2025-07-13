@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { UniCountry } from "./unicountry-select";
 import { UniRegion } from "./uniregion";
 import { CircleX } from "lucide-react";
+import { set } from "mongoose";
 
 
 const UniversitySignUpForm: React.FC = () => {
@@ -40,10 +41,26 @@ const UniversitySignUpForm: React.FC = () => {
     const [uniCountry, setUniCountry] = useState<string[]>([]);
     const [emptyUniCountry, setEmptyUniCountry] = useState(true);
 
+    //Representative Name
+    const [repFirstName, setRepFirstName] = useState("");
+    const [emptyRepFirstName, setEmptyRepFirstName] = useState(true);
+
+    const [repLastName, setRepLastName] = useState("");
+    const [emptyRepLastName, setEmptyRepLastName] = useState(true);
+
+    //Contact Email
+
     //Uni Name Handler
     const handleUniNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUniName(e.target.value);
         setEmptyUniName(false);
+        setHasError(false);
+    }
+
+    //Rep Name Handlers
+    const handleRepFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRepFirstName(e.target.value);    
+        setEmptyRepFirstName(false);
         setHasError(false);
     }
 
@@ -99,7 +116,10 @@ const UniversitySignUpForm: React.FC = () => {
             return;
         }
 
-        console.log(cityValues)
+        if (emptyRepFirstName == true || repFirstName == "") {
+            setEmptyRepFirstName(true);
+            setHasError(true);
+        }
 
         if (hasError == true) {
             return;
@@ -187,7 +207,15 @@ const UniversitySignUpForm: React.FC = () => {
                             Representative Information
                         </Label>
                         <div className = "flex">
-                            <Input id = "rep_first_name" type="text" placeholder="First Name" required></Input>
+                            <Input 
+                                id = "rep_first_name" 
+                                type="text" 
+                                placeholder="First Name" 
+                                required
+                                onChange = {handleRepFirstName}
+                                value = {repFirstName}
+                            > 
+                            </Input>
                             <Input id = "rep_last_name" type="text" placeholder="Last Name" required></Input>
                         </div>
                     </div>
