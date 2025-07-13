@@ -20,13 +20,17 @@ import { CircleX } from "lucide-react";
 
 const UniversitySignUpForm: React.FC = () => {
 
+    interface CityInput {
+        id: number;
+        value: string;
+    }
+
     //Name
     const [uniName, setUniName] = useState("");
     const [emptyUniName, setEmptyUniName] = useState(true);
 
     //City
-    const [CityNumber, setCityNumber] = useState([{id:1}]);
-    const [cities, setCities] = useState<string[]>([]);
+    const [cityInputs, setCityInputs] = useState<CityInput[]>([{ id: 1, value: "" }]);
 
     //Region
     const [uniRegion, setUniRegion] = useState<string[]>([]);
@@ -42,18 +46,26 @@ const UniversitySignUpForm: React.FC = () => {
         setEmptyUniName(false);
         setHasError(false);
     }
+
+    //City Input Handler
+    const handleCityChange = (id: number, value: string) => {
+        setCityInputs(prevInputs =>
+            prevInputs.map(input =>
+                input.id === id ? {...input, value} : input
+            )
+        )
+    }
     
     //City Handler
     const addCityInput = () => {
-        setCityNumber((prevInputs) => {
-            const updatedInputs = [...prevInputs];
-            updatedInputs.push({ id: prevInputs.length + 1 });
-            return updatedInputs;
-        });
+        setCityInputs((prevInputs) => [
+            ...prevInputs,
+            {id:prevInputs.length + 1, value: ""}
+        ]);
     };
 
     const removeCityInput = () => {
-        setCityNumber((prevInputs) => {
+        setCityInputs((prevInputs) => {
             const updatedInputs = [...prevInputs];
             updatedInputs.pop();
             return updatedInputs;
@@ -70,17 +82,24 @@ const UniversitySignUpForm: React.FC = () => {
             setHasError(true);
         }
 
-        console.log(uniRegion)
-
         if (emptyRegion == true) {
             setHasError(true);
         }
 
-        console.log(uniCountry)
-
         if (emptyUniCountry == true) {
             setHasError(true);
         }
+
+        const cityValues = cityInputs
+            .map(input => input.value)
+            .filter(value => value !== "");
+        
+        if (cityValues.length === 0) {
+            setHasError(true);
+            return;
+        }
+
+        console.log(cityValues)
 
         if (hasError == true) {
             return;
@@ -132,15 +151,17 @@ const UniversitySignUpForm: React.FC = () => {
                                 onUniCountryChange={setEmptyUniCountry}
                             ></UniCountry>
                         </div>
-                        {CityNumber.map((input) => (
-                                <div key={input.id}>
-                                    <Input
-                                        id={`city_name_${input.id}`}
-                                        type="text"
-                                        placeholder="City"
-                                        required
-                                    />
-                                </div>
+                        {cityInputs.map((input) => (
+                            <div key={input.id}>
+                                <Input
+                                    id={`city_name_${input.id}`}
+                                    type="text"
+                                    placeholder="City"
+                                    required
+                                    value={input.value}
+                                    onChange={(e) => handleCityChange(input.id, e.target.value)}
+                                />
+                            </div>
                         ))}
                         <div className = "flex">
                             <Button
