@@ -49,6 +49,8 @@ const UniversitySignUpForm: React.FC = () => {
     const [emptyRepLastName, setEmptyRepLastName] = useState(true);
 
     //Contact Email
+    const [contactEmail, setContactEmail] = useState("");
+    const [emptyContactEmail, setEmptyContactEmail] = useState(true);
 
     //Uni Name Handler
     const handleUniNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +66,12 @@ const UniversitySignUpForm: React.FC = () => {
         setHasError(false);
     }
 
+    const handleRepLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRepLastName(e.target.value);
+        setEmptyRepLastName(false);
+        setHasError(false);
+    }
+
     //City Input Handler
     const handleCityChange = (id: number, value: string) => {
         setCityInputs(prevInputs =>
@@ -71,6 +79,7 @@ const UniversitySignUpForm: React.FC = () => {
                 input.id === id ? {...input, value} : input
             )
         )
+        setHasError(false)
     }
     
     //City Handler
@@ -113,13 +122,20 @@ const UniversitySignUpForm: React.FC = () => {
         
         if (cityValues.length === 0) {
             setHasError(true);
-            return;
         }
 
         if (emptyRepFirstName == true || repFirstName == "") {
             setEmptyRepFirstName(true);
             setHasError(true);
         }
+
+        if (emptyRepLastName == true || repLastName == "") {
+            setEmptyRepLastName(true);
+            setHasError(true);
+        }
+
+        console.log(cityValues)
+        console.log(cityValues.length)
 
         if (hasError == true) {
             return;
@@ -216,7 +232,15 @@ const UniversitySignUpForm: React.FC = () => {
                                 value = {repFirstName}
                             > 
                             </Input>
-                            <Input id = "rep_last_name" type="text" placeholder="Last Name" required></Input>
+                            <Input 
+                                id = "rep_last_name" 
+                                type="text" 
+                                placeholder="Last Name" 
+                                required
+                                onChange = {handleRepLastName}
+                                value = {repLastName}
+                            >
+                            </Input>
                         </div>
                     </div>
                     <div className = "space-y-2">
