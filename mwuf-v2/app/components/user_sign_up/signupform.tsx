@@ -137,7 +137,7 @@ const SignUpForm: React.FC = () => {
             });
 
             if (response.ok) {
-                router.push("/signup/student")
+                router.push(`/signup/student?email=${encodeURIComponent(email)}`);
             } else {
                 alert("Error creating Student");
             }

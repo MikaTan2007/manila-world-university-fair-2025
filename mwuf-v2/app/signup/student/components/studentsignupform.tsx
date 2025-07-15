@@ -25,6 +25,17 @@ import { CircleX } from "lucide-react";
 const StudentSignUpForm: React.FC = () => {
     //Initialization of router
     const router = useRouter();
+    const searchParams = new URLSearchParams(window.location.search);
+    const email = searchParams.get('email') || '';
+
+    //Email from prev sign up page
+    const [userEmail, setUserEmail] = useState(email);
+
+    useEffect(() => {
+        if (email) {
+            setUserEmail(email);
+        }
+    }, [email]);
 
     //Name Variables
     const [firstName, setFirstName] = useState("");
@@ -82,6 +93,9 @@ const StudentSignUpForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        console.log("original email: ", email)
+        console.log("user email: ", userEmail)
 
         if (emptyFirstName == true || firstName == "") {
             setEmptyFirstName(true);
