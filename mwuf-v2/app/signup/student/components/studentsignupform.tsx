@@ -252,10 +252,6 @@ const StudentSignUpForm: React.FC = () => {
                     <Button type = "submit" variant = "ghost" className = "w-full text-white bg-red-400">
                         Back
                     </Button>
-
-                    <CardFooter className = "flex justify-center text-sm">
-                        <Button variant = "link">Already have an account? Login here</Button>
-                    </CardFooter>
                     
                 </div>
             </CardContent>
