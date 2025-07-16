@@ -207,7 +207,7 @@ const SignUpForm: React.FC = () => {
             });
 
             if (response.ok) {
-                router.push("/signup/university")
+                router.push(`/signup/university?email=${encodeURIComponent(email)}`)
             } else {
                 alert("Error creating University");
             }
