@@ -97,49 +97,53 @@ const StudentSignUpForm: React.FC = () => {
         setHasError(false);
     }
 
-    const [hasError, setHasError] = useState(false);
+    const [hasError, setHasError] = useState(true);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        let hasError = false;
+
         //Empty Error Checking
         if (emptyFirstName == true || firstName == "") {
             setEmptyFirstName(true);
-            setHasError(true);
+            hasError = true;
         }
 
         if (emptyLastName == true || lastName == "") {
             setEmptyLastName(true);
-            setHasError(true);
+            hasError = true;
         }
 
         if (dateChanged == false) {
-            setHasError(true);
+            hasError = true;
         }
 
         if (emptyGender == true) {
-            setHasError(true);
+            hasError = true;
         }
 
         if (emptyGradYear == true) {
-            setHasError(true);
+            hasError = true;
         }
 
         if (emptyCitizenship == true) {
-            setHasError(true);
+            hasError = true;
         }
 
         if (emptySchoolName == true || schoolName == "") {
-            setHasError(true);
+            hasError = true;
         } 
 
         if (emptyIdealMajor == true) {
-            setHasError(true);
+            hasError = true;
         }
+        
+        setHasError(hasError);
 
         if (hasError == true) {
             return;
-        }
+        } 
 
         try {
             const studentData = {
@@ -165,12 +169,13 @@ const StudentSignUpForm: React.FC = () => {
             } else {
                 alert("Error creating Student");
             }
+
         } catch (error) {
             console.error("Error: ", error)
             alert("Error creating Student")
         }
         
-        
+
     }
 
     return(

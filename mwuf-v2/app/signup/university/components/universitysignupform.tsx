@@ -26,15 +26,23 @@ const UniversitySignUpForm: React.FC = () => {
     const router = useRouter();
     const searchParams = new URLSearchParams(window.location.search);
     const email = searchParams.get('email') || '';
+    const password = searchParams.get('password')
 
     //Email from prev sign up page
     const [userEmail, setUserEmail] = useState(email);
+
+    //Password from prev sign up page
+    const [userPassword, setUserPassword] = useState(password)
 
     useEffect(() => {
         if (email) {
             setUserEmail(email);
         }
-    }, [email]);
+
+        if (password) {
+            setUserPassword(password);
+        }
+    }, [email, password]);
 
     interface CityInput {
         id: number;
@@ -120,23 +128,25 @@ const UniversitySignUpForm: React.FC = () => {
         });
     };
 
-    const [hasError, setHasError] = useState(false);
+    const [hasError, setHasError] = useState(true);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        let hasError = false;
+
         //Value Error Checking
         if (emptyUniName == true || uniName == "") {
             setEmptyUniName(true);
-            setHasError(true);
+            hasError = true;
         }
 
         if (emptyRegion == true) {
-            setHasError(true);
+            hasError = true;
         }
 
         if (emptyUniCountry == true) {
-            setHasError(true);
+            hasError = true;
         }
 
         const cityValues = cityInputs
@@ -144,29 +154,60 @@ const UniversitySignUpForm: React.FC = () => {
             .filter(value => value !== "");
         
         if (cityValues.length === 0) {
-            setHasError(true);
+            hasError = true;
         }
 
         if (emptyRepFirstName == true || repFirstName == "") {
             setEmptyRepFirstName(true);
-            setHasError(true);
+            hasError = true;
         }
 
         if (emptyRepLastName == true || repLastName == "") {
             setEmptyRepLastName(true);
-            setHasError(true);
+            hasError = true;
         }
 
         if (emptyContactEmail == true || contactEmail == "") {
             setEmptyContactEmail(true);
-            setHasError(true);
+            hasError = true;
         }
+
+        setHasError(hasError);
 
         if (hasError == true) {
             return;
         }
 
-        
+        try {
+            const universityData = {
+                email: userEmail,
+                password: userPassword,
+                uni_name: uniName,
+                region: uniRegion,
+                countries: uniCountry,
+                cities: cityValues,
+                rep_first_name: repFirstName,
+                rep_last_name: repLastName,
+                rep_contact_email: contactEmail
+            }
+            
+            const response = await fetch("/api/signup/signup_1/universities", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(universityData),
+            });
+
+            if (response.ok) {
+                alert("University created successfully")
+            } else {
+                alert("Error creating University");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error creating University");
+        }
 
     }
 

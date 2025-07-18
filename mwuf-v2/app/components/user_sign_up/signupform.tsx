@@ -127,32 +127,6 @@ const SignUpForm: React.FC = () => {
         }
 
         router.push(`/signup/student?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`);
-
-        /*
-        try {
-            const studentData = {
-                email,
-                password: firstPassword
-            }
-            
-            const response = await fetch("/api/signup/signup_1/students", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(studentData),
-            });
-
-            if (response.ok) {
-                router.push(`/signup/student?email=${encodeURIComponent(email)}?password=${encodeURIComponent(firstPassword)}`);
-            } else {
-                alert("Error creating Student");
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Error creating Student");
-        }
-        */
     }
 
     //MongoDB university submission
@@ -204,6 +178,9 @@ const SignUpForm: React.FC = () => {
             return;
         }
 
+        router.push(`/signup/university?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`)
+
+        /*
         try {
             const universityData = {
                 email,
@@ -227,6 +204,7 @@ const SignUpForm: React.FC = () => {
             console.error("Error:", error);
             alert("Error creating University");
         }
+        */
     }
 
     return(
