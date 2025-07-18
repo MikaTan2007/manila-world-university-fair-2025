@@ -141,7 +141,34 @@ const StudentSignUpForm: React.FC = () => {
             return;
         }
 
-        console.log(userEmail, userPassword)
+        try {
+            const studentData = {
+                email: userEmail,
+                password: userPassword,
+                first_name: firstName,
+                last_name: lastName,
+                birthday: dateofBirth,
+                gender: gender,
+                citizenship: citizenship
+            }
+
+            const response = await fetch("/api/signup/signup_1/students", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(studentData),
+            });
+
+            if (response.ok) {
+                alert("Student created successfully")
+            } else {
+                alert("Error creating Student");
+            }
+        } catch (error) {
+            console.error("Error: ", error)
+            alert("Error creating Student")
+        }
         
         
     }
