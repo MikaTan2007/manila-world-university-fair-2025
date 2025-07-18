@@ -178,6 +178,11 @@ const StudentSignUpForm: React.FC = () => {
 
     }
 
+    const goBack = async (e: React.FormEvent) => {
+        e.preventDefault();
+        router.back()
+    }
+
     return(
         <Card className = "mx-auto max-w-sm">
             <CardHeader className = "space-y-1">
@@ -291,7 +296,7 @@ const StudentSignUpForm: React.FC = () => {
                     <Button type = "submit" onClick = {handleSubmit} variant = "ghost" className = "w-full text-white bg-blue-400">
                         Proceed
                     </Button>
-                    <Button type = "submit" variant = "ghost" className = "w-full text-white bg-red-400">
+                    <Button type = "submit" onClick = {goBack} variant = "ghost" className = "w-full text-white bg-red-400">
                         Back
                     </Button>
                     
