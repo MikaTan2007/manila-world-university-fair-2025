@@ -102,7 +102,7 @@ const SignUpForm: React.FC = () => {
         }
 
         try {
-            const checkEmailResponse = await fetch ("/api/students", {
+            const checkEmailResponse = await fetch ("/api/signup/signup_1/students", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -128,7 +128,7 @@ const SignUpForm: React.FC = () => {
                 password: firstPassword
             }
             
-            const response = await fetch("/api/students", {
+            const response = await fetch("/api/signup/signup_1/students", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -172,7 +172,7 @@ const SignUpForm: React.FC = () => {
         }
 
         try {
-            const checkEmailResponse = await fetch ("/api/universities", {
+            const checkEmailResponse = await fetch ("/api/signup/signup_1/universities", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -198,7 +198,7 @@ const SignUpForm: React.FC = () => {
                 password: firstPassword
             }
             
-            const response = await fetch("/api/universities", {
+            const response = await fetch("/api/signup/signup_1/universities", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

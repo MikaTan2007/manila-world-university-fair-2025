@@ -67,6 +67,13 @@ const UniversitySignUpForm: React.FC = () => {
     const [contactEmail, setContactEmail] = useState("");
     const [emptyContactEmail, setEmptyContactEmail] = useState(true);
 
+    //Contact Email handler
+    const handleContactEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setContactEmail(e.target.value)
+        setEmptyContactEmail(false);
+        setHasError(false);
+    }
+
     //Uni Name Handler
     const handleUniNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUniName(e.target.value);
@@ -152,8 +159,13 @@ const UniversitySignUpForm: React.FC = () => {
             setHasError(true);
         }
 
-        console.log(cityValues)
-        console.log(cityValues.length)
+        if (emptyContactEmail == true || contactEmail == "") {
+            setEmptyContactEmail(true);
+            setHasError(true);
+        }
+
+        console.log(contactEmail)
+
 
         if (hasError == true) {
             return;
@@ -266,8 +278,15 @@ const UniversitySignUpForm: React.FC = () => {
                             Contact Email
                         </Label>
                         <div className = "flex">
-                            
-                            <Input id = "email" type="email" placeholder="contactme@email.com" required></Input>
+                            <Input 
+                                id = "email" 
+                                type="email" 
+                                placeholder="contactme@email.com" 
+                                required
+                                onChange={handleContactEmailChange}
+                                value = {contactEmail}
+                            >
+                            </Input>
                         </div>
                     </div>
 
