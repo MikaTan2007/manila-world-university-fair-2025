@@ -26,16 +26,24 @@ const StudentSignUpForm: React.FC = () => {
     //Initialization of router
     const router = useRouter();
     const searchParams = new URLSearchParams(window.location.search);
-    const email = searchParams.get('email') || '';
+    const email = searchParams.get('email');
+    const password = searchParams.get('password');
 
     //Email from prev sign up page
     const [userEmail, setUserEmail] = useState(email);
+
+    //Password from prev sign up page
+    const [userPassword, setUserPassword] = useState(password)
 
     useEffect(() => {
         if (email) {
             setUserEmail(email);
         }
-    }, [email]);
+
+        if (password) {
+            setUserPassword(password);
+        }
+    }, [email, password]);
 
     //Name Variables
     const [firstName, setFirstName] = useState("");
@@ -133,6 +141,7 @@ const StudentSignUpForm: React.FC = () => {
             return;
         }
 
+        console.log(userEmail, userPassword)
         
         
     }

@@ -126,7 +126,7 @@ const SignUpForm: React.FC = () => {
             return;
         }
 
-        router.push(`/signup/student?email=${encodeURIComponent(email)}?password=${encodeURIComponent(firstPassword)}`);
+        router.push(`/signup/student?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`);
 
         /*
         try {
