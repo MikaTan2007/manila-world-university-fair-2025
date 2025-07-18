@@ -156,7 +156,7 @@ const StudentSignUpForm: React.FC = () => {
                 citizenship: citizenship
             }
 
-            const response = await fetch("/api/signup/signup_1/students", {
+            const response = await fetch("/api/signup/students", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

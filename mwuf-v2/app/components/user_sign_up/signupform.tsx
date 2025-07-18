@@ -106,7 +106,7 @@ const SignUpForm: React.FC = () => {
         }
 
         try {
-            const checkEmailResponse = await fetch ("/api/signup/signup_1/students", {
+            const checkEmailResponse = await fetch ("/api/signup/students", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -158,7 +158,7 @@ const SignUpForm: React.FC = () => {
         }
 
         try {
-            const checkEmailResponse = await fetch ("/api/signup/signup_1/universities", {
+            const checkEmailResponse = await fetch ("/api/signup/universities", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -179,32 +179,6 @@ const SignUpForm: React.FC = () => {
         }
 
         router.push(`/signup/university?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`)
-
-        /*
-        try {
-            const universityData = {
-                email,
-                password: firstPassword
-            }
-            
-            const response = await fetch("/api/signup/signup_1/universities", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(universityData),
-            });
-
-            if (response.ok) {
-                router.push(`/signup/university?email=${encodeURIComponent(email)}`)
-            } else {
-                alert("Error creating University");
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Error creating University");
-        }
-        */
     }
 
     return(
@@ -257,7 +231,7 @@ const SignUpForm: React.FC = () => {
                                 value = {firstPassword} 
                                 onChange = {handleFirstPasswordChange} 
                                 className="border-0" 
-                                id="password" 
+                                id="firstPassword" 
                                 type={showPassword ? "text" : "password"} 
                                 placeholder="Input Password"
                                 required>
@@ -268,7 +242,15 @@ const SignUpForm: React.FC = () => {
                         </div>
                         
                         <div className = "flex">
-                            <Input value = {secondPassword} onChange = {handleSecondPasswordChange} className = "border-0" id = "password" type = {showConfirmPassword ? "text" : "password"} placeholder = "Confirm Password" required></Input>
+                            <Input 
+                                value = {secondPassword} 
+                                onChange = {handleSecondPasswordChange} 
+                                className = "border-0" id = "secondPassword" 
+                                type = {showConfirmPassword ? "text" : "password"} 
+                                placeholder = "Confirm Password" 
+                                required
+                            >
+                            </Input>
                             <Button onClick = {toggleConfirmPasswordVisibility} variant = "ghost" size = "icon">
                                 {showConfirmPassword ? <Eye></Eye> : <EyeClosed></EyeClosed>}
                             </Button>

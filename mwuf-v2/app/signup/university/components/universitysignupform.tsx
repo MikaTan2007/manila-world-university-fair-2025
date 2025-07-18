@@ -191,7 +191,7 @@ const UniversitySignUpForm: React.FC = () => {
                 rep_contact_email: contactEmail
             }
             
-            const response = await fetch("/api/signup/signup_1/universities", {
+            const response = await fetch("/api/signup/universities", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
