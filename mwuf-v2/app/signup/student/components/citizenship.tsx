@@ -206,7 +206,7 @@ const countries = [
   { value: "ukraine", label: "Ukraine" },
   { value: "united-arab-emirates", label: "United Arab Emirates" },
   { value: "united-kingdom", label: "United Kingdom" },
-  { value: "united-states", label: "United States" },
+  { value: "united-states-of-america", label: "United States of America" },
   { value: "uruguay", label: "Uruguay" },
   { value: "uzbekistan", label: "Uzbekistan" },
   { value: "vanuatu", label: "Vanuatu" },
