@@ -125,9 +125,7 @@ const UniversitySignUpForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log("original email: ", email)
-        console.log("user email: ", userEmail)
-
+        //Value Error Checking
         if (emptyUniName == true || uniName == "") {
             setEmptyUniName(true);
             setHasError(true);
@@ -164,12 +162,12 @@ const UniversitySignUpForm: React.FC = () => {
             setHasError(true);
         }
 
-        console.log(contactEmail)
-
-
         if (hasError == true) {
             return;
         }
+
+        
+
     }
 
     return(

@@ -101,6 +101,10 @@ const SignUpForm: React.FC = () => {
             return;
         }
 
+        if (availableEmail == false) {
+            return;
+        }
+
         try {
             const checkEmailResponse = await fetch ("/api/signup/signup_1/students", {
                 method: "POST",
@@ -122,6 +126,9 @@ const SignUpForm: React.FC = () => {
             return;
         }
 
+        router.push(`/signup/student?email=${encodeURIComponent(email)}?password=${encodeURIComponent(firstPassword)}`);
+
+        /*
         try {
             const studentData = {
                 email,
@@ -137,7 +144,7 @@ const SignUpForm: React.FC = () => {
             });
 
             if (response.ok) {
-                router.push(`/signup/student?email=${encodeURIComponent(email)}`);
+                router.push(`/signup/student?email=${encodeURIComponent(email)}?password=${encodeURIComponent(firstPassword)}`);
             } else {
                 alert("Error creating Student");
             }
@@ -145,6 +152,7 @@ const SignUpForm: React.FC = () => {
             console.error("Error:", error);
             alert("Error creating Student");
         }
+        */
     }
 
     //MongoDB university submission
@@ -168,6 +176,10 @@ const SignUpForm: React.FC = () => {
         }
 
         if (hasError == true) {
+            return;
+        }
+
+        if (availableEmail == false) {
             return;
         }
 

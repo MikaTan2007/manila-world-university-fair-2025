@@ -94,9 +94,7 @@ const StudentSignUpForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log("original email: ", email)
-        console.log("user email: ", userEmail)
-
+        //Empty Error Checking
         if (emptyFirstName == true || firstName == "") {
             setEmptyFirstName(true);
             setHasError(true);
@@ -134,6 +132,9 @@ const StudentSignUpForm: React.FC = () => {
         if (hasError == true) {
             return;
         }
+
+        
+        
     }
 
     return(
