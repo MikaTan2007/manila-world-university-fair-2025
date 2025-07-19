@@ -1,7 +1,9 @@
 'use client';
 import Image from "next/image"
+import { UniversityList } from "./components/universityList";
 
 export default function StudentHomePage() {
+
   return (
     <div>
       <div className="flex flex-col items-center pt-10">
@@ -15,7 +17,7 @@ export default function StudentHomePage() {
           />
       </div>
       <div className = "pt-10">
-        
+        <UniversityList></UniversityList>
       </div>
       
     </div>
