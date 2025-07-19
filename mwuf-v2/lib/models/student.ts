@@ -30,6 +30,10 @@ const StudentSchema = new Schema(
         citizenship: {
             type: [String],
             required: false,
+        },
+        registered_universities: { //For Unis student has registered for
+            type: [String],
+            required: false
         }
     },
     {

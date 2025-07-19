@@ -38,6 +38,10 @@ const UniversitySchema = new Schema (
         rep_contact_email : {
             type: String,
             required: false,
+        },
+        registered_students : { //For students that have registered for this university
+            type: [String],
+            required: false
         }
     },
     {
