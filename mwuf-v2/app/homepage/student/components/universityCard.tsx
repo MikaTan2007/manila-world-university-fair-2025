@@ -50,7 +50,7 @@ export function UniversityCard({ university }: UniversityProps) {
                 </div>
                 
             </CardContent>
-            <CardFooter className="flex justify-end">
+            <CardFooter className="flex justify-end font-sans">
                 <Button variant="outline">Register</Button>
             </CardFooter>
         </Card>

@@ -27,6 +27,8 @@ const region = [
   { value: "Central America", label: "Central America" },
   { value: "South America", label: "South America" },
   { value: "Central Asia", label: "Central Asia" },
+  { value: "North Asia", label: "North Asia" },
+  { value: "West Asia", label: "West Asia" },
   { value: "East Asia", label: "East Asia" },
   { value: "South Asia", label: "South Asia" },
   { value: "Southeast Asia", label: "Southeast Asia" },
