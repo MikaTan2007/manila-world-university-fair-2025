@@ -18,38 +18,40 @@ interface UniversityProps {
 
 export function UniversityCard({ university }: UniversityProps) {
     return (
-        <Card className="w-full hover:shadow-lg transition-shadow">
+        <Card className="w-full hover:shadow-lg transition-shadow font-serif">
             <CardHeader>
-                <CardTitle className = "text-2xl font-bold flex justify-start">{university.uni_name}</CardTitle>
-                <CardDescription>{university.region.join(", ")}</CardDescription>
+                <CardTitle className="text-2xl font-bold flex justify-start text-green-800">{university.uni_name}</CardTitle>
+                <CardDescription className="font-bold">
+                    <div className="flex flex-col">
+                        <div>
+                            {university.cities.join(", ")}
+                        </div>
+
+                        <div>
+                            {university.countries.join(", ")}
+                        </div>
+                    </div>
+                    
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 <div className = "space-y-4">
-                    <div className="space-y-2">
-                        <Label className = "font-bold text-1xl">
-                            Located in:
-                        </Label>
-
-                        <div>
-                            
-                            <p>{university.cities.join(", ")}</p>
+                    <div className = "flex flex-col">
+                        <div className="font-bold text-green-800">
+                            Contact Information
                         </div>
-                    </div>
-
-                    <div className = "space-y-2">
-                        <Label className = "font-bold text-1xl">
-                            Contact Information:
-                        </Label>
-
                         <div>
-                            <p><strong>Representative:</strong> {university.rep_first_name} {university.rep_last_name}</p>
+                            {university.rep_first_name} {university.rep_last_name}
+                        </div>
+                        <div>
+                            {university.rep_contact_email}
                         </div>
                     </div>
                 </div>
                 
             </CardContent>
             <CardFooter className="flex justify-end">
-                <Button variant="outline">View Details</Button>
+                <Button variant="outline">Register</Button>
             </CardFooter>
         </Card>
     );
