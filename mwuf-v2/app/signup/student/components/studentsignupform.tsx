@@ -200,25 +200,25 @@ const StudentSignUpForm: React.FC = () => {
                         </Label>
                         <div className = "flex">
                         
-                        <Input 
-                            id = "first_name" 
-                            type="text" 
-                            placeholder="First Name" 
-                            required
-                            onChange = {handleFirstNameChange}
-                            value = {firstName}
-                            >
-                        </Input> 
+                            <Input 
+                                id = "first_name" 
+                                type="text" 
+                                placeholder="First Name" 
+                                required
+                                onChange = {handleFirstNameChange}
+                                value = {firstName}
+                                >
+                            </Input> 
 
-                        <Input 
-                            id = "last_name" 
-                            type="text" 
-                            placeholder="Last Name" 
-                            required
-                            value = {lastName}
-                            onChange = {handleLastNameChange}
-                            >
-                        </Input>
+                            <Input 
+                                id = "last_name" 
+                                type="text" 
+                                placeholder="Last Name" 
+                                required
+                                value = {lastName}
+                                onChange = {handleLastNameChange}
+                                >
+                            </Input>
 
                         </div>
                         <div className = "flex">
