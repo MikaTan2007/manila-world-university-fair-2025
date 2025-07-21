@@ -1,7 +1,6 @@
 "use client"
 import * as React from "react"
 import { UniversityCard } from "./universityCard";
-import { HomepageSkeletonLoad } from "./cardSkeletonLoad";
 
 interface University {
     email: string;
@@ -38,15 +37,7 @@ export function UniversityList() {
         fetchUniversities();
     }, []);
 
-    if (loading == true) {
-        return (
-            <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-                <HomepageSkeletonLoad></HomepageSkeletonLoad>
-                <HomepageSkeletonLoad></HomepageSkeletonLoad>
-                <HomepageSkeletonLoad></HomepageSkeletonLoad>
-            </div>
-        )
-    }
+    if (loading) return <div>Loading universities</div>;
 
     return (
         <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
