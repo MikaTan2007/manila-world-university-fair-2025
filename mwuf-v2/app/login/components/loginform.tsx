@@ -26,6 +26,10 @@ const LoginForm: React.FC = () => {
         
     }
 
+    const handleStudentLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
+        
+    }
+
     return(
         <Card className = "mx-auto max-w-sm">
             <CardHeader className = "space-y-1">
