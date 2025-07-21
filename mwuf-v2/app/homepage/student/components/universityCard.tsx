@@ -1,6 +1,5 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label";
 
 interface UniversityProps {
     university: {
@@ -18,7 +17,7 @@ interface UniversityProps {
 
 export function UniversityCard({ university }: UniversityProps) {
     return (
-        <Card className="w-full hover:shadow-lg transition-shadow font-serif">
+        <Card className="w-full hover:shadow-lg transition-shadow font-mons">
             <CardHeader>
                 <CardTitle className="text-2xl font-bold flex justify-start text-green-800">{university.uni_name}</CardTitle>
                 <CardDescription className="font-bold">
