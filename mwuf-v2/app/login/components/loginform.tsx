@@ -53,10 +53,12 @@ const LoginForm: React.FC = () => {
 
     const handleStudentLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-
+        
         let hasError = false;
         let noEmail = false;
         let wrongPassword = false;
+        setNoEmail(noEmail)
+        setWrongPassword(wrongPassword)
 
         if (emptyEmail == true || email == "") {
             setEmptyEmail(true);
@@ -118,6 +120,8 @@ const LoginForm: React.FC = () => {
         let hasError = false;
         let noEmail = false;
         let wrongPassword = false;
+        setNoEmail(noEmail)
+        setWrongPassword(wrongPassword)
 
         if (emptyEmail == true || email == "") {
             setEmptyEmail(true);
