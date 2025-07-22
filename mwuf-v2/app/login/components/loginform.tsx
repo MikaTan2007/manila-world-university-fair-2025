@@ -48,8 +48,6 @@ const LoginForm: React.FC = () => {
         setEmail("");
         setEmptyEmail(true);
     }
-
-    
     
     const [hasError, setHasError] = useState(true);
 
@@ -112,9 +110,68 @@ const LoginForm: React.FC = () => {
         } catch (error){
             console.log(error)
         }
-        
     }
-    
+
+    const handleUniversityLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        let hasError = false;
+        let noEmail = false;
+        let wrongPassword = false;
+
+        if (emptyEmail == true || email == "") {
+            setEmptyEmail(true);
+            setEmail("This field is required")
+            hasError = true;
+        }
+
+        if (emptyPassword == true || password == "") {
+            setEmptyPassword(true);
+            hasError = true;
+        }
+
+        setHasError(hasError);
+
+        if (hasError == true) {
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/login/universities", {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body : JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            })
+            const reply = await response.json();
+
+            let message = reply.message
+
+            console.log(message)
+
+            if (message == "University not found") {
+                noEmail = true;
+                setNoEmail(noEmail)
+                return;
+            }
+            
+            if (message == "Password does not match") {
+                wrongPassword = true;
+                setWrongPassword(wrongPassword)
+                return;
+            } else {
+                wrongPassword = false;
+            }
+
+            
+        } catch (error){
+            console.log(error)
+        }
+    }
 
     return(
         <Card className = "mx-auto max-w-sm">
@@ -188,7 +245,7 @@ const LoginForm: React.FC = () => {
                         Login as a Student
                     </Button>
 
-                    <Button type = "submit" variant = "ghost" className = "w-full text-white bg-green-700">
+                    <Button type = "submit" onClick = {handleUniversityLogin} variant = "ghost" className = "w-full text-white bg-green-700">
                         Login as a University
                     </Button>
 

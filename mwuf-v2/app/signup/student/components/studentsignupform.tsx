@@ -171,7 +171,6 @@ const StudentSignUpForm: React.FC = () => {
             }
 
         } catch (error) {
-            console.error("Error: ", error)
             alert("Error creating Student")
         }
         
