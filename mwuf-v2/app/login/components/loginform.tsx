@@ -2,6 +2,9 @@
 import { SetStateAction, useState, useEffect} from "react";
 import Link from "next/link";
 
+//React Router
+import {useRouter} from "next/navigation";
+
 //Lucide
 import { EyeClosed, Eye, Eraser, CircleX } from "lucide-react";
 
@@ -12,6 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const LoginForm: React.FC = () => {
+
+    //Initialization of router
+    const router = useRouter();
 
     const [email, setEmail] = useState("");
     const [emptyEmail, setEmptyEmail] = useState(true);
@@ -107,7 +113,10 @@ const LoginForm: React.FC = () => {
             } else {
                 wrongPassword = false;
             }
-
+            
+            if (message == "Login successful") {
+                router.push(`/homepage/student?email=${encodeURIComponent(email)}`);
+            }
             
         } catch (error){
             console.log(error)
