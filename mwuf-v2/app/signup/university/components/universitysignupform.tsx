@@ -202,11 +202,10 @@ const UniversitySignUpForm: React.FC = () => {
             if (response.ok) {
                 alert("University created successfully")
             } else {
-                alert("Error creating University");
+                router.push("/error")
             }
         } catch (error) {
-            console.error("Error:", error);
-            alert("Error creating University");
+            router.push("/error")
         }
 
     }

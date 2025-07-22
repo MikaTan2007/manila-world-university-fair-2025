@@ -119,7 +119,7 @@ const LoginForm: React.FC = () => {
             }
             
         } catch (error){
-            console.log(error)
+            router.push("/error")
         }
     }
 
@@ -164,8 +164,6 @@ const LoginForm: React.FC = () => {
 
             let message = reply.message
 
-            console.log(message)
-
             if (message == "University not found") {
                 noEmail = true;
                 setNoEmail(noEmail)
@@ -182,7 +180,7 @@ const LoginForm: React.FC = () => {
 
             
         } catch (error){
-            console.log(error)
+            router.push("/error")
         }
     }
 

@@ -122,7 +122,7 @@ const SignUpForm: React.FC = () => {
                 return;
             }
         } catch (error: any) {
-            alert("Error checking email. Please try again.");
+            router.push("/error")
             return;
         }
 
@@ -174,7 +174,7 @@ const SignUpForm: React.FC = () => {
                 return;
             }
         } catch (error: any) {
-            alert("Error checking email. Please try again.");
+            router.push("/error")
             return;
         }
 

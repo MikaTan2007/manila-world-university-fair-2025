@@ -2,6 +2,7 @@
 import * as React from "react"
 import { UniversityCard } from "./universityCard";
 import { HomepageSkeletonLoad } from "./cardSkeletonLoad";
+import { useRouter } from "next/navigation";
 
 interface University {
     email: string;
@@ -18,18 +19,19 @@ interface University {
 export function UniversityList() {
     const [universitites, setUniversitites] = React.useState<University[]>([]);
     const [loading, setLoading] = React.useState(true);
+    const router = useRouter();
 
     React.useEffect(() => {
         const fetchUniversities = async () => {
             try {
                 const response = await fetch("/api/homepage/students");
                 if (response.ok != true) {
-                    throw new Error('Failed to fetch universities')
+                    router.push("/error")
                 }
                 const data = await response.json();
                 setUniversitites(data);
             } catch(error) {
-                console.error("Error fetching universities: ", error);
+                router.push("/error")
             } finally {
                 setLoading(false);
             }
@@ -57,9 +59,7 @@ export function UniversityList() {
                 <UniversityCard
                     key = {university.email}
                     university={university}
-                />
-
-                
+                /> 
             ))}
         </div>
     )
