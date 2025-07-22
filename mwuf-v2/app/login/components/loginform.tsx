@@ -3,7 +3,7 @@ import { SetStateAction, useState, useEffect} from "react";
 import Link from "next/link";
 
 //Lucide
-import { EyeClosed, Eye, Eraser, CircleX, CircleCheck} from "lucide-react";
+import { EyeClosed, Eye, Eraser, CircleX } from "lucide-react";
 
 //Shadcn
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
@@ -21,10 +21,15 @@ const LoginForm: React.FC = () => {
     const [password, setPassword] = useState("");
     const [emptyPassword, setEmptyPassword] = useState(false);
 
+    //Login States
+    const [noEmail, setNoEmail] = useState(false);
+    const [wrongPassword, setWrongPassword] = useState(false);
+
 
     const handlePasswordChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
         setEmptyPassword(false);
+        setWrongPassword(false);
     }
 
     const togglePasswordVisibility = () => {
@@ -35,6 +40,8 @@ const LoginForm: React.FC = () => {
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
         setEmptyEmail(false);
+        setNoEmail(false);
+        setWrongPassword(false);
     }
 
     const clearEmail = () => {
@@ -44,10 +51,14 @@ const LoginForm: React.FC = () => {
 
     
     
-    
+    const [hasError, setHasError] = useState(true);
+
     const handleStudentLogin = async (e: React.FormEvent) => {
-        
+        e.preventDefault();
+
         let hasError = false;
+        let noEmail = false;
+        let wrongPassword = false;
 
         if (emptyEmail == true || email == "") {
             setEmptyEmail(true);
@@ -60,21 +71,48 @@ const LoginForm: React.FC = () => {
             hasError = true;
         }
 
+        setHasError(hasError);
+
         if (hasError == true) {
-            return
+            return;
         }
 
-        /*
         try {
-            const checkEmailResponse = await fetch("/api/login/students", {
+            const response = await fetch("/api/login/students", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type" : "application/json",
                 },
-                body: JSON.stringify({checkEmail: true, email})
+                body : JSON.stringify({
+                    email: email,
+                    password: password
+                })
             })
+            const reply = await response.json();
+
+            let message = reply.message
+
+            console.log(message)
+
+            if (message == "Student not found") {
+                noEmail = true;
+                setNoEmail(noEmail)
+                return;
+            }
+            
+            if (message == "Password does not match") {
+                wrongPassword = true;
+                setWrongPassword(wrongPassword)
+                return;
+            } else {
+                wrongPassword = false;
+            }
+
+            
+        } catch (error){
+            console.log(error)
         }
-        */
+        
     }
     
 
@@ -133,6 +171,16 @@ const LoginForm: React.FC = () => {
                         <div className = "text-sm flex animate-pulse">
                             {emptyPassword ? <CircleX color="red" className="size-5" /> : null}
                             {emptyPassword? <p className = "text-red-600 ml-1">Password must not be empty</p> : null}
+                        </div>
+
+                        <div className = "text-sm flex animate-pulse">
+                            {noEmail ? <CircleX color="red" className="size-5" /> : null}
+                            {noEmail ? <p className = "text-red-600 ml-1">Email does not exist</p> : null}
+                        </div>
+
+                        <div className = "text-sm flex animate-pulse">
+                            {wrongPassword ? <CircleX color="red" className="size-5" /> : null}
+                            {wrongPassword ? <p className = "text-red-600 ml-1">Incorrect password</p> : null}
                         </div>
                     </div>
 
