@@ -3,7 +3,7 @@ import { SetStateAction, useState, useEffect} from "react";
 import Link from "next/link";
 
 //Lucide
-import { EyeClosed, Eye} from "lucide-react";
+import { EyeClosed, Eye, Eraser} from "lucide-react";
 
 //Shadcn
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
@@ -12,6 +12,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const LoginForm: React.FC = () => {
+
+    const [email, setEmail] = useState("");
+    const [emptyEmail, setEmptyEmail] = useState(true);
+
     const [showPassword, setShowPassword] = useState(false);
 
     const [firstPassword, setFirstPassword] = useState("");
@@ -26,9 +30,31 @@ const LoginForm: React.FC = () => {
         
     }
 
-    const handleStudentLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
-        
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+        setEmptyEmail(false);
     }
+
+    const clearEmail = () => {
+        setEmail("");
+        setEmptyEmail(true);
+    }
+
+    
+    
+    /*
+    const handleStudentLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
+        try {
+            const checkEmailResponse = await fetch("/api/login/students", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({checkEmail: true, email})
+            })
+        }
+    }
+    */
 
     return(
         <Card className = "mx-auto max-w-sm">
@@ -44,7 +70,31 @@ const LoginForm: React.FC = () => {
                         <Label htmlFor="email">
                             Email
                         </Label>
-                        <Input id = "email" type="email" placeholder="@example.com" required></Input>
+                        <div className="flex">
+                            {(emptyEmail) ? 
+                                <Input 
+                                    id = "email" 
+                                    type="email" 
+                                    placeholder="@example.com"
+                                    value = {email} 
+                                    onChange={handleEmailChange}
+                                    className = "text-red-600"
+                                    required>
+                                </Input>
+                                :
+                                <Input 
+                                    id = "email" 
+                                    type="email" 
+                                    placeholder="@example.com"
+                                    value = {email} 
+                                    onChange={handleEmailChange}
+                                    required>
+                                </Input>
+                                }
+                                <Button onClick = {clearEmail} variant = "ghost" size = "icon">
+                                    <Eraser></Eraser>
+                                </Button>
+                        </div>
                     </div>
 
                     <div className = "space-y-2">
