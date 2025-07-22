@@ -3,7 +3,7 @@ import { SetStateAction, useState, useEffect} from "react";
 import Link from "next/link";
 
 //Lucide
-import { EyeClosed, Eye, Eraser} from "lucide-react";
+import { EyeClosed, Eye, Eraser, CircleX, CircleCheck} from "lucide-react";
 
 //Shadcn
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
@@ -18,11 +18,13 @@ const LoginForm: React.FC = () => {
 
     const [showPassword, setShowPassword] = useState(false);
 
-    const [firstPassword, setFirstPassword] = useState("");
+    const [password, setPassword] = useState("");
+    const [emptyPassword, setEmptyPassword] = useState(false);
 
 
-    const handleFirstPasswordChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
-        setFirstPassword(e.target.value);
+    const handlePasswordChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+        setEmptyPassword(false);
     }
 
     const togglePasswordVisibility = () => {
@@ -42,8 +44,27 @@ const LoginForm: React.FC = () => {
 
     
     
-    /*
-    const handleStudentLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
+    
+    const handleStudentLogin = async (e: React.FormEvent) => {
+        
+        let hasError = false;
+
+        if (emptyEmail == true || email == "") {
+            setEmptyEmail(true);
+            setEmail("This field is required")
+            hasError = true;
+        }
+
+        if (emptyPassword == true || password == "") {
+            setEmptyPassword(true);
+            hasError = true;
+        }
+
+        if (hasError == true) {
+            return
+        }
+
+        /*
         try {
             const checkEmailResponse = await fetch("/api/login/students", {
                 method: "POST",
@@ -53,8 +74,9 @@ const LoginForm: React.FC = () => {
                 body: JSON.stringify({checkEmail: true, email})
             })
         }
+        */
     }
-    */
+    
 
     return(
         <Card className = "mx-auto max-w-sm">
@@ -102,14 +124,19 @@ const LoginForm: React.FC = () => {
                             Password
                         </Label>
                         <div className = "flex">
-                            <Input value = {firstPassword} onChange = {handleFirstPasswordChange} className="border-0" id = "password" type = {showPassword ? "text" : "password"} placeholder = "Input Password" required></Input>
+                            <Input value = {password} onChange = {handlePasswordChange} className="border-0" id = "password" type = {showPassword ? "text" : "password"} placeholder = "Input Password" required></Input>
                             <Button onClick = {togglePasswordVisibility} variant = "ghost" size = "icon">
                                 {showPassword ? <Eye></Eye> : <EyeClosed></EyeClosed>}
                             </Button>
                         </div>
+
+                        <div className = "text-sm flex animate-pulse">
+                            {emptyPassword ? <CircleX color="red" className="size-5" /> : null}
+                            {emptyPassword? <p className = "text-red-600 ml-1">Password must not be empty</p> : null}
+                        </div>
                     </div>
 
-                    <Button type = "submit" variant = "ghost" className = "w-full text-white bg-blue-500">
+                    <Button type = "submit" onClick = {handleStudentLogin} variant = "ghost" className = "w-full text-white bg-blue-500">
                         Login as a Student
                     </Button>
 
