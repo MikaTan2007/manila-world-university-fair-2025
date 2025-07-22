@@ -44,6 +44,9 @@ export function UniversityList() {
                 <HomepageSkeletonLoad></HomepageSkeletonLoad>
                 <HomepageSkeletonLoad></HomepageSkeletonLoad>
                 <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                <HomepageSkeletonLoad></HomepageSkeletonLoad>
             </div>
         )
     }

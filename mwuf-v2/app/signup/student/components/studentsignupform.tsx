@@ -165,7 +165,7 @@ const StudentSignUpForm: React.FC = () => {
             });
 
             if (response.ok) {
-                alert("Student created successfully")
+                router.push(`/homepage/student?email=${encodeURIComponent(userEmail ?? "")}`);
             } else {
                 alert("Error creating Student");
             }
