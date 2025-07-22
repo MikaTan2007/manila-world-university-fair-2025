@@ -2,16 +2,6 @@ import { NextResponse } from "next/server";
 import Student from "@/lib/models/student";
 import connect from "@/lib/db";
 
-export const GET = async () => {
-    try {
-        await connect();
-        const students = await Student.find();
-        return new NextResponse(JSON.stringify(students), {status: 200});
-    } catch (error: any) {
-        return new NextResponse("Error in fetching students " + error.message, {status: 500});
-    }
-};
-
 export const POST = async (req: Request) => {
 
     const body = await req.json();
