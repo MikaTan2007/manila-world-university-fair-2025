@@ -98,8 +98,6 @@ const LoginForm: React.FC = () => {
 
             let message = reply.message
 
-            console.log(message)
-
             if (message == "Student not found") {
                 noEmail = true;
                 setNoEmail(noEmail)
@@ -116,6 +114,11 @@ const LoginForm: React.FC = () => {
             
             if (message == "Login successful") {
                 router.push(`/homepage/student?email=${encodeURIComponent(email)}`);
+            }
+
+            if (response.ok != true) {
+                router.push("/error")
+                return;
             }
             
         } catch (error){
@@ -176,6 +179,15 @@ const LoginForm: React.FC = () => {
                 return;
             } else {
                 wrongPassword = false;
+            }
+
+            if (message == "Login successful") {
+                //router.push(`/homepage/student?email=${encodeURIComponent(email)}`);
+            }
+
+            if (response.ok != true) {
+                router.push("/error")
+                return;
             }
 
             

@@ -21,7 +21,6 @@ import { IdealMajor } from "./idealmajor";
 import { CountrySelect } from "./citizenship";
 import { CircleX } from "lucide-react";
 
-
 const StudentSignUpForm: React.FC = () => {
     //Initialization of router
     const router = useRouter();

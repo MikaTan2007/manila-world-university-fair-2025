@@ -16,6 +16,30 @@ interface UniversityProps {
 }
 
 export function UniversityCard({ university }: UniversityProps) {
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const studentEmail = searchParams.get('email');
+
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log("Email located in universityCard.tsx: ", university.email);
+
+        try {
+            const response = await fetch("/api/homepage/students/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body : JSON.stringify({
+                    universityEmail: university.email,
+                    studentEmail: studentEmail,
+                })
+            })
+        } catch {
+            null;
+        }
+    }
+
     return (
         <Card className="w-full hover:shadow-lg transition-shadow font-mons">
             <CardHeader>
@@ -50,7 +74,7 @@ export function UniversityCard({ university }: UniversityProps) {
                 
             </CardContent>
             <CardFooter className="flex justify-end font-sans">
-                <Button variant="outline">Register</Button>
+                <Button onClick = {handleRegister} variant="outline">Register</Button>
             </CardFooter>
         </Card>
     );
