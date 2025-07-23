@@ -1,10 +1,12 @@
+![alt text][logo]
+
+[logo]: [https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png](https://github.com/MikaTan2007/manila-world-university-fair-2025/blob/main/mwuf-v2/public/images/mwuf_logo.png "Logo"
+# Background
+
 The Manila World University Fair (MWUF) is an annual university fair started by the International School Manila (ISM) in September of 2024. 
 There were nearly 2000 students, parents, educators, and international university representatives present on a single day, forging connections and future pathways for students.
 
-I built a web application for that fair in 2024 to facilitate easier transmission of information between university representatives and students. I used ReactJS, C# (ASP.NET), and msSQL.
-That version was riddled with several bugs and routing issues, however, it still got the job done.
+The 2024 MWUF Web App *was* built using a technical stack of ReactJS, 
 
-This year's fair, hosted on September 27th 2025 in ISM once more, will feature this new full stack web application built from the ground up using NextJS and MongoDB.
+This is the second version of the MWUF Web Application is built for the 2025 conference and beyond. The purpose of this app is to faciliate more efficient and faster communication of information between university representatives and potential students. 
 
-Fully solo-developed. 
-By Mika Tan
