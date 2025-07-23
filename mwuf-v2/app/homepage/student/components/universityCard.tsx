@@ -1,6 +1,7 @@
 import { useState, useEffect} from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import {useRouter} from "next/navigation";
 
 interface UniversityProps {
     university: {
@@ -20,6 +21,15 @@ export function UniversityCard({ university }: UniversityProps) {
 
     const searchParams = new URLSearchParams(window.location.search);
     const studentEmail = searchParams.get('email');
+    const [registered, setRegistered] = useState(false);
+
+    useEffect(() => {
+        if (studentEmail && university.registered_students.includes(studentEmail)) {
+            setRegistered(true);
+        }
+    }, [studentEmail, university.registered_students]);
+
+    const router = useRouter();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,13 +46,21 @@ export function UniversityCard({ university }: UniversityProps) {
                     studentEmail: studentEmail,
                 })
             })
-        } catch {
-            null;
+
+            if (response.ok == true) {
+                setRegistered(true);
+            }
+
+        } catch (error) {
+            router.push("/error");
         }
     }
 
     return (
-        <Card className="w-full hover:shadow-lg transition-shadow font-mons">
+        <Card className={`w-full hover:shadow-lg transition-shadow font-mons 
+                        ${
+                            registered ? 'bg-green-100 border-green-300' : null
+                        }`}>
             <CardHeader>
                 <CardTitle className="text-2xl font-bold flex justify-start text-green-800">{university.uni_name}</CardTitle>
                 <CardDescription className="font-bold">
@@ -55,7 +73,6 @@ export function UniversityCard({ university }: UniversityProps) {
                             {university.countries.join(", ")}
                         </div>
                     </div>
-                    
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -75,7 +92,13 @@ export function UniversityCard({ university }: UniversityProps) {
                 
             </CardContent>
             <CardFooter className="flex justify-end font-sans">
-                <Button onClick = {handleRegister} variant="outline">Register</Button>
+                <Button 
+                    onClick = {handleRegister} 
+                    variant="outline"
+                    disabled = {registered}
+                >
+                    {registered ? "Registered" : "Register"}
+                </Button>
             </CardFooter>
         </Card>
     );

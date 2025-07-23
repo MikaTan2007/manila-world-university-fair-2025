@@ -121,7 +121,7 @@ const LoginForm: React.FC = () => {
                 return;
             }
             
-        } catch (error){
+        } catch (error) {
             router.push("/error")
         }
     }
