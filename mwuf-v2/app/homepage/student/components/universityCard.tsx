@@ -49,6 +49,8 @@ export function UniversityCard({ university }: UniversityProps) {
 
             if (response.ok == true) {
                 setRegistered(true);
+            } else {
+                router.push("/error");
             }
 
         } catch (error) {

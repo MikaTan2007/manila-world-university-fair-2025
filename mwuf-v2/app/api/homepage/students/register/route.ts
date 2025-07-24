@@ -8,6 +8,13 @@ export const POST = async (req: Request) => {
         const body = await req.json();
         const {universityEmail, studentEmail} = body;
 
+        if (studentEmail == null) {
+            return NextResponse.json({
+                success: false,
+                message: "Student not found",
+            }, {status: 500});
+        }
+
         await connect();
 
         const university = await University.findOne({email : universityEmail});

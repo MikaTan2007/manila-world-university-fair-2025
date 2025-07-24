@@ -15,14 +15,9 @@ const ErrorForm: React.FC = () => {
     //Initialization of router
     const router = useRouter();
 
-    const goBack = async (e: React.FormEvent) => {
-        e.preventDefault();
-        router.back()
-    }
-
     const goToHome = async (e: React.FormEvent) => {
         e.preventDefault();
-        router.push("/")
+        router.push("/login")
     }
 
     return(
@@ -38,10 +33,7 @@ const ErrorForm: React.FC = () => {
                 <div className = "space-y-4">
 
                     <Button type = "submit" onClick = {goToHome} variant = "ghost" className = "w-full text-white bg-red-400">
-                        Go to Home
-                    </Button>
-                    <Button type = "submit" onClick = {goBack} variant = "ghost" className = "w-full text-white bg-red-400">
-                        Back
+                        Back to Login
                     </Button>
                     
                 </div>
