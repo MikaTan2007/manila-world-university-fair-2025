@@ -1,8 +1,9 @@
 "use client"
-import * as React from "react"
+import { useState, useEffect} from "react";
 import { UniversityCard } from "./universityCard";
-import { HomepageSkeletonLoad } from "./cardSkeletonLoad";
+import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
 import { useRouter } from "next/navigation";
+import React from "react";
 
 interface University {
     email: string;
@@ -17,11 +18,11 @@ interface University {
 }
 
 export function UniversityList() {
-    const [universitites, setUniversitites] = React.useState<University[]>([]);
-    const [loading, setLoading] = React.useState(true);
+    const [universitites, setUniversitites] = useState<University[]>([]);
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
 
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchUniversities = async () => {
             try {
                 const response = await fetch("/api/homepage/students");

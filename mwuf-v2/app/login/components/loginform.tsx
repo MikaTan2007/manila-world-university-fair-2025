@@ -182,7 +182,7 @@ const LoginForm: React.FC = () => {
             }
 
             if (message == "Login successful") {
-                //router.push(`/homepage/student?email=${encodeURIComponent(email)}`);
+                router.push(`/homepage/university?email=${encodeURIComponent(email)}`);
             }
 
             if (response.ok != true) {
