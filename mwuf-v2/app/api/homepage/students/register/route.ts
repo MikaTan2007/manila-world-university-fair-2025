@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import University from "@/lib/models/university";
+import Student from "@/lib/models/student";
 import connect from "@/lib/db";
 
 export const POST = async (req: Request) => {
@@ -8,15 +9,16 @@ export const POST = async (req: Request) => {
         const body = await req.json();
         const {universityEmail, studentEmail} = body;
 
-        if (studentEmail == null) {
+        if (studentEmail == null || universityEmail == null) {
             return NextResponse.json({
                 success: false,
-                message: "Student not found",
-            }, {status: 500});
+                message: "Uni/Student not found",
+            }, {status: 404});
         }
 
         await connect();
 
+        //Adding student email to registered_students
         const university = await University.findOne({email : universityEmail});
 
         if (!university) {
@@ -38,9 +40,25 @@ export const POST = async (req: Request) => {
             {new: true}
         );
 
+        //Adding uni email to registered_uni
+        const student = await Student.findOne({email: studentEmail});
+
+        if (!student) {
+            return NextResponse.json({
+                success: false,
+                message: "Student not found",
+            }, {status: 404});
+        }
+
+        const updatedStudent = await Student.findOneAndUpdate(
+            {email: studentEmail},
+            {$push: {registered_universities: universityEmail}},
+            {new: true}
+        )
+
         return NextResponse.json({
             success: true,
-            message: "Student registered successfully",
+            message: "Student and University registered successfully",
         }, {status: 200});
 
     } catch (error: any) {
