@@ -15,7 +15,22 @@ export const POST = async (req: Request) => {
             email: universityEmail
         })
 
+        if (!university) {
+            return NextResponse.json({
+                success: false,
+                error: "University not found"
+            }, {status: 404});
+        }
+
         const studentEmails = university.registered_students;
+
+        if (!studentEmails || studentEmails.length === 0) {
+            return NextResponse.json({
+                success: true,
+                message: "No students registered",
+                students: []
+            }, {status: 200});
+        }
 
         const students = await Student.find({
             email: {$in: studentEmails}

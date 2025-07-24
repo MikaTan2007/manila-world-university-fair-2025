@@ -1,7 +1,7 @@
 import { useState, useEffect} from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 
 interface UniversityProps {
     university: {
@@ -19,7 +19,7 @@ interface UniversityProps {
 
 export function UniversityCard({ university }: UniversityProps) {
 
-    const searchParams = new URLSearchParams(window.location.search);
+    const searchParams = useSearchParams();
     const studentEmail = searchParams.get('email');
     const [registered, setRegistered] = useState(false);
 

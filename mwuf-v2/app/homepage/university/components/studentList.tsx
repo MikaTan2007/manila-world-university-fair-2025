@@ -2,7 +2,7 @@
 import { useState, useEffect} from "react";
 import { Date } from "mongoose";
 import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { StudentCard } from "./studentCard";
 
 interface Student {
@@ -20,12 +20,11 @@ interface Student {
 
 export function StudentList() {
     const router = useRouter();
-    const searchParams = new URLSearchParams(window.location.search);
+    const searchParams = useSearchParams();
     const universityEmail = searchParams.get('email');
+
     const [noStudents, setNoStudents] = useState(true);
-
     const [students, setStudents] = useState<Student[]>([]);
-
     const [loading, setLoading] = useState<boolean>(false);
     
     useEffect(() => {
@@ -45,14 +44,23 @@ export function StudentList() {
                     })
                 });
 
+                const reply = await response.json();
+
+                if (reply.message === "No students registered") {
+                    setNoStudents(true);
+                    setStudents([]);
+                    setLoading(false);
+                    return;
+                }
+
                 if (response.ok) {
-                    const data = await response.json();
-                    setStudents(data.students);
+                    setStudents(reply.students);
+                    setNoStudents(false);
                 } else {
-                    console.log("Error occuring")
+                    router.push("/error")
                 }
             } catch (error) {
-                console.log(error)
+                router.push("/error")
             } finally {
                 setLoading(false);
             }
@@ -75,8 +83,16 @@ export function StudentList() {
         )
     }
 
+    if (noStudents) {
+        return (
+            <div className="text-center p-4">
+                <p>No students registered yet.</p>
+            </div>
+        );
+    }
+
     return (
-        <div>
+        <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             {students.map((student) => (
                 <StudentCard key = {student.email} student={student}/>
             ))}

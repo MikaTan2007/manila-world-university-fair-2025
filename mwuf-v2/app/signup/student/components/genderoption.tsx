@@ -36,10 +36,10 @@ export function GenderOption({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>   
-          <SelectItem value="male">Male</SelectItem>
-          <SelectItem value="female">Female</SelectItem>
-          <SelectItem value="non-binary">Non-Binary</SelectItem>
-          <SelectItem value="other">Other</SelectItem>
+          <SelectItem value="Male">Male</SelectItem>
+          <SelectItem value="Female">Female</SelectItem>
+          <SelectItem value="Non-binary">Non-Binary</SelectItem>
+          <SelectItem value="Other">Other</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
