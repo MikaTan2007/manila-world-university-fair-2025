@@ -152,7 +152,10 @@ const StudentSignUpForm: React.FC = () => {
                 last_name: lastName,
                 birthday: dateofBirth,
                 gender: gender,
-                citizenship: citizenship
+                citizenship: citizenship,
+                graduation_year: gradYear,
+                school_name: schoolName,
+                ideal_major: idealMajor
             }
 
             const response = await fetch("/api/signup/students", {

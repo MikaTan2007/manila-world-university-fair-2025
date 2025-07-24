@@ -31,6 +31,18 @@ const StudentSchema = new Schema(
             type: [String],
             required: false,
         },
+        graduation_year : {
+            type: String,
+            required: false
+        },
+        school_name : {
+            type: String,
+            required: false
+        },
+        ideal_major : {
+            type: [String],
+            required: false
+        },
         registered_universities: { //For Unis student has registered for
             type: [String],
             required: false
