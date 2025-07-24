@@ -59,6 +59,7 @@ export function StudentList() {
                 } else {
                     router.push("/error")
                 }
+                
             } catch (error) {
                 router.push("/error")
             } finally {

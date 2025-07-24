@@ -59,7 +59,7 @@ export function UniversityCard({ university }: UniversityProps) {
     }
 
     return (
-        <Card className={`w-full hover:shadow-lg transition-shadow font-mons 
+        <Card className={`w-full hover:shadow-lg transition-shadow font-sans 
                         ${
                             registered ? 'bg-green-100 border-green-300' : null
                         }`}>
