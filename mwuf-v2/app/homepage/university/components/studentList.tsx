@@ -25,7 +25,7 @@ export function StudentList() {
 
     const [noStudents, setNoStudents] = useState(true);
     const [students, setStudents] = useState<Student[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     
     useEffect(() => {
         
@@ -59,7 +59,7 @@ export function StudentList() {
                 } else {
                     router.push("/error")
                 }
-                
+
             } catch (error) {
                 router.push("/error")
             } finally {
