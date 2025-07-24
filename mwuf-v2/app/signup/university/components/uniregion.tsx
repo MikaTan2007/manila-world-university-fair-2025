@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useState, useEffect} from "react";
 import { Check, ChevronsUpDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -48,14 +48,14 @@ interface uniRegionProps {
     setUniRegion,
     onUniRegionChange
   } : uniRegionProps) {
-    const [open, setOpen] = React.useState(false);
-    const [selectedValues, setSelectedValues] = React.useState<string[]>([]);
+    const [open, setOpen] = useState(false);
+    const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-    React.useEffect(() => {
+    useEffect(() => {
       setSelectedValues(uniRegion)
     }, [uniRegion]);
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (JSON.stringify(selectedValues) !== JSON.stringify(uniRegion)) {
         setUniRegion(selectedValues);
         onUniRegionChange?.(false);

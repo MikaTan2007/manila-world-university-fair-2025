@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useState, useEffect} from "react";
 import { format, getMonth, getYear, setMonth, setYear } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 
@@ -28,7 +28,7 @@ export function DatePicker({
   endYear = getYear(new Date()) + 100,
   onDateChanged,
 }: DatePickerProps) {
-  const [dateChanged, setDateChanged] = React.useState(false);
+  const [dateChanged, setDateChanged] = useState(false);
 
   const months = [
     'January',
