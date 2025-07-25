@@ -1,8 +1,18 @@
 'use client';
 import Image from "next/image"
-import { StudentList } from "./components/studentList";
+import { StudentList, StudentListRefresh } from "./components/studentList";
+import { Button } from "@/components/ui/button";
+import { useRef } from "react";
+import { RefreshCw } from "lucide-react";
 
 export default function UniversityHomePage() {
+  const studentListRefresh = useRef<StudentListRefresh>(null);
+
+  const refreshStudents = () => {
+    if (studentListRefresh.current) {
+      studentListRefresh.current.refreshStudents();
+    }
+  }
 
   return (
     <div>
@@ -16,8 +26,18 @@ export default function UniversityHomePage() {
           priority={true}
           />
       </div>
+      <div className="flex justify-center pt-10">
+        <Button
+          onClick = {refreshStudents}
+          variant = "ghost"
+          className="flex items-center gap-2"
+          >
+            <RefreshCw className="h-4 w-4"/>
+            Refresh
+        </Button>
+      </div>
       <div className = "pt-10">
-        <StudentList></StudentList>
+        <StudentList ref={studentListRefresh} ></StudentList>
       </div>
       
     </div>

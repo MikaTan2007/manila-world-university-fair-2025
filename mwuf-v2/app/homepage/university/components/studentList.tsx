@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect} from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle} from "react";
 import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
 import { useRouter, useSearchParams } from "next/navigation";
 import { StudentCard } from "./studentCard";
@@ -17,7 +17,11 @@ interface Student {
     registered_universitites: [string];
 }
 
-export function StudentList() {
+export interface StudentListRefresh {
+    refreshStudents: () => void;
+}
+
+export const StudentList = forwardRef<StudentListRefresh>((props, refresh) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const universityEmail = searchParams.get('email');
@@ -25,47 +29,51 @@ export function StudentList() {
     const [noStudents, setNoStudents] = useState(true);
     const [students, setStudents] = useState<Student[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+
+    const fetchStudents = async () => {
+            
+        setLoading(true);
+
+        try {
+            const response = await fetch("/api/homepage/universities", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    universityEmail: universityEmail
+                })
+            });
+
+            const reply = await response.json();
+
+            if (reply.message === "No students registered") {
+                setNoStudents(true);
+                setStudents([]);
+                setLoading(false);
+                return;
+            }
+
+            if (response.ok) {
+                setStudents(reply.students);
+                setNoStudents(false);
+            } else {
+                router.push("/error")
+            }
+
+        } catch (error) {
+            router.push("/error")
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useImperativeHandle(refresh, () => ({
+        refreshStudents: fetchStudents
+    }));
     
     useEffect(() => {
-        
-        const fetchStudents = async () => {
-            
-            setLoading(true);
-
-            try {
-                const response = await fetch("/api/homepage/universities", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        universityEmail: universityEmail
-                    })
-                });
-
-                const reply = await response.json();
-
-                if (reply.message === "No students registered") {
-                    setNoStudents(true);
-                    setStudents([]);
-                    setLoading(false);
-                    return;
-                }
-
-                if (response.ok) {
-                    setStudents(reply.students);
-                    setNoStudents(false);
-                } else {
-                    router.push("/error")
-                }
-
-            } catch (error) {
-                router.push("/error")
-            } finally {
-                setLoading(false);
-            }
-        };
-
+    
         fetchStudents();
 
     }, [universityEmail])
@@ -100,5 +108,6 @@ export function StudentList() {
         </div>
     )
 
-}
+});
 
+StudentList.displayName = 'StudentList';
