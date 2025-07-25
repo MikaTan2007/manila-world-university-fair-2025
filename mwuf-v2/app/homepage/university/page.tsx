@@ -26,17 +26,18 @@ export default function UniversityHomePage() {
           priority={true}
           />
       </div>
-      <div className="flex justify-center pt-10">
-        <Button
-          onClick = {refreshStudents}
-          variant = "ghost"
-          className="flex items-center gap-2"
-          >
-            <RefreshCw className="h-4 w-4"/>
-            Refresh
-        </Button>
-      </div>
+      
       <div className = "pt-10">
+        <div className="flex justify-center">
+          <Button
+            onClick = {refreshStudents}
+            variant = "ghost"
+            className="flex items-center gap-2 text-white"
+            >
+              <RefreshCw className="h-4 w-4"/>
+              Refresh
+          </Button>
+        </div>  
         <StudentList ref={studentListRefresh} ></StudentList>
       </div>
       
