@@ -1,6 +1,6 @@
 //React or Next
 import { useState, useEffect} from "react";
-import {useRouter} from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 //Shadcn
 import { Card, 
@@ -24,7 +24,7 @@ import { CircleX } from "lucide-react";
 const StudentSignUpForm: React.FC = () => {
     //Initialization of router
     const router = useRouter();
-    const searchParams = new URLSearchParams(window.location.search);
+    const searchParams = useSearchParams();
     const email = searchParams.get('email');
     const password = searchParams.get('password');
 
