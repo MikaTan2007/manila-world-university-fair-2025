@@ -1,6 +1,6 @@
 //React
-import { SetStateAction, useState, useEffect} from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect} from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 //Shadcn
 import { Card, 
@@ -24,7 +24,7 @@ import { set } from "mongoose";
 const UniversitySignUpForm: React.FC = () => {
     //Initialization of Router
     const router = useRouter();
-    const searchParams = new URLSearchParams(window.location.search);
+    const searchParams = useSearchParams();
     const email = searchParams.get('email') || '';
     const password = searchParams.get('password')
 
@@ -200,7 +200,7 @@ const UniversitySignUpForm: React.FC = () => {
             });
 
             if (response.ok) {
-                alert("University created successfully")
+                router.push(`/homepage/university?email=${encodeURIComponent(email)}`);
             } else {
                 router.push("/error")
             }
