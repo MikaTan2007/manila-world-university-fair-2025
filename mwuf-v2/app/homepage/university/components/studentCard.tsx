@@ -1,15 +1,10 @@
-import { useState, useEffect} from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import {useRouter} from "next/navigation";
-import { Date } from "mongoose";
 
 interface StudentProps {
     student: {
         email: string;
         first_name: string;
         last_name: string;
-        birthday: Date;
         gender: string;
         citizenship: [string];
         graduation_year: string;

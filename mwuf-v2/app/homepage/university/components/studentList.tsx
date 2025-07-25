@@ -1,15 +1,14 @@
 "use client"
 import { useState, useEffect} from "react";
-import { Date } from "mongoose";
 import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
 import { useRouter, useSearchParams } from "next/navigation";
 import { StudentCard } from "./studentCard";
+import { NoStudentCard } from "./noStudent";
 
 interface Student {
     email: string;
     first_name: string;
     last_name: string;
-    birthday: Date;
     gender: string;
     citizenship: [string];
     graduation_year: string;
@@ -86,9 +85,10 @@ export function StudentList() {
 
     if (noStudents) {
         return (
-            <div className="text-center p-4">
-                <p>No students registered yet.</p>
+            <div className = "mx-auto max-w-sm">
+                <NoStudentCard></NoStudentCard>
             </div>
+            
         );
     }
 
