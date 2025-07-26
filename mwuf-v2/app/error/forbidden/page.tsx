@@ -1,9 +1,9 @@
 'use client';
 import Image from "next/image"
-import ErrorForm from "./components/errorForm";
+import ForbiddenForm from "./components/forbiddenForm";
 
 
-export default function ErrorPage() {
+export default function ForbiddenPage() {
   return (
     <div>
       <div className="flex flex-col items-center pt-10">
@@ -17,7 +17,7 @@ export default function ErrorPage() {
           />
       </div>
       <div className = "pt-10">
-        <ErrorForm></ErrorForm>
+        <ForbiddenForm></ForbiddenForm>
       </div>
       
     </div>

@@ -9,7 +9,7 @@ import { Card,
         } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const ErrorForm: React.FC = () => {
+const ForbiddenForm: React.FC = () => {
     //Initialization of router
     const router = useRouter();
 
@@ -22,9 +22,9 @@ const ErrorForm: React.FC = () => {
         <Card className = "mx-auto max-w-sm">
             <CardHeader className = "space-y-1">
                 <CardTitle className = "text-2xl font-bold flex justify-center">
-                    Error 404
+                    Error 403
                 </CardTitle>
-                <CardDescription className = "flex justify-center text-center">We apologize for the inconvenience</CardDescription>
+                <CardDescription className = "flex justify-center text-center">Unauthorized Login or Access Detected</CardDescription>
             </CardHeader>
             
             <CardContent>
@@ -40,4 +40,4 @@ const ErrorForm: React.FC = () => {
     )
 }
 
-export default ErrorForm
+export default ForbiddenForm

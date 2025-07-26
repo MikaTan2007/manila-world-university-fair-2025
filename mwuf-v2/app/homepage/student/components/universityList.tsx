@@ -2,7 +2,7 @@
 import { useState, useEffect} from "react";
 import { UniversityCard } from "./universityCard";
 import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
-import { useRouter } from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 import React from "react";
 
 interface University {
@@ -22,15 +22,41 @@ export function UniversityList() {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
+    const searchParams = useSearchParams();
+    const studentEmail = searchParams.get('email');
+
     useEffect(() => {
         const fetchUniversities = async () => {
             try {
-                const response = await fetch("/api/homepage/students");
-                if (response.ok != true) {
-                    router.push("/error")
+                const response = await fetch("/api/homepage/students", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        studentEmail: studentEmail
+                    })
+
+                });
+                
+                if (response.status === 401 || response.status === 403) {
+                    router.push("/error/forbidden");
+                    return;
                 }
+
+                if (response.ok != true) {
+                    router.push("/error");
+                    return;
+                }
+
                 const data = await response.json();
-                setUniversitites(data);
+                
+                if (data.success && data.universities) {
+                    setUniversitites(data.universities);
+                } else {
+                    setUniversitites(data)
+                }
+
             } catch(error) {
                 router.push("/error")
             } finally {
@@ -38,8 +64,10 @@ export function UniversityList() {
             }
         };
 
-        fetchUniversities();
-    }, []);
+        if (studentEmail) {
+            fetchUniversities();
+        }
+    }, [studentEmail, router]);
 
     if (loading == true) {
         return (
