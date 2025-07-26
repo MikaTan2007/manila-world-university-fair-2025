@@ -24,8 +24,8 @@ interface DatePickerProps {
 export function DatePicker({
   value,
   onChange,
-  startYear = getYear(new Date()) - 100,
-  endYear = getYear(new Date()) + 100,
+  startYear = getYear(new Date()) - 30,
+  endYear = getYear(new Date()),
   onDateChanged,
 }: DatePickerProps) {
   const [dateChanged, setDateChanged] = useState(false);
