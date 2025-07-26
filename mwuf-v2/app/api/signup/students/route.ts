@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Student from "@/lib/models/student";
 import connect from "@/lib/db";
+import { createSession } from "@/lib/session";
 
 export const POST = async (req: Request) => {
 
@@ -24,16 +25,37 @@ export const POST = async (req: Request) => {
     }
     else {
         try {
+            const {email} = body;
+
+            //Create session
+            const sessionId = createSession(email, 'student');
+
             await connect();
     
             const student = new Student(body);
             await student.save();
     
-            return new NextResponse(JSON.stringify({message: "Student created successfully", student: student}), 
-            {status: 200});
+            const response = NextResponse.json({
+                success: true,
+                message: "Student created successfully",
+                student: student
+            }, {status : 200});
+
+            response.cookies.set('sessionId', sessionId, {
+                httpOnly: true,
+                secure: false,
+                maxAge: 24 * 60 * 60 * 1000
+            });
+
+            return response;
+            
     
-        } catch {
-            return new NextResponse("Error in creating student", {status: 500});
+        } catch (error: any) {
+
+            return NextResponse.json({
+                success: false,
+                message: "Error in creating student",
+            }, {status: 500});
         }
     }
     
