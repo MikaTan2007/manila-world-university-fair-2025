@@ -47,6 +47,12 @@ export const StudentList = forwardRef<StudentListRefresh>((props, refresh) => {
 
             const reply = await response.json();
 
+            if (response.status === 401 || response.status === 403) {
+                router.push("/error");
+                console.log("Nuh uh!")
+                return;
+            }
+
             if (reply.message === "No students registered") {
                 setNoStudents(true);
                 setStudents([]);

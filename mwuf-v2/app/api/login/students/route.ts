@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Student from "@/lib/models/student";
 import connect from "@/lib/db";
+import { createSession } from "@/lib/session";
 
 
 export const POST = async (req: Request) => {
@@ -27,11 +28,23 @@ export const POST = async (req: Request) => {
             }, {status: 401})
         }
 
-        return NextResponse.json({
+        // Create session
+        const sessionId = createSession(email, 'student');
+
+        const response = NextResponse.json({
             success: true,
             message: "Login successful",
             student: student
         }, {status : 200});
+
+        // Set session cookie
+        response.cookies.set('sessionId', sessionId, {
+            httpOnly: true,
+            secure: false, // Set to true in production with HTTPS
+            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        });
+
+        return response;
 
 
     } catch (error: any) {
