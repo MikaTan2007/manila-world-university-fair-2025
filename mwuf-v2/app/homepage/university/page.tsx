@@ -31,7 +31,7 @@ export default function UniversityHomePage() {
         <div className="flex justify-center">
           <Button
             onClick = {refreshStudents}
-            variant = "ghost"
+            variant = "link"
             className="flex items-center gap-2 text-white"
             >
               <RefreshCw className="h-4 w-4"/>
