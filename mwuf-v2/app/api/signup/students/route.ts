@@ -6,9 +6,9 @@ import { createSession } from "@/lib/session";
 export const POST = async (req: Request) => {
 
     const body = await req.json();
+    const {email} = body;
 
     if (body.checkEmail == true) {
-        const {email} = body;
 
         try {
             await connect();
@@ -25,8 +25,6 @@ export const POST = async (req: Request) => {
     }
     else {
         try {
-            const {email} = body;
-
             //Create session
             const sessionId = createSession(email, 'student');
 

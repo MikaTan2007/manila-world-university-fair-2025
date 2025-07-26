@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import University from "@/lib/models/university";
 import connect from "@/lib/db";
+import { createSession } from "@/lib/session";
 
 export const POST = async (req: Request) => {
 
     const body = await req.json();
+    const {email} = body;
 
     if (body.checkEmail == true) {
-        const {email} = body;
 
         try {
             await connect();
@@ -24,15 +25,32 @@ export const POST = async (req: Request) => {
     }
     else {
         try {
+            const sessionId = createSession(email, 'university');
+
             await connect();
     
             const university = new University(body);
             await university.save();
+
+            const response = NextResponse.json({
+                success: true,
+                message: "University created successfully",
+                university: university
+            }, {status: 200});
+
+            response.cookies.set('sessionId', sessionId, {
+                httpOnly: true,
+                secure: false,
+                maxAge: 24 * 60 * 60 * 1000
+            });
+
+            return response;
     
-            return new NextResponse(JSON.stringify({message: "University created successfully", university: university}), 
-            {status: 200});
-        } catch {
-            return new NextResponse("Error in creating university", {status: 500});
+        } catch (error: any) {
+            return NextResponse.json({
+                success: false,
+                message: "Error in creating university",
+            }, {status: 500});
         }
     }
     
