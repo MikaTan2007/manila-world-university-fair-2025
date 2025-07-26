@@ -8,7 +8,7 @@ import { Card,
         CardTitle, 
         CardDescription, 
         CardContent, 
-        CardFooter} from "@/components/ui/card";
+        } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,6 @@ import { Button } from "@/components/ui/button";
 import { UniCountry } from "./unicountry-select";
 import { UniRegion } from "./uniregion";
 import { CircleX } from "lucide-react";
-import { set } from "mongoose";
 
 
 
