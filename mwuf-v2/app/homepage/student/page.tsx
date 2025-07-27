@@ -12,9 +12,9 @@ export default function StudentHomePage() {
         <StudentSidebar/>
 
         <main className = "flex-1 flex flex-col">
-          <div className = "flex items-center p-4 border-b">
+          <div className = "flex items-center p-4">
               <SidebarTrigger/>
-              <h1 className="ml-4 text-xl font-semibold font-sans">Student Dashboard</h1>
+              <h1 className="ml-4 text-xl font-semibold font-sans">Student Homepage</h1>
           </div>
 
           {/* Page Content*/ }
