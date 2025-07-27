@@ -28,20 +28,6 @@ interface Student {
     registered_universitites: [string];
 }
 
-const menuItems = [
-    {
-        title: "My Profile",
-        url: "#",
-        icon: User,
-    },
-    {
-        title: "Logout",
-        url: "#",
-        icon: LogOut,
-    },
-    
-]
-
 export function StudentSidebar() {
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -49,7 +35,19 @@ export function StudentSidebar() {
 
     //Student object
     const [student, setStudent] = useState<Student | null>(null);
-    const [loading, setLoading] = useState(true);
+
+    //Logout function
+    const handleLogout = async() => {
+        try {
+            await fetch("/api/logout", {
+                method: "POST"
+            })
+
+            router.push("/login");
+        } catch (error) {
+            router.push("/error")
+        }
+    }
 
     //Fetching student data
     useEffect(() => {
@@ -74,8 +72,6 @@ export function StudentSidebar() {
             } catch (error) {
                 router.push("/error");
                 return;
-            } finally {
-                setLoading(false);
             }
         }
 
@@ -88,8 +84,8 @@ export function StudentSidebar() {
                 <div className="flex items-center space-x-2">
                 <div>
                     <p className="text-3xl font-sans text-green-900 font-extrabold">Welcome, {student?.first_name}</p>
-                    <p className="text-xs text-muted-foreground truncate">
-                        
+                    <p className="truncate text-green-900">
+                        {studentEmail}
                     </p>
                 </div>
                 </div>
@@ -97,17 +93,26 @@ export function StudentSidebar() {
 
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarMenu>
-                        {menuItems.map((item) => (
-                            <SidebarMenuItem key = {item.title}>
-                                <SidebarMenuSubButton asChild>
-                                    <a href = {item.url} className="flex items-center space-x-2">
-                                        <item.icon className = "w-4 h-4"></item.icon>
-                                        <span>{item.title}</span>
-                                    </a>
-                                </SidebarMenuSubButton>
-                            </SidebarMenuItem>
-                        ))}
+                    <SidebarMenu className="space-y-2">
+                        <SidebarMenuItem className="font-sans">
+                            {/* Profile */}
+                            <SidebarMenuSubButton asChild>
+                                <a href="#" className="flex items-center">
+                                    <User className="!w-6 !h-6" />
+                                    <span className = "text-lg">Profile</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
+
+                        <SidebarMenuItem className="font-sans">
+                            {/* Logout */}
+                            <SidebarMenuSubButton asChild>
+                                <a onClick = {handleLogout} className="flex items-center">
+                                    <LogOut className="!w-6 !h-6"/>
+                                    <span className = "text-lg">Logout</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
