@@ -78,6 +78,10 @@ export const StudentList = forwardRef<StudentListRefresh>((props, refresh) => {
     }));
     
     useEffect(() => {
+        if (universityEmail == "") {
+            router.push("/error/forbidden")
+            return;
+        }
     
         fetchStudents();
 

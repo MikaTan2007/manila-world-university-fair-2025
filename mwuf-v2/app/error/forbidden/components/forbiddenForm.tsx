@@ -22,9 +22,9 @@ const ForbiddenForm: React.FC = () => {
         <Card className = "mx-auto max-w-sm">
             <CardHeader className = "space-y-1">
                 <CardTitle className = "text-2xl font-bold flex justify-center">
-                    Error 403
+                    Error 401/403
                 </CardTitle>
-                <CardDescription className = "flex justify-center text-center">Unauthorized Login or Access Detected</CardDescription>
+                <CardDescription className = "flex justify-center text-center">Unauthorized Access Detected</CardDescription>
             </CardHeader>
             
             <CardContent>

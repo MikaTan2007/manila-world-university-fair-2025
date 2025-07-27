@@ -26,6 +26,11 @@ export function UniversityList() {
     const studentEmail = searchParams.get('email');
 
     useEffect(() => {
+        if (studentEmail == "") {
+            router.push("/error/forbidden")
+            return;
+        }
+        
         const fetchUniversities = async () => {
             try {
                 const response = await fetch("/api/homepage/students", {
