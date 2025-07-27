@@ -15,7 +15,15 @@ const ForbiddenForm: React.FC = () => {
 
     const goToHome = async (e: React.FormEvent) => {
         e.preventDefault();
-        router.push("/login")
+        try {
+            await fetch("/api/logout", {
+                method: "POST"
+            })
+
+            router.push("/login");
+        } catch (error) {
+            router.push("/error")
+        }
     }
 
     return(
