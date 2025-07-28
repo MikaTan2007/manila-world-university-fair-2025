@@ -44,6 +44,19 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
     //Student object
     const [university, setUniversity] = useState<University | null>(null);
 
+    //Logout function
+    const handleLogout = async() => {
+        try {
+            await fetch("/api/logout", {
+                method: "POST"
+            })
+
+            router.push("/login");
+        } catch (error) {
+            router.push("/error")
+        }
+    }
+
     //Fetching university
     useEffect(() => {
         const fetchUniversityData = async () => {
@@ -109,6 +122,15 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
                             </SidebarMenuSubButton>
                         </SidebarMenuItem>
 
+                        <SidebarMenuItem className="font-sans">
+                            {/* Logout */}
+                            <SidebarMenuSubButton asChild>
+                                <a onClick = {handleLogout} className="flex items-center">
+                                    <LogOut className="!w-6 !h-6"/>
+                                    <span className = "text-lg">Logout</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
