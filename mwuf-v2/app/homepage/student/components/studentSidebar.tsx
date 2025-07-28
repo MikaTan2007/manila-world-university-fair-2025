@@ -1,4 +1,4 @@
-import { Calendar, Home, LogOut, Settings, University, User } from "lucide-react"
+import { LogOut, User } from "lucide-react"
 import { useState, useEffect } from "react";
 import {
   Sidebar,
