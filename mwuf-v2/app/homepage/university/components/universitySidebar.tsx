@@ -30,27 +30,57 @@ interface University {
     registered_students: string[];
 }
 
+//Refreshing
 interface UniversitySidebarProps {
     onRefreshStudents: () => void;
 }
 
 export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) {
-    const studentListRefresh = useRef<StudentListRefresh>(null);
 
-    const refreshStudents = () => {
-        if (studentListRefresh.current) {
-        studentListRefresh.current.refreshStudents();
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    const universityEmail = searchParams.get('email')
+
+    //Student object
+    const [university, setUniversity] = useState<University | null>(null);
+
+    //Fetching university
+    useEffect(() => {
+        const fetchUniversityData = async () => {
+            try {
+                const response = await fetch("/api/homepage/universities/profile", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: universityEmail
+                    })
+                })
+
+                if (response.ok) {
+                    const data = await response.json()
+                    if (data.success) {
+                        setUniversity(data.university)
+                    }
+                }
+            } catch (error) {
+                router.push("/error");
+                return;
+            }
         }
-    }
+
+        fetchUniversityData();
+    }, [universityEmail, router])
 
     return (
         <Sidebar>
             <SidebarHeader className="p-5">
                 <div className="flex items-center space-x-2">
                 <div>
-                    <p className="text-3xl font-sans text-green-900 font-extrabold">Welcome, University</p>
+                    <p className="text-3xl font-sans text-green-900 font-extrabold">Welcome, {university?.rep_first_name}</p>
                     <p className="truncate text-green-900">
-                        
+                        {universityEmail}
                     </p>
                 </div>
                 </div>
