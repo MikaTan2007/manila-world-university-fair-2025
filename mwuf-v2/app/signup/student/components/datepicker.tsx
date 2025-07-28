@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect} from "react";
+import { useState } from "react";
 import { format, getMonth, getYear, setMonth, setYear } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 
