@@ -49,7 +49,7 @@ export function StudentSidebar() {
         }
     }
 
-    //Logout function
+    //Homepage function
     const handleHome = async() => {
         router.push(`/homepage/student?email=${encodeURIComponent(studentEmail ?? "")}`);
         return;

@@ -1,4 +1,4 @@
-import { LogOut, User, RefreshCcw } from "lucide-react"
+import { LogOut, User, RefreshCcw, HomeIcon} from "lucide-react"
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation"
 
@@ -55,6 +55,12 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
         }
     }
 
+    //Homepage function
+    const handleHome = async() => {
+        router.push(`/homepage/student?email=${encodeURIComponent(universityEmail ?? "")}`);
+        return;
+    }
+
     //Fetching university
     useEffect(() => {
         const fetchUniversityData = async () => {
@@ -100,6 +106,16 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarMenu className="space-y-2">
+                        <SidebarMenuItem className="font-sans">
+                            {/* Homepage */}
+                            <SidebarMenuSubButton asChild>
+                                <a onClick={handleHome} className="flex items-center">
+                                    <HomeIcon className="!w-6 !h-6" />
+                                    <span className = "text-lg">Home</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
+
                         <SidebarMenuItem className="font-sans">
                             {/* Profile */}
                             <SidebarMenuSubButton asChild>
