@@ -53,7 +53,7 @@ export function StudentSidebar() {
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
-                const response = await fetch("/api/homepage/students/profile", {
+                const response = await fetch("/api/homepage/students/sidebar", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

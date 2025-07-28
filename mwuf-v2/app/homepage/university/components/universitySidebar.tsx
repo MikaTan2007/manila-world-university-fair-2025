@@ -1,8 +1,6 @@
 import { LogOut, User, RefreshCcw } from "lucide-react"
 import { useState, useEffect } from "react";
-import { useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation"
-import { StudentListRefresh } from "./studentList";
 
 import {
   Sidebar,
@@ -61,7 +59,7 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
     useEffect(() => {
         const fetchUniversityData = async () => {
             try {
-                const response = await fetch("/api/homepage/universities/profile", {
+                const response = await fetch("/api/homepage/universities/sidebar", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

@@ -32,7 +32,7 @@ export const POST = async (req: Request) => {
         if (session.email !== studentEmail) {
             return NextResponse.json({
                 success: false,
-                error: "Forbidden: Cannot access other university's data"
+                error: "Forbidden: Cannot access other student's data"
             }, {status: 403});
         }
 
