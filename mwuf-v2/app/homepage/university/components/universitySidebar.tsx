@@ -1,5 +1,9 @@
-import { Calendar, Home, LogOut, Settings, University, User } from "lucide-react"
+import { LogOut, User, RefreshCcw } from "lucide-react"
 import { useState, useEffect } from "react";
+import { useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation"
+import { StudentListRefresh } from "./studentList";
+
 import {
   Sidebar,
   SidebarContent,
@@ -14,8 +18,6 @@ import {
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar"
 
-import { useRouter, useSearchParams } from "next/navigation"
-
 interface University {
     email: string;
     uni_name: string;
@@ -28,7 +30,18 @@ interface University {
     registered_students: string[];
 }
 
-export function UniversitySidebar() {
+interface UniversitySidebarProps {
+    onRefreshStudents: () => void;
+}
+
+export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) {
+    const studentListRefresh = useRef<StudentListRefresh>(null);
+
+    const refreshStudents = () => {
+        if (studentListRefresh.current) {
+        studentListRefresh.current.refreshStudents();
+        }
+    }
 
     return (
         <Sidebar>
@@ -52,6 +65,16 @@ export function UniversitySidebar() {
                                 <a href="#" className="flex items-center">
                                     <User className="!w-6 !h-6" />
                                     <span className = "text-lg">Profile</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
+
+                        <SidebarMenuItem className="font-sans">
+                            {/* Refresh */}
+                            <SidebarMenuSubButton asChild>
+                                <a onClick={onRefreshStudents} className="flex items-center">
+                                    <RefreshCcw className="!w-6 !h-6" />
+                                    <span className = "text-lg">Refresh Students</span>
                                 </a>
                             </SidebarMenuSubButton>
                         </SidebarMenuItem>

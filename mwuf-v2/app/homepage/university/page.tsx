@@ -19,7 +19,7 @@ export default function UniversityHomePage() {
   return (
     <SidebarProvider>
       <div className = "flex min-h-screen w-full">
-        <UniversitySidebar/>
+        <UniversitySidebar onRefreshStudents = {refreshStudents}/>
 
 
           <main className = "flex-1 flex flex-col">
@@ -42,16 +42,6 @@ export default function UniversityHomePage() {
               </div>
               
               <div className = "pt-10">
-                <div className="flex justify-center">
-                  <Button
-                    onClick = {refreshStudents}
-                    variant = "link"
-                    className="flex items-center gap-2 text-white"
-                    >
-                      <RefreshCw className="h-4 w-4"/>
-                      Refresh
-                  </Button>
-                </div>  
                 <StudentList ref={studentListRefresh} ></StudentList>
               </div>
             </div>
