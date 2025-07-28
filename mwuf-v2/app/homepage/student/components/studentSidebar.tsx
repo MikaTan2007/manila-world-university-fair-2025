@@ -1,4 +1,4 @@
-import { LogOut, User } from "lucide-react"
+import { LogOut, User, HouseIcon, HomeIcon } from "lucide-react"
 import { useState, useEffect } from "react";
 import {
   Sidebar,
@@ -49,6 +49,12 @@ export function StudentSidebar() {
         }
     }
 
+    //Logout function
+    const handleHome = async() => {
+        router.push(`/homepage/student?email=${encodeURIComponent(studentEmail ?? "")}`);
+        return;
+    }
+
     //Fetching student data
     useEffect(() => {
         const fetchStudentData = async () => {
@@ -94,6 +100,16 @@ export function StudentSidebar() {
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarMenu className="space-y-2">
+                        <SidebarMenuItem className="font-sans">
+                            {/* Homepage */}
+                            <SidebarMenuSubButton asChild>
+                                <a onClick={handleHome} className="flex items-center">
+                                    <HomeIcon className="!w-6 !h-6" />
+                                    <span className = "text-lg">Home</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
+
                         <SidebarMenuItem className="font-sans">
                             {/* Profile */}
                             <SidebarMenuSubButton asChild>
