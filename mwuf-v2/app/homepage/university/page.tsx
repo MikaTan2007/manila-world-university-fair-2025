@@ -1,9 +1,7 @@
 'use client';
 import Image from "next/image"
 import { StudentList, StudentListRefresh } from "./components/studentList";
-import { Button } from "@/components/ui/button";
 import { useRef } from "react";
-import { RefreshCw } from "lucide-react";
 import { UniversitySidebar } from "./components/universitySidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 

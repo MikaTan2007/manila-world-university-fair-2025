@@ -1,4 +1,4 @@
-import { LogOut, User, RefreshCcw, HomeIcon} from "lucide-react"
+import { LogOut, User, HomeIcon} from "lucide-react"
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation"
 
@@ -24,25 +24,12 @@ interface University {
     registered_students: string[];
 }
 
-//Refreshing
-interface UniversitySidebarProps {
-    onRefreshStudents: () => void;
-}
-
-export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) {
+export function UniProfileSidebar() {
 
     const router = useRouter()
     const searchParams = useSearchParams()
     const universityEmail = searchParams.get('email')
-
-    //Student object
-    const [university, setUniversity] = useState<University | null>(null);
-
-    //Profile Page
-    const handleProfile = async() => {
-        router.push(`/homepage/university/profile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${university?.rep_first_name}`);
-        return;
-    }
+    const firstName = searchParams.get('firstName')
 
     //Logout function
     const handleLogout = async() => {
@@ -63,41 +50,12 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
         return;
     }
 
-    //Fetching university
-    useEffect(() => {
-        const fetchUniversityData = async () => {
-            try {
-                const response = await fetch("/api/homepage/universities/sidebar", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        email: universityEmail
-                    })
-                })
-
-                if (response.ok) {
-                    const data = await response.json()
-                    if (data.success) {
-                        setUniversity(data.university)
-                    }
-                }
-            } catch (error) {
-                router.push("/error");
-                return;
-            }
-        }
-
-        fetchUniversityData();
-    }, [universityEmail, router])
-
     return (
         <Sidebar>
             <SidebarHeader className="p-5">
                 <div className="flex items-center space-x-2">
                 <div>
-                    <p className="text-3xl font-sans text-green-900 font-extrabold">Welcome, {university?.rep_first_name}</p>
+                    <p className="text-3xl font-sans text-green-900 font-extrabold">Welcome, {firstName}</p>
                     <p className="truncate text-green-900">
                         {universityEmail}
                     </p>
@@ -114,26 +72,6 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
                                 <a onClick={handleHome} className="flex items-center">
                                     <HomeIcon className="!w-6 !h-6" />
                                     <span className = "text-lg">Home</span>
-                                </a>
-                            </SidebarMenuSubButton>
-                        </SidebarMenuItem>
-
-                        <SidebarMenuItem className="font-sans">
-                            {/* Profile */}
-                            <SidebarMenuSubButton asChild>
-                                <a onClick={handleProfile} className="flex items-center">
-                                    <User className="!w-6 !h-6" />
-                                    <span className = "text-lg">Profile</span>
-                                </a>
-                            </SidebarMenuSubButton>
-                        </SidebarMenuItem>
-
-                        <SidebarMenuItem className="font-sans">
-                            {/* Refresh */}
-                            <SidebarMenuSubButton asChild>
-                                <a onClick={onRefreshStudents} className="flex items-center">
-                                    <RefreshCcw className="!w-6 !h-6" />
-                                    <span className = "text-lg">Refresh Students</span>
                                 </a>
                             </SidebarMenuSubButton>
                         </SidebarMenuItem>
