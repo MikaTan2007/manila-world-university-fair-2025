@@ -1,13 +1,13 @@
 //React or Next
-import { SetStateAction, useState, useEffect} from "react";
+import { useState, useEffect} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 
 //Lucide
-import { EyeClosed, Eye, CircleCheck, CircleX, Eraser, Loader2 } from "lucide-react";
+import { EyeClosed, Eye, CircleCheck, CircleX, Eraser, } from "lucide-react";
 
 //Shadcn
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 const SignUpForm: React.FC = () => {
     //Initialization of router
     const router = useRouter();
+
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setConfirmPassword] = useState(false);
@@ -121,17 +122,18 @@ const SignUpForm: React.FC = () => {
                 setEmail("This email is already in use")
                 return;
             }
+
+            router.push(`/signup/student?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`);
         } catch (error: any) {
             router.push("/error")
             return;
         }
-
-        router.push(`/signup/student?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`);
     }
 
     //MongoDB university submission
     const handleUniversitySubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
 
         let hasError = false;
 
@@ -173,12 +175,14 @@ const SignUpForm: React.FC = () => {
                 setEmail("This email is already in use")
                 return;
             }
+
+            router.push(`/signup/university?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`)
         } catch (error: any) {
             router.push("/error")
             return;
         }
 
-        router.push(`/signup/university?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`)
+        
     }
 
     return(
