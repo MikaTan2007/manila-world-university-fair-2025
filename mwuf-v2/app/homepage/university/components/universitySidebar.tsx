@@ -65,6 +65,11 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
 
     //Fetching university
     useEffect(() => {
+        if (universityEmail == "") {
+            router.push("/error/forbidden")
+            return;
+        }
+        
         const fetchUniversityData = async () => {
             try {
                 const response = await fetch("/api/homepage/universities/sidebar", {

@@ -57,6 +57,11 @@ export function StudentSidebar() {
 
     //Fetching student data
     useEffect(() => {
+        if (studentEmail == "") {
+            router.push("/error/forbidden")
+            return;
+        }
+
         const fetchStudentData = async () => {
             try {
                 const response = await fetch("/api/homepage/students/sidebar", {
