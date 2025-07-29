@@ -1,6 +1,9 @@
 //React
-import { SetStateAction, useState, useEffect} from "react";
+import { useState } from "react";
 import Link from "next/link";
+
+//Toaster
+import toast from "react-hot-toast";
 
 //React Router
 import {useRouter} from "next/navigation";
@@ -83,6 +86,8 @@ const LoginForm: React.FC = () => {
             return;
         }
 
+        const toastId = toast.loading('Logging you in')
+
         try {
             const response = await fetch("/api/login/students", {
                 method: "POST",
@@ -114,6 +119,7 @@ const LoginForm: React.FC = () => {
             
             if (message == "Login successful") {
                 router.push(`/homepage/student?email=${encodeURIComponent(email)}`);
+                toast.dismiss(toastId)
             }
 
             if (response.ok != true) {
@@ -152,6 +158,8 @@ const LoginForm: React.FC = () => {
             return;
         }
 
+        const toastId = toast.loading('Logging you in')
+
         try {
             const response = await fetch("/api/login/universities", {
                 method: "POST",
@@ -183,6 +191,7 @@ const LoginForm: React.FC = () => {
 
             if (message == "Login successful") {
                 router.push(`/homepage/university?email=${encodeURIComponent(email)}`);
+                toast.dismiss(toastId)
             }
 
             if (response.ok != true) {
