@@ -122,7 +122,11 @@ export function UniProfile() {
                     
                 </CardContent>
                 <CardFooter className="flex justify-end font-sans">
-
+                        <Button 
+                            variant="outline"
+                        >
+                            Edit Profile
+                        </Button>
                 </CardFooter>
             </Card>
             <div></div>

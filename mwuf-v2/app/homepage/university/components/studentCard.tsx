@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface StudentProps {
     student: {
@@ -65,9 +65,6 @@ export function StudentCard({student}: StudentProps) {
                 </div>
                 
             </CardContent>
-            <CardFooter className="flex justify-end font-sans">
-
-            </CardFooter>
         </Card>
     );
 
