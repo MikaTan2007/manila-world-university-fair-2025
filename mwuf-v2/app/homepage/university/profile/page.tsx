@@ -2,6 +2,7 @@
 import Image from "next/image"
 import { UniProfileSidebar } from "./components/uniProfileSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { UniProfile } from "./components/changeProfile";
 
 export default function UniversityProfilePage() {
     return (
@@ -28,7 +29,9 @@ export default function UniversityProfilePage() {
                       priority={true}
                       />
                   </div>
-                  
+                  <div className = "pt-10">
+                    <UniProfile></UniProfile>
+                  </div>
                 </div>
               </main>
             </div>

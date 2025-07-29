@@ -18,12 +18,11 @@ export function HomepageSkeletonLoad() {
             <div className="p-6 py-4">
                 <div className="space-y-4">
                     <div className="flex flex-col">
-                        {/* Contact Information Label */}
+                        
                         <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-40 mb-2"></div>
-                        {/* Representative Name */}
                         <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-48 mb-2"></div>
-                        {/* Representative Email */}
-                        <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-56"></div>
+                        <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-55 mb-2"></div>
+                        
                     </div>
                 </div>
             </div>
