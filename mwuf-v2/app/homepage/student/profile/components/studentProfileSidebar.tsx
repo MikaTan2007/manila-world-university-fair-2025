@@ -11,12 +11,11 @@ import {
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar"
 
-
-export function UniProfileSidebar() {
+export function StudentProfileSidebar() {
 
     const router = useRouter();
     const searchParams = useSearchParams();
-    const universityEmail = searchParams.get('email');
+    const studentEmail = searchParams.get('email');
     const firstName = searchParams.get('firstName');
 
     //Logout function
@@ -34,13 +33,13 @@ export function UniProfileSidebar() {
 
     //Homepage function
     const handleHome = async() => {
-        router.push(`/homepage/university?email=${encodeURIComponent(universityEmail ?? "")}`);
+        router.push(`/homepage/student?email=${encodeURIComponent(studentEmail ?? "")}`);
         return;
     }
 
     //Profile Page
     const handleProfile = async() => {
-        router.push(`/homepage/university/profile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${firstName}`);
+        router.push(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${firstName}`);
         return;
     }
 
@@ -51,7 +50,7 @@ export function UniProfileSidebar() {
                 <div>
                     <p className="text-3xl font-sans text-green-900 font-extrabold">Welcome, {firstName}</p>
                     <p className="truncate text-green-900">
-                        {universityEmail}
+                        {studentEmail}
                     </p>
                 </div>
                 </div>

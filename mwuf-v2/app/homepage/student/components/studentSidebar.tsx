@@ -55,6 +55,12 @@ export function StudentSidebar() {
         return;
     }
 
+    //Profile Page
+    const handleProfile = async() => {
+        router.push(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${student?.first_name}`);
+        return;
+    }
+
     //Fetching student data
     useEffect(() => {
         if (studentEmail == "") {
@@ -118,7 +124,7 @@ export function StudentSidebar() {
                         <SidebarMenuItem className="font-sans">
                             {/* Profile */}
                             <SidebarMenuSubButton asChild>
-                                <a href="#" className="flex items-center">
+                                <a onClick={handleProfile} className="flex items-center">
                                     <User className="!w-6 !h-6" />
                                     <span className = "text-lg">Profile</span>
                                 </a>
