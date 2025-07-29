@@ -74,6 +74,10 @@ export function UniversityCard({ university }: UniversityProps) {
                         <div>
                             {university.countries.join(", ")}
                         </div>
+
+                        <div>
+                            {university.region.join(", ")}
+                        </div>
                     </div>
                 </CardDescription>
             </CardHeader>
