@@ -11,7 +11,7 @@ NProgress.configure({
   trickleSpeed: 200,     // Speed of the progress bar animation
   minimum: 0.08,         // Minimum percentage used upon starting
   easing: 'ease',     // CSS easing animation to use
-  speed: 1000,            // Speed of the progress bar (in ms)
+  speed: 500,            // Speed of the progress bar (in ms)
 });
 
 export default function ProgressBar() {

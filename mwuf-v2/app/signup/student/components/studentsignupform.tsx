@@ -150,6 +150,8 @@ const StudentSignUpForm: React.FC = () => {
             return;
         } 
 
+        const toastId = toast.loading('Processing...')
+
         try {
             const studentData = {
                 email: userEmail,

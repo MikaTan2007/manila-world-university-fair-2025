@@ -1,20 +1,17 @@
-import { LogOut, User, HouseIcon, HomeIcon } from "lucide-react"
+import { LogOut, User, HomeIcon } from "lucide-react"
 import { useState, useEffect } from "react";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
   SidebarHeader,
-  SidebarFooter,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar"
 
 import { useRouter, useSearchParams } from "next/navigation"
+import toast from "react-hot-toast";
 
 interface Student {
     email: string;
@@ -60,6 +57,10 @@ export function StudentSidebar() {
         router.push(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${student?.first_name}`);
         return;
     }
+
+    useEffect(() => {
+        toast.dismiss();
+    }, []);
 
     //Fetching student data
     useEffect(() => {
