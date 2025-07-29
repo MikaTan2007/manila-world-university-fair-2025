@@ -6,6 +6,8 @@ import {useRouter} from "next/navigation";
 //Lucide
 import { EyeClosed, Eye, CircleCheck, CircleX, Eraser, } from "lucide-react";
 
+import toast from "react-hot-toast";
+
 //Shadcn
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -106,6 +108,8 @@ const SignUpForm: React.FC = () => {
             return;
         }
 
+        const toastId = toast.loading('Processing...')
+
         try {
             const checkEmailResponse = await fetch ("/api/signup/students", {
                 method: "POST",
@@ -158,6 +162,8 @@ const SignUpForm: React.FC = () => {
         if (availableEmail == false) {
             return;
         }
+
+        const toastId = toast.loading('Processing...')
 
         try {
             const checkEmailResponse = await fetch ("/api/signup/universities", {

@@ -2,6 +2,8 @@
 import { useState, useEffect} from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import toast from "react-hot-toast";
+
 //Shadcn
 import { Card, 
         CardHeader, 
@@ -32,6 +34,10 @@ const UniversitySignUpForm: React.FC = () => {
 
     //Password from prev sign up page
     const [userPassword, setUserPassword] = useState(password)
+
+    useEffect(() => {
+        toast.dismiss();
+    }, []);
 
     useEffect(() => {
         if (email) {
