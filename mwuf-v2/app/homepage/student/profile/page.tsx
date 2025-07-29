@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { StudentProfileSidebar } from "./components/studentProfileSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { StudentProfile } from "./components/changeProfile";
 
 export default function StudentProfilePage() {
     return (
@@ -29,11 +30,12 @@ export default function StudentProfilePage() {
                         />
                     </div>
                     <div className = "pt-10">
-
+                        <StudentProfile></StudentProfile>
                     </div>
                 </div>
                 </main>
             </div>
         </SidebarProvider>
-    )
+
+    );
 }
