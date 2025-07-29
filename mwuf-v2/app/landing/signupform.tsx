@@ -4,7 +4,7 @@ import Link from "next/link";
 import {useRouter} from "next/navigation";
 
 //Lucide
-import { EyeClosed, Eye, CircleCheck, CircleX, Eraser } from "lucide-react";
+import { EyeClosed, Eye, CircleCheck, CircleX, Eraser, Loader2 } from "lucide-react";
 
 //Shadcn
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
