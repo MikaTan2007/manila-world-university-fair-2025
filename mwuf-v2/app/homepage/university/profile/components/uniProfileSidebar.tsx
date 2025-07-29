@@ -12,17 +12,6 @@ import {
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar"
 
-interface University {
-    email: string;
-    uni_name: string;
-    region: string[];
-    countries: string[];
-    cities: string[];
-    rep_first_name: string;
-    rep_last_name: string;
-    rep_contact_email: string;
-    registered_students: string[];
-}
 
 export function UniProfileSidebar() {
 
@@ -50,6 +39,12 @@ export function UniProfileSidebar() {
         return;
     }
 
+    //Profile Page
+    const handleProfile = async() => {
+        router.push(`/homepage/university/profile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${firstName}`);
+        return;
+    }
+
     return (
         <Sidebar>
             <SidebarHeader className="p-5">
@@ -72,6 +67,16 @@ export function UniProfileSidebar() {
                                 <a onClick={handleHome} className="flex items-center">
                                     <HomeIcon className="!w-6 !h-6" />
                                     <span className = "text-lg">Home</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
+
+                        <SidebarMenuItem className="font-sans">
+                            {/* Profile */}
+                            <SidebarMenuSubButton asChild>
+                                <a onClick={handleProfile} className="flex items-center">
+                                    <User className="!w-6 !h-6" />
+                                    <span className = "text-lg">Profile</span>
                                 </a>
                             </SidebarMenuSubButton>
                         </SidebarMenuItem>
