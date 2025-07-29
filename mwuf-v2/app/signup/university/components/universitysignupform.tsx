@@ -36,10 +36,6 @@ const UniversitySignUpForm: React.FC = () => {
     const [userPassword, setUserPassword] = useState(password)
 
     useEffect(() => {
-        toast.dismiss();
-    }, []);
-
-    useEffect(() => {
         if (email) {
             setUserEmail(email);
         }
@@ -48,6 +44,10 @@ const UniversitySignUpForm: React.FC = () => {
             setUserPassword(password);
         }
     }, [email, password]);
+
+    useEffect(() => {
+        toast.dismiss();
+    }, []);
 
     interface CityInput {
         id: number;
@@ -182,6 +182,8 @@ const UniversitySignUpForm: React.FC = () => {
         if (hasError == true) {
             return;
         }
+
+        toast.loading("Processing...")
 
         try {
             const universityData = {

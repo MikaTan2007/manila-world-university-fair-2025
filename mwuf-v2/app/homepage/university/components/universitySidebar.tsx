@@ -1,6 +1,7 @@
 import { LogOut, User, RefreshCcw, HomeIcon} from "lucide-react"
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation"
+import toast from "react-hot-toast";
 
 import {
   Sidebar,
@@ -96,6 +97,10 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
 
         fetchUniversityData();
     }, [universityEmail, router])
+
+    useEffect(() => {
+        toast.dismiss();
+    }, []);
 
     return (
         <Sidebar>

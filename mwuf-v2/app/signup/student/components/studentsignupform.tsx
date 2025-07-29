@@ -37,10 +37,6 @@ const StudentSignUpForm: React.FC = () => {
     const [userPassword, setUserPassword] = useState(password)
 
     useEffect(() => {
-        toast.dismiss();
-    }, []);
-
-    useEffect(() => {
         if (email) {
             setUserEmail(email);
         }
@@ -49,6 +45,10 @@ const StudentSignUpForm: React.FC = () => {
             setUserPassword(password);
         }
     }, [email, password]);
+
+    useEffect(() => {
+        toast.dismiss();
+    }, []);
 
     //Name Variables
     const [firstName, setFirstName] = useState("");

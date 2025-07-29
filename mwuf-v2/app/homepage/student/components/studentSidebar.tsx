@@ -58,10 +58,6 @@ export function StudentSidebar() {
         return;
     }
 
-    useEffect(() => {
-        toast.dismiss();
-    }, []);
-
     //Fetching student data
     useEffect(() => {
         if (studentEmail == "") {
@@ -95,6 +91,10 @@ export function StudentSidebar() {
 
         fetchStudentData();
     }, [studentEmail, router])
+
+    useEffect(() => {
+        toast.dismiss();
+    }, []);
 
     return (
         <Sidebar>

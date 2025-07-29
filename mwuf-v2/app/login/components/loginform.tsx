@@ -119,7 +119,6 @@ const LoginForm: React.FC = () => {
             
             if (message == "Login successful") {
                 router.push(`/homepage/student?email=${encodeURIComponent(email)}`);
-                toast.dismiss(toastId)
             }
 
             if (response.ok != true) {
@@ -191,7 +190,6 @@ const LoginForm: React.FC = () => {
 
             if (message == "Login successful") {
                 router.push(`/homepage/university?email=${encodeURIComponent(email)}`);
-                toast.dismiss(toastId)
             }
 
             if (response.ok != true) {
