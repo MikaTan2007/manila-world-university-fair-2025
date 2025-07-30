@@ -89,7 +89,7 @@ const LoginForm: React.FC = () => {
             return;
         }
 
-        const toastId = toast.loading('Logging you in')
+        const toastId = toast.loading('Processing...')
 
         try {
             const response = await fetch("/api/login/students", {
@@ -164,7 +164,7 @@ const LoginForm: React.FC = () => {
             return;
         }
 
-        const toastId = toast.loading('Processing')
+        const toastId = toast.loading('Processing...')
 
         try {
             const response = await fetch("/api/login/universities", {
