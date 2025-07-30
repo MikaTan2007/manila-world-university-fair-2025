@@ -116,7 +116,7 @@ export function StudentSidebar() {
                         <SidebarMenuItem className="font-sans">
                             {/* Homepage */}
                             <SidebarMenuSubButton asChild>
-                                <a onClick={handleHome} className="flex items-center">
+                                <a className="flex items-center">
                                     <HomeIcon className="!w-6 !h-6" />
                                     <span className = "text-lg">Home</span>
                                 </a>
