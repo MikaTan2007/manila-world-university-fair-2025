@@ -1,6 +1,7 @@
 //React or Next
 import { useState, useEffect} from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useNavigation } from "@/hooks/useNavigation";
 
 import toast from "react-hot-toast";
 
@@ -25,7 +26,8 @@ import { CircleX } from "lucide-react";
 
 const StudentSignUpForm: React.FC = () => {
     //Initialization of router
-    const router = useRouter();
+    const {navigate} = useNavigation();
+    const {back} = useNavigation();
     const searchParams = useSearchParams();
     const email = searchParams.get('email');
     const password = searchParams.get('password');
@@ -175,13 +177,13 @@ const StudentSignUpForm: React.FC = () => {
             });
 
             if (response.ok) {
-                router.push(`/homepage/student?email=${encodeURIComponent(userEmail ?? "")}`);
+                navigate(`/homepage/student?email=${encodeURIComponent(userEmail ?? "")}`);
             } else {
-                router.push("/error")
+                navigate("/error")
             }
 
         } catch (error) {
-            router.push("/error")
+            navigate("/error")
         }
         
 
@@ -189,7 +191,7 @@ const StudentSignUpForm: React.FC = () => {
 
     const goBack = async (e: React.FormEvent) => {
         e.preventDefault();
-        router.back()
+        back();
     }
 
     return(

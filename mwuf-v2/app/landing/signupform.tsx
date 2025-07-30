@@ -1,7 +1,7 @@
 //React or Next
 import { useState, useEffect} from "react";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
+import { useNavigation } from "@/hooks/useNavigation";
 
 //Lucide
 import { EyeClosed, Eye, CircleCheck, CircleX, Eraser, } from "lucide-react";
@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 
 const SignUpForm: React.FC = () => {
     //Initialization of router
-    const router = useRouter();
+    const {navigate} = useNavigation();
 
 
     const [showPassword, setShowPassword] = useState(false);
@@ -124,12 +124,14 @@ const SignUpForm: React.FC = () => {
             if (checkEmailData.exists == true) {
                 setAvailableEmail(false);
                 setEmail("This email is already in use")
+                toast.dismiss()
                 return;
             }
-
-            router.push(`/signup/student?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`);
+            
+            navigate(`/signup/student?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`)
+            //navigate(`/signup/student?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`);
         } catch (error: any) {
-            router.push("/error")
+            navigate("/error")
             return;
         }
     }
@@ -179,16 +181,21 @@ const SignUpForm: React.FC = () => {
             if (checkEmailData.exists == true) {
                 setAvailableEmail(false);
                 setEmail("This email is already in use")
+                toast.dismiss()
                 return;
             }
 
-            router.push(`/signup/university?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`)
+            navigate(`/signup/university?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`)
         } catch (error: any) {
-            router.push("/error")
+            navigate("/error")
             return;
         }
 
         
+    }
+
+    const handleToLogin = () => {
+        navigate("/login")
     }
 
     return(
@@ -290,7 +297,7 @@ const SignUpForm: React.FC = () => {
                     </Button>
 
                     <CardFooter className = "flex justify-center text-sm">
-                        <Button variant = "link"><Link href = "/login">Already have an account? Login here</Link></Button>
+                        <Button variant = "link" onClick={handleToLogin}>Already have an account? Login here</Button>
                     </CardFooter>
                     
                 </div>

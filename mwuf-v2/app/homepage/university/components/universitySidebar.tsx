@@ -1,6 +1,7 @@
 import { LogOut, User, RefreshCcw, HomeIcon} from "lucide-react"
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
+import { useNavigation } from "@/hooks/useNavigation";
 import toast from "react-hot-toast";
 
 import {
@@ -32,7 +33,7 @@ interface UniversitySidebarProps {
 
 export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) {
 
-    const router = useRouter()
+    const {navigate} = useNavigation();
     const searchParams = useSearchParams()
     const universityEmail = searchParams.get('email')
 
@@ -41,7 +42,7 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
 
     //Profile Page
     const handleProfile = async() => {
-        router.push(`/homepage/university/profile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${university?.rep_first_name}`);
+        navigate(`/homepage/university/profile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${university?.rep_first_name}`);
         return;
     }
 
@@ -52,22 +53,22 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
                 method: "POST"
             })
 
-            router.push("/login");
+            navigate("/login");
         } catch (error) {
-            router.push("/error")
+            navigate("/error")
         }
     }
 
     //Homepage function
     const handleHome = async() => {
-        router.push(`/homepage/university?email=${encodeURIComponent(universityEmail ?? "")}`);
+        navigate(`/homepage/university?email=${encodeURIComponent(universityEmail ?? "")}`);
         return;
     }
 
     //Fetching university
     useEffect(() => {
         if (universityEmail == "") {
-            router.push("/error/forbidden")
+            navigate("/error/forbidden")
             return;
         }
         
@@ -90,13 +91,13 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
                     }
                 }
             } catch (error) {
-                router.push("/error");
+                navigate("/error");
                 return;
             }
         }
 
         fetchUniversityData();
-    }, [universityEmail, router])
+    }, [universityEmail])
 
     useEffect(() => {
         toast.dismiss();

@@ -1,5 +1,6 @@
 import { LogOut, User, HomeIcon} from "lucide-react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
+import { useNavigation } from "@/hooks/useNavigation";
 
 import {
   Sidebar,
@@ -14,7 +15,7 @@ import {
 
 export function UniProfileSidebar() {
 
-    const router = useRouter();
+    const {navigate} = useNavigation();
     const searchParams = useSearchParams();
     const universityEmail = searchParams.get('email');
     const firstName = searchParams.get('firstName');
@@ -26,21 +27,21 @@ export function UniProfileSidebar() {
                 method: "POST"
             })
 
-            router.push("/login");
+            navigate("/login");
         } catch (error) {
-            router.push("/error")
+            navigate("/error")
         }
     }
 
     //Homepage function
     const handleHome = async() => {
-        router.push(`/homepage/university?email=${encodeURIComponent(universityEmail ?? "")}`);
+        navigate(`/homepage/university?email=${encodeURIComponent(universityEmail ?? "")}`);
         return;
     }
 
     //Profile Page
     const handleProfile = async() => {
-        router.push(`/homepage/university/profile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${firstName}`);
+        navigate(`/homepage/university/profile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${firstName}`);
         return;
     }
 

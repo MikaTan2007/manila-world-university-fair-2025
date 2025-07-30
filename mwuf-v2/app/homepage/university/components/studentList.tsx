@@ -1,9 +1,10 @@
 "use client"
 import { useState, useEffect, forwardRef, useImperativeHandle} from "react";
 import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { StudentCard } from "./studentCard";
 import { NoStudentCard } from "./noStudent";
+import { useNavigation } from "@/hooks/useNavigation";
 
 interface Student {
     email: string;
@@ -22,7 +23,7 @@ export interface StudentListRefresh {
 }
 
 export const StudentList = forwardRef<StudentListRefresh>((props, refresh) => {
-    const router = useRouter();
+    const {navigate} = useNavigation();
     const searchParams = useSearchParams();
     const universityEmail = searchParams.get('email');
 
@@ -48,7 +49,7 @@ export const StudentList = forwardRef<StudentListRefresh>((props, refresh) => {
             const reply = await response.json();
 
             if (response.status === 401 || response.status === 403) {
-                router.push("/error/forbidden");
+                navigate("/error/forbidden");
                 return;
             }
 
@@ -63,11 +64,11 @@ export const StudentList = forwardRef<StudentListRefresh>((props, refresh) => {
                 setStudents(reply.students);
                 setNoStudents(false);
             } else {
-                router.push("/error")
+                navigate("/error")
             }
 
         } catch (error) {
-            router.push("/error")
+            navigate("/error")
         } finally {
             setLoading(false);
         }
@@ -79,7 +80,7 @@ export const StudentList = forwardRef<StudentListRefresh>((props, refresh) => {
     
     useEffect(() => {
         if (universityEmail == "") {
-            router.push("/error/forbidden")
+            navigate("/error/forbidden")
             return;
         }
     

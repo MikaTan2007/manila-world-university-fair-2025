@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { HomepageSkeletonLoad } from "@/app/homepage/cardSkeletonLoad";
+import { useNavigation } from "@/hooks/useNavigation";
 
 interface University {
     email: string;
@@ -19,7 +20,7 @@ interface University {
 export function UniProfile() {
     
     const [loading, setLoading] = useState(true);
-    const router = useRouter();
+    const {navigate} = useNavigation();
 
     const searchParams = useSearchParams();
     const universityEmail = searchParams.get('email');
@@ -28,7 +29,7 @@ export function UniProfile() {
 
     useEffect(() => {
         if (universityEmail == "") {
-            router.push("/error/forbidden")
+            navigate("/error/forbidden")
             return;
         }
 
@@ -45,12 +46,12 @@ export function UniProfile() {
                 });
 
                 if (response.status === 401 || response.status === 403) {
-                    router.push("/error/forbidden");
+                    navigate("/error/forbidden");
                     return;
                 }
 
                 if (response.ok != true) {
-                    router.push("/error");
+                    navigate("/error");
                     return;
                 }
 
@@ -62,7 +63,7 @@ export function UniProfile() {
                 }
 
             } catch (error) {
-                router.push("/error");
+                navigate("/error");
                 return;
             } finally {
                 setLoading(false);
@@ -71,7 +72,7 @@ export function UniProfile() {
         
         fetchUniversityData();
     
-    }, [universityEmail, router])
+    }, [universityEmail])
 
     if (loading == true) {
         return(

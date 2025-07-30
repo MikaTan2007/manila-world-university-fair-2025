@@ -6,7 +6,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 
 //React Router
-import {useRouter} from "next/navigation";
+import { useNavigation } from "@/hooks/useNavigation";
 
 //Lucide
 import { EyeClosed, Eye, Eraser, CircleX } from "lucide-react";
@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 const LoginForm: React.FC = () => {
 
     //Initialization of router
-    const router = useRouter();
+    const {navigate} = useNavigation();
 
     const [email, setEmail] = useState("");
     const [emptyEmail, setEmptyEmail] = useState(true);
@@ -56,6 +56,10 @@ const LoginForm: React.FC = () => {
     const clearEmail = () => {
         setEmail("");
         setEmptyEmail(true);
+    }
+
+    const handleToSignup = () => {
+        navigate("/")
     }
     
     const [hasError, setHasError] = useState(true);
@@ -118,16 +122,16 @@ const LoginForm: React.FC = () => {
             }
             
             if (message == "Login successful") {
-                router.push(`/homepage/student?email=${encodeURIComponent(email)}`);
+                navigate(`/homepage/student?email=${encodeURIComponent(email)}`);
             }
 
             if (response.ok != true) {
-                router.push("/error")
+                navigate("/error")
                 return;
             }
             
         } catch (error) {
-            router.push("/error")
+            navigate("/error")
         }
     }
 
@@ -189,17 +193,17 @@ const LoginForm: React.FC = () => {
             }
 
             if (message == "Login successful") {
-                router.push(`/homepage/university?email=${encodeURIComponent(email)}`);
+                navigate(`/homepage/university?email=${encodeURIComponent(email)}`);
             }
 
             if (response.ok != true) {
-                router.push("/error")
+                navigate("/error")
                 return;
             }
 
             
         } catch (error){
-            router.push("/error")
+            navigate("/error")
         }
     }
 
@@ -280,7 +284,7 @@ const LoginForm: React.FC = () => {
                     </Button>
 
                     <CardFooter className = "flex justify-center text-sm">
-                        <Button variant = "link"><Link href = "/">No account yet? Sign up here</Link></Button>
+                        <Button variant = "link" onClick={handleToSignup}>No account yet? Sign up here</Button>
                     </CardFooter>
                     
                 </div>

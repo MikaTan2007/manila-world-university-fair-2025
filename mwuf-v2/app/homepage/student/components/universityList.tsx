@@ -2,7 +2,8 @@
 import { useState, useEffect} from "react";
 import { UniversityCard } from "./universityCard";
 import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
-import {useRouter, useSearchParams} from "next/navigation";
+import { useSearchParams} from "next/navigation";
+import { useNavigation } from "@/hooks/useNavigation";
 import React from "react";
 
 interface University {
@@ -20,14 +21,14 @@ interface University {
 export function UniversityList() {
     const [universitites, setUniversitites] = useState<University[]>([]);
     const [loading, setLoading] = useState(true);
-    const router = useRouter();
+    const {navigate} = useNavigation();
 
     const searchParams = useSearchParams();
     const studentEmail = searchParams.get('email');
 
     useEffect(() => {
         if (studentEmail == "") {
-            router.push("/error/forbidden")
+            navigate("/error/forbidden")
             return;
         }
         
@@ -45,12 +46,12 @@ export function UniversityList() {
                 });
                 
                 if (response.status === 401 || response.status === 403) {
-                    router.push("/error/forbidden");
+                    navigate("/error/forbidden");
                     return;
                 }
 
                 if (response.ok != true) {
-                    router.push("/error");
+                    navigate("/error");
                     return;
                 }
 
@@ -63,7 +64,7 @@ export function UniversityList() {
                 }
 
             } catch(error) {
-                router.push("/error")
+                navigate("/error")
             } finally {
                 setLoading(false);
             }
@@ -72,7 +73,7 @@ export function UniversityList() {
         if (studentEmail) {
             fetchUniversities();
         }
-    }, [studentEmail, router]);
+    }, [studentEmail]);
 
     if (loading == true) {
         return (

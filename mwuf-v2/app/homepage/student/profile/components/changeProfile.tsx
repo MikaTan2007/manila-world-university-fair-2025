@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { HomepageSkeletonLoad } from "@/app/homepage/cardSkeletonLoad";
+import { useNavigation } from "@/hooks/useNavigation";
 
 interface Student {
     email: string;
@@ -18,7 +19,7 @@ interface Student {
 
 export function StudentProfile() {
     const [loading, setLoading] = useState(true);
-    const router = useRouter();
+    const {navigate} = useNavigation();
 
     const searchParams = useSearchParams();
     const studentEmail = searchParams.get('email');
@@ -27,7 +28,7 @@ export function StudentProfile() {
 
     useEffect(() => {
         if (studentEmail == "") {
-            router.push("/error/forbidden")
+            navigate("/error/forbidden")
             return;
         }
 
@@ -44,12 +45,12 @@ export function StudentProfile() {
                 });
 
                 if (response.status === 401 || response.status === 403) {
-                    router.push("/error/forbidden");
+                    navigate("/error/forbidden");
                     return;
                 }
 
                 if (response.ok != true) {
-                    router.push("/error");
+                    navigate("/error");
                     return;
                 }
 
@@ -61,7 +62,7 @@ export function StudentProfile() {
                 }
 
             } catch (error) {
-                router.push("/error");
+                navigate("/error");
                 return;
             } finally {
                 setLoading(false);
@@ -70,7 +71,7 @@ export function StudentProfile() {
         
         fetchStudentData();
     
-    }, [studentEmail, router])
+    }, [studentEmail])
 
     if (loading == true) {
         return(

@@ -1,4 +1,4 @@
-import {useRouter} from "next/navigation";
+import { useNavigation } from "@/hooks/useNavigation";
 
 //Shadcn
 import { Card, 
@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 
 const ErrorForm: React.FC = () => {
     //Initialization of router
-    const router = useRouter();
+    const {navigate} = useNavigation();
 
     const goToHome = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -20,9 +20,9 @@ const ErrorForm: React.FC = () => {
                 method: "POST"
             })
 
-            router.push("/login");
+            navigate("/login");
         } catch (error) {
-            router.push("/error")
+            navigate("/error");
         }
     }
 

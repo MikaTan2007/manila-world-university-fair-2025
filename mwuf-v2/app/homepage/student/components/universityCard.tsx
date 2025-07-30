@@ -1,7 +1,8 @@
 import { useState, useEffect} from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import {useRouter, useSearchParams} from "next/navigation";
+import { useSearchParams} from "next/navigation";
+import { useNavigation } from "@/hooks/useNavigation";
 
 interface UniversityProps {
     university: {
@@ -29,7 +30,7 @@ export function UniversityCard({ university }: UniversityProps) {
         }
     }, [studentEmail, university.registered_students]);
 
-    const router = useRouter();
+    const {navigate} = useNavigation();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -50,11 +51,11 @@ export function UniversityCard({ university }: UniversityProps) {
             if (response.ok == true) {
                 setRegistered(true);
             } else {
-                router.push("/error");
+                navigate("/error");
             }
 
         } catch (error) {
-            router.push("/error");
+            navigate("/error");
         }
     }
 

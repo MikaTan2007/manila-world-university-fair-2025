@@ -10,7 +10,8 @@ import {
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar"
 
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
+import { useNavigation } from "@/hooks/useNavigation";
 import toast from "react-hot-toast";
 
 interface Student {
@@ -26,7 +27,7 @@ interface Student {
 }
 
 export function StudentSidebar() {
-    const router = useRouter()
+    const {navigate} = useNavigation();
     const searchParams = useSearchParams()
     const studentEmail = searchParams.get('email')
 
@@ -40,28 +41,28 @@ export function StudentSidebar() {
                 method: "POST"
             })
 
-            router.push("/login");
+            navigate("/login");
         } catch (error) {
-            router.push("/error")
+            navigate("/error")
         }
     }
 
     //Homepage function
     const handleHome = async() => {
-        router.push(`/homepage/student?email=${encodeURIComponent(studentEmail ?? "")}`);
+        navigate(`/homepage/student?email=${encodeURIComponent(studentEmail ?? "")}`);
         return;
     }
 
     //Profile Page
     const handleProfile = async() => {
-        router.push(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${student?.first_name}`);
+        navigate(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${student?.first_name}`);
         return;
     }
 
     //Fetching student data
     useEffect(() => {
         if (studentEmail == "") {
-            router.push("/error/forbidden")
+            navigate("/error/forbidden")
             return;
         }
 
@@ -84,13 +85,13 @@ export function StudentSidebar() {
                     }
                 }
             } catch (error) {
-                router.push("/error");
+                navigate("/error");
                 return;
             }
         }
 
         fetchStudentData();
-    }, [studentEmail, router])
+    }, [studentEmail])
 
     useEffect(() => {
         toast.dismiss();
