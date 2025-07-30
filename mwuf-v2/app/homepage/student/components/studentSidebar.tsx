@@ -47,12 +47,6 @@ export function StudentSidebar() {
         }
     }
 
-    //Homepage function
-    const handleHome = async() => {
-        navigate(`/homepage/student?email=${encodeURIComponent(studentEmail ?? "")}`);
-        return;
-    }
-
     //Profile Page
     const handleProfile = async() => {
         navigate(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${student?.first_name}`);

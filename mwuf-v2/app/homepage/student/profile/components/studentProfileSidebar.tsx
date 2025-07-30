@@ -38,12 +38,6 @@ export function StudentProfileSidebar() {
         return;
     }
 
-    //Profile Page
-    const handleProfile = async() => {
-        navigate(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${firstName}`);
-        return;
-    }
-
     return (
         <Sidebar>
             <SidebarHeader className="p-5">
