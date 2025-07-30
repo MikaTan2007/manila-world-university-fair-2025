@@ -211,9 +211,11 @@ const UniversitySignUpForm: React.FC = () => {
             if (response.ok) {
                 navigate(`/homepage/university?email=${encodeURIComponent(email)}`);
             } else {
+                toast.dismiss();
                 navigate("/error")
             }
         } catch (error) {
+            toast.dismiss();
             navigate("/error")
         }
 

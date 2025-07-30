@@ -179,10 +179,12 @@ const StudentSignUpForm: React.FC = () => {
             if (response.ok) {
                 navigate(`/homepage/student?email=${encodeURIComponent(userEmail ?? "")}`);
             } else {
+                toast.dismiss();
                 navigate("/error")
             }
 
         } catch (error) {
+            toast.dismiss();
             navigate("/error")
         }
         

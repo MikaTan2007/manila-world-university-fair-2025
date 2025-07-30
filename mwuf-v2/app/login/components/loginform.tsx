@@ -1,6 +1,5 @@
 //React
 import { useState } from "react";
-import Link from "next/link";
 
 //Toaster
 import toast from "react-hot-toast";
@@ -108,29 +107,33 @@ const LoginForm: React.FC = () => {
             let message = reply.message
 
             if (message == "Student not found") {
+                toast.dismiss();
                 noEmail = true;
                 setNoEmail(noEmail)
                 return;
             }
             
             if (message == "Password does not match") {
+                toast.dismiss();
                 wrongPassword = true;
                 setWrongPassword(wrongPassword)
                 return;
             } else {
                 wrongPassword = false;
             }
-            
-            if (message == "Login successful") {
-                navigate(`/homepage/student?email=${encodeURIComponent(email)}`);
-            }
 
             if (response.ok != true) {
+                toast.dismiss();
                 navigate("/error")
                 return;
             }
             
+            if (message == "Login successful") {
+                navigate(`/homepage/student?email=${encodeURIComponent(email)}`);
+            }
+            
         } catch (error) {
+            toast.dismiss();
             navigate("/error")
         }
     }
@@ -161,7 +164,7 @@ const LoginForm: React.FC = () => {
             return;
         }
 
-        const toastId = toast.loading('Logging you in')
+        const toastId = toast.loading('Processing')
 
         try {
             const response = await fetch("/api/login/universities", {
@@ -179,12 +182,14 @@ const LoginForm: React.FC = () => {
             let message = reply.message
 
             if (message == "University not found") {
+                toast.dismiss();
                 noEmail = true;
                 setNoEmail(noEmail)
                 return;
             }
             
             if (message == "Password does not match") {
+                toast.dismiss();
                 wrongPassword = true;
                 setWrongPassword(wrongPassword)
                 return;
@@ -192,17 +197,19 @@ const LoginForm: React.FC = () => {
                 wrongPassword = false;
             }
 
-            if (message == "Login successful") {
-                navigate(`/homepage/university?email=${encodeURIComponent(email)}`);
-            }
-
             if (response.ok != true) {
+                toast.dismiss();
                 navigate("/error")
                 return;
             }
 
+            if (message == "Login successful") {
+                navigate(`/homepage/university?email=${encodeURIComponent(email)}`);
+            }
+
             
         } catch (error){
+            toast.dismiss();
             navigate("/error")
         }
     }

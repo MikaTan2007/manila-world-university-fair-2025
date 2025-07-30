@@ -1,6 +1,5 @@
 //React or Next
 import { useState, useEffect} from "react";
-import Link from "next/link";
 import { useNavigation } from "@/hooks/useNavigation";
 
 //Lucide
@@ -131,6 +130,7 @@ const SignUpForm: React.FC = () => {
             navigate(`/signup/student?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`)
             //navigate(`/signup/student?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`);
         } catch (error: any) {
+            toast.dismiss();
             navigate("/error")
             return;
         }
@@ -187,6 +187,7 @@ const SignUpForm: React.FC = () => {
 
             navigate(`/signup/university?email=${encodeURIComponent(email)}&password=${encodeURIComponent(firstPassword)}`)
         } catch (error: any) {
+            toast.dismiss();
             navigate("/error")
             return;
         }
