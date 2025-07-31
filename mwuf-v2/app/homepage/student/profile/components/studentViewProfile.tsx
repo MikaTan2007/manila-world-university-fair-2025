@@ -26,6 +26,11 @@ export function StudentProfile() {
 
     const [student, setStudent] = useState<Student | null>(null);
 
+    const handleSendToEditProfile = () => {
+        navigate(`/homepage/student/profile/editprofile?email=${encodeURIComponent(studentEmail ?? "")}`)
+        return;
+    }
+
     const fetchStudentData = async () => {
         try {
             const response = await fetch("/api/homepage/students/profile", {
@@ -138,6 +143,7 @@ export function StudentProfile() {
                     <CardFooter className="flex justify-end font-sans">
                         <Button 
                             variant="outline"
+                            onClick={handleSendToEditProfile}
                         >
                             Edit Profile
                         </Button>

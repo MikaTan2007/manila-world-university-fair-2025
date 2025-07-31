@@ -2,7 +2,7 @@
 import Image from "next/image"
 import { UniProfileSidebar } from "./components/uniProfileSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { UniProfile } from "./components/changeProfile";
+import { UniProfile } from "./components/uniViewProfile";
 
 export default function UniversityProfilePage() {
     return (

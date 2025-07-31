@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { StudentProfileSidebar } from "./components/studentProfileSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { StudentProfile } from "./components/changeProfile";
+import { StudentProfile } from "./components/studentViewProfile";
 
 export default function StudentProfilePage() {
     return (
