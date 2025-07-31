@@ -21,6 +21,7 @@ import { GradYearOption } from "@/app/signup/student/components/graduation-year-
 import { IdealMajor } from "@/app/signup/student/components/idealmajor";
 import { CountrySelect } from "@/app/signup/student/components/citizenship";
 import { HomepageSkeletonLoad } from "@/app/homepage/cardSkeletonLoad";
+import { CircleX } from "lucide-react";
 
 interface Student {
     email: string;
@@ -41,6 +42,7 @@ const StudentEditProfileForm: React.FC = () => {
 
     const [student, setStudent] = useState<Student>();
     const [loading, setLoading] = useState<boolean>(true);
+    const [hasError, setHasError] = useState(false);
 
     //Student Attributes
     const [firstName, setFirstName] = useState("");
@@ -52,31 +54,25 @@ const StudentEditProfileForm: React.FC = () => {
     const [schoolName, setSchoolName] = useState("");
     const [idealMajor, setIdealMajor] = useState<string[]>([]);
 
-    //Empty Checking Variables
-    const [emptyFirstName, setEmptyFirstName] = useState(false);
-    const [emptyLastName, setEmptyLastName] = useState(false);
-    const [emptyEmail, setEmptyEmail] = useState(false);
-    const [emptySchoolName, setEmptySchoolName] = useState(false);
-
     //Variable Handlers
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
-        setEmptyFirstName(false);
+        setHasError(false);
     }
 
     const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLastName(e.target.value);
-        setEmptyLastName(false);
+        setHasError(false);
     }
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewEmail(e.target.value);
-        setEmptyEmail(false);
+        setHasError(false);
     }
 
     const handleSchoolNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSchoolName(e.target.value);
-        setEmptySchoolName(false);
+        setHasError(false);
     }
 
     const fetchStudentData = async () => {
@@ -151,10 +147,11 @@ const StudentEditProfileForm: React.FC = () => {
         }
 
         if (hasError == true) {
-            console.log("Empty fields")
+            setHasError(true);
+            return;
         }
         
-        return;
+        
     }
 
 
@@ -219,6 +216,7 @@ const StudentEditProfileForm: React.FC = () => {
                                 gender={gender}
                                 setGender={(value) => {
                                     setGender(value);
+                                    setHasError(false);
                                 }}
                             >
                             </GenderOption>
@@ -227,6 +225,7 @@ const StudentEditProfileForm: React.FC = () => {
                                 citizenship={citizenship}
                                 setCitizenship={(value) => {
                                     setCitizenship(value);
+                                    setHasError(false);
                                 }}
                             >
                             </CountrySelect>
@@ -252,6 +251,7 @@ const StudentEditProfileForm: React.FC = () => {
                                 gradYear = {gradYear}
                                 setGradYear={(value) => {
                                     setGradYear(value);
+                                    setHasError(false);
                                 }}
                             ></GradYearOption>
                         </div>
@@ -266,9 +266,15 @@ const StudentEditProfileForm: React.FC = () => {
                                 idealMajor={idealMajor}
                                 setIdealMajor={(values) => {
                                     setIdealMajor(values)
+                                    setHasError(false);
                                 }}
                             ></IdealMajor>
                         </div>
+                    </div>
+                    
+                    <div className = "text-sm flex animate-pulse">
+                        {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
+                        {hasError && <p className = "text-red-600 ml-1">All fields are required</p>}
                     </div>
                     <Button type = "submit" onClick={handleProfileSubmit} variant = "ghost" className = "w-full text-white bg-blue-400">
                         Save Changes
