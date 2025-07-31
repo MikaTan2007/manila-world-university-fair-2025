@@ -73,7 +73,7 @@ export function StudentProfileSidebar() {
                         <SidebarMenuItem className="font-sans">
                             {/* Profile */}
                             <SidebarMenuSubButton asChild>
-                                <a onClick={handleProfile} className="flex items-center">
+                                <a  className="flex items-center">
                                     <User className="!w-6 !h-6" />
                                     <span className = "text-lg">Profile</span>
                                 </a>
