@@ -165,29 +165,18 @@ const majors = [
     onIdealMajorChange
   } : idealMajorProps) {
     const [open, setOpen] = useState(false);
-    const [selectedValues, setSelectedValues] = useState<string[]>([]);
-
-    useEffect(() => {
-      setSelectedValues(idealMajor)
-    }, [idealMajor]);
-
-    useEffect(() => {
-      if (JSON.stringify(selectedValues) !== JSON.stringify(idealMajor)) {
-        setIdealMajor(selectedValues);
-        onIdealMajorChange?.(false);
-      }
-    })
+    
   
     const handleSelect = (currentValue: string) => {
-      setSelectedValues(prev => {
-        if (prev.includes(currentValue)) {
-          return prev.filter(value => value !== currentValue);
-        }
-        return [...prev, currentValue];
-      });
+      const newIdealMajor = idealMajor.includes(currentValue)
+        ? idealMajor.filter(value => value !== currentValue)
+        : [...idealMajor, currentValue]
+      
+      setIdealMajor(newIdealMajor)
+      onIdealMajorChange?.(false);
     };
   
-    const displayString = selectedValues
+    const displayString = idealMajor
       .map(value => majors.find(major => major.value === value)?.label)
       .filter(Boolean)
       .join(", ");
@@ -202,7 +191,7 @@ const majors = [
             className="w-[335px] justify-between"
           >
             <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-2 text-left">
-              {selectedValues.length > 0 ? displayString : "Interested Majors (multiple allowed)"}
+              {idealMajor.length > 0 ? displayString : "Interested Majors (multiple allowed)"}
             </div>
             <ChevronsUpDown className="opacity-50 shrink-0" />
           </Button>
@@ -223,7 +212,7 @@ const majors = [
                     <Check
                       className={cn(
                         "ml-auto",
-                        selectedValues.includes(major.value) ? "opacity-100" : "opacity-0"
+                        idealMajor.includes(major.value) ? "opacity-100" : "opacity-0"
                       )}
                     />
                   </CommandItem>

@@ -79,6 +79,11 @@ const StudentEditProfileForm: React.FC = () => {
         setEmptyEmail(false);
     }
 
+    const handleSchoolNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSchoolName(e.target.value);
+        setEmptySchoolName(false);
+    }
+
     const fetchStudentData = async () => {
         try {
             const response = await fetch("/api/homepage/students/profile", {
@@ -158,7 +163,7 @@ const StudentEditProfileForm: React.FC = () => {
                         <Label htmlFor="name">
                             Name
                         </Label>
-                        <div className = "flex gap-2">
+                        <div className = "flex">
                         
                             <Input 
                                 id = "first_name" 
@@ -177,28 +182,91 @@ const StudentEditProfileForm: React.FC = () => {
                                 onChange = {handleLastNameChange}
                                 >
                             </Input>
-
                         </div>
+                    </div>
 
+                    <div className = "space-y-2">
                         <Label htmlFor="email">
                             Email
                         </Label>
                         <div className = "flex">
                             <Input 
-                                id = "first_name" 
-                                type="text" 
-                                placeholder="First Name" 
+                                id = "email" 
+                                type="email" 
+                                placeholder="@example.com" 
                                 onChange={handleEmailChange}
                                 value = {newEmail}
                                 >
                             </Input> 
                         </div>
-
-                        <Label htmlFor="general_information">
-                            Email
-                        </Label>
-                        
                     </div>
+
+                    <div className = "space-y-2">
+                        <Label htmlFor="gender/citizenship">
+                            Gender & Citizenship
+                        </Label>
+                        <div className = "flex">
+                            <GenderOption
+                                gender={gender}
+                                setGender={(value) => {
+                                    setGender(value);
+                                    setEmptyGender(false);
+                                }}
+                            >
+                            </GenderOption>
+                            
+                            <CountrySelect
+                                citizenship={citizenship}
+                                setCitizenship={(value) => {
+                                    setCitizenship(value);
+                                    setEmptyCitizenship(false);
+                                }}
+                            >
+                            </CountrySelect>
+                        </div>
+                    </div>
+
+                    <div className = "space-y-2">
+                        <Label htmlFor="school">
+                            School Name and Graduation Year
+                        </Label>
+                        <div className = "flex">
+                            <Input 
+                                id = "school" 
+                                type="text" 
+                                placeholder="High School" 
+                                value = {schoolName}
+                                onChange={handleSchoolNameChange}
+                                required
+                            >
+                            </Input>
+
+                            <GradYearOption
+                                gradYear = {gradYear}
+                                setGradYear={(value) => {
+                                    setGradYear(value);
+                                }}
+                                onGradYearChange={setEmptyGradYear}
+                            ></GradYearOption>
+                        </div>
+                    </div>
+
+                    <div className = "space-y-2">
+                        <Label htmlFor="idealMajor">
+                            Ideal Major
+                        </Label>
+                        <div className = "flex">
+                            <IdealMajor
+                                idealMajor={idealMajor}
+                                setIdealMajor={(values) => {
+                                    setIdealMajor(values)
+                                }}
+                                onIdealMajorChange={setEmptyIdealMajor}
+                            ></IdealMajor>
+                        </div>
+                    </div>
+
+
                 </div>
             </CardContent>
         </Card>

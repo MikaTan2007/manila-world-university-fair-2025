@@ -229,29 +229,17 @@ export function CountrySelect({
   onCitizenshipChange
 } : CountrySelectProps) {
   const [open, setOpen] = useState(false);
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
-
-  useEffect(() => {
-    setSelectedValues(citizenship);
-  }, [citizenship]);
-
-  useEffect(() => {
-    if (JSON.stringify(selectedValues) !== JSON.stringify(citizenship)) {
-      setCitizenship(selectedValues);
-      onCitizenshipChange?.(false);
-    }
-  }, [selectedValues, citizenship, setCitizenship, onCitizenshipChange]);
 
   const handleSelect = (currentValue: string) => {
-    setSelectedValues(prev => {
-      if (prev.includes(currentValue)) {
-        return prev.filter(value => value !== currentValue)
-      }
-      return [...prev, currentValue]
-    });
+    const newCitizenship = citizenship.includes(currentValue)
+      ? citizenship.filter(value => value !== currentValue)
+      : [...citizenship, currentValue];
+    
+    setCitizenship(newCitizenship);
+    onCitizenshipChange?.(false);
   };
   
-  const displayString = selectedValues
+  const displayString = citizenship
     .map(value => countries.find(country => country.value === value)?.label)
     .filter(Boolean)
     .join(", ");
@@ -263,15 +251,15 @@ export function CountrySelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[245px] justify-between"
+          className="w-[245px] justify-between" // ✅ Change to w-full
         >
           <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-2 text-left">
-            {selectedValues.length > 0 ? displayString : "Citizenship (multiple allowed)"}
+            {citizenship.length > 0 ? displayString : "Select citizenship"}
           </div>
           <ChevronsUpDown className="opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[400px] p-0">
+      <PopoverContent className="w-[300px] p-0">
         <Command>
           <CommandInput placeholder="Search country..." className="h-9" />
           <CommandList>
@@ -287,7 +275,7 @@ export function CountrySelect({
                   <Check
                     className={cn(
                       "ml-auto",
-                      selectedValues.includes(country.value) ? "opacity-100" : "opacity-0"
+                      citizenship.includes(country.value) ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>
