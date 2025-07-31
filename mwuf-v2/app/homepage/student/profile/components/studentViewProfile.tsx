@@ -27,7 +27,7 @@ export function StudentProfile() {
     const [student, setStudent] = useState<Student | null>(null);
 
     const handleSendToEditProfile = () => {
-        navigate(`/homepage/student/profile/editprofile?email=${encodeURIComponent(studentEmail ?? "")}`)
+        navigate(`/homepage/student/profile/editprofile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${student?.first_name}`)
         return;
     }
 

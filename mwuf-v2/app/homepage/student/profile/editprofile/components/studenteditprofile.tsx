@@ -21,6 +21,7 @@ import { GenderOption } from "@/app/signup/student/components/genderoption";
 import { GradYearOption } from "@/app/signup/student/components/graduation-year-select";
 import { IdealMajor } from "@/app/signup/student/components/idealmajor";
 import { CountrySelect } from "@/app/signup/student/components/citizenship";
+import { HomepageSkeletonLoad } from "@/app/homepage/cardSkeletonLoad";
 
 interface Student {
     email: string;
@@ -56,12 +57,7 @@ const StudentEditProfileForm: React.FC = () => {
     const [emptyFirstName, setEmptyFirstName] = useState(false);
     const [emptyLastName, setEmptyLastName] = useState(false);
     const [emptyEmail, setEmptyEmail] = useState(false);
-    const [dateChanged, setDateChanged] = useState(true);
-    const [emptyGender, setEmptyGender] = useState(false);
-    const [emptyGradYear, setEmptyGradYear] = useState(true);
-    const [emptyCitizenship, setEmptyCitizenship] = useState(true);
-    const [emptySchoolName, setEmptySchoolName] = useState(true);
-    const [emptyIdealMajor, setEmptyIdealMajor] = useState(true);
+    const [emptySchoolName, setEmptySchoolName] = useState(false);
 
     //Variable Handlers
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,11 +138,17 @@ const StudentEditProfileForm: React.FC = () => {
 
     if (loading == true) {
         return (
-            <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-                Loading my good man!
+            <div className = "mx-auto max-w-sm">
+                <HomepageSkeletonLoad></HomepageSkeletonLoad>
             </div>
         )
     }
+
+    // const handleProfileSubmit = async() => {
+    //     let hasError = false;
+
+    //     if 
+    // }
 
 
     return (
@@ -210,7 +212,6 @@ const StudentEditProfileForm: React.FC = () => {
                                 gender={gender}
                                 setGender={(value) => {
                                     setGender(value);
-                                    setEmptyGender(false);
                                 }}
                             >
                             </GenderOption>
@@ -219,7 +220,6 @@ const StudentEditProfileForm: React.FC = () => {
                                 citizenship={citizenship}
                                 setCitizenship={(value) => {
                                     setCitizenship(value);
-                                    setEmptyCitizenship(false);
                                 }}
                             >
                             </CountrySelect>
@@ -246,7 +246,6 @@ const StudentEditProfileForm: React.FC = () => {
                                 setGradYear={(value) => {
                                     setGradYear(value);
                                 }}
-                                onGradYearChange={setEmptyGradYear}
                             ></GradYearOption>
                         </div>
                     </div>
@@ -261,11 +260,15 @@ const StudentEditProfileForm: React.FC = () => {
                                 setIdealMajor={(values) => {
                                     setIdealMajor(values)
                                 }}
-                                onIdealMajorChange={setEmptyIdealMajor}
                             ></IdealMajor>
                         </div>
                     </div>
-
+                    <Button type = "submit" disabled variant = "ghost" className = "w-full text-white bg-blue-400">
+                        Save Changes
+                    </Button>
+                    <Button type = "submit" disabled variant = "ghost" className = "w-full text-white bg-red-400">
+                        Back
+                    </Button>
 
                 </div>
             </CardContent>

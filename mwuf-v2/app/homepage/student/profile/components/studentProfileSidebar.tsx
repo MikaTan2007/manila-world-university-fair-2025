@@ -38,6 +38,12 @@ export function StudentProfileSidebar() {
         return;
     }
 
+    //Profile Page
+    const handleProfile = async() => {
+        navigate(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${firstName}`);
+        return;
+    }
+
     return (
         <Sidebar>
             <SidebarHeader className="p-5">
@@ -67,7 +73,7 @@ export function StudentProfileSidebar() {
                         <SidebarMenuItem className="font-sans">
                             {/* Profile */}
                             <SidebarMenuSubButton asChild>
-                                <a className="flex items-center">
+                                <a onClick={handleProfile} className="flex items-center">
                                     <User className="!w-6 !h-6" />
                                     <span className = "text-lg">Profile</span>
                                 </a>

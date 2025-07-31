@@ -254,7 +254,7 @@ export function CountrySelect({
           className="w-[245px] justify-between" // ✅ Change to w-full
         >
           <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-2 text-left">
-            {citizenship.length > 0 ? displayString : "Select citizenship"}
+            {citizenship.length > 0 ? displayString : "Select citizenship (multiple allowed)"}
           </div>
           <ChevronsUpDown className="opacity-50 shrink-0" />
         </Button>
