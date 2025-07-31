@@ -135,7 +135,7 @@ const UniversitySignUpForm: React.FC = () => {
         });
     };
 
-    const [hasError, setHasError] = useState(true);
+    const [hasError, setHasError] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

@@ -104,7 +104,7 @@ const StudentSignUpForm: React.FC = () => {
         setHasError(false);
     }
 
-    const [hasError, setHasError] = useState(true);
+    const [hasError, setHasError] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -235,15 +235,7 @@ const StudentSignUpForm: React.FC = () => {
 
                         </div>
                         <div className = "flex">
-                            <DatePicker
-                                value = {dateofBirth}
-                                onChange = {(date) => {
-                                    setDateOfBirth(date);
-                                    setHasError(false);
-                                }}
-                                onDateChanged = {setDateChanged}
-                            >
-                            </DatePicker>
+
                             <GenderOption
                                 gender = {gender}
                                 setGender={(value) => {
@@ -252,8 +244,7 @@ const StudentSignUpForm: React.FC = () => {
                                 }}
                                 onGenderChange={setEmptyGender}
                             ></GenderOption>
-                        </div>
-                        <div className = "flex">
+
                             <CountrySelect
                                 citizenship={citizenship}
                                 setCitizenship={(values) => {
@@ -262,6 +253,10 @@ const StudentSignUpForm: React.FC = () => {
                                 }}
                                 onCitizenshipChange={setEmptyCitizenship}
                             />
+                            
+                        </div>
+                        <div className = "flex">
+                            
                         </div>
                     </div>
                     <div className = "space-y-2">
