@@ -143,11 +143,19 @@ const StudentEditProfileForm: React.FC = () => {
         )
     }
 
-    // const handleProfileSubmit = async() => {
-    //     let hasError = false;
+    const handleProfileSubmit = async() => {
+        let hasError = false;
 
-    //     if 
-    // }
+        if (firstName == "" || lastName == "" || schoolName == "" || newEmail == "" || citizenship.length == 0 || idealMajor.length == 0) {
+            hasError = true;
+        }
+
+        if (hasError == true) {
+            console.log("Empty fields")
+        }
+        
+        return;
+    }
 
 
     return (
@@ -262,7 +270,7 @@ const StudentEditProfileForm: React.FC = () => {
                             ></IdealMajor>
                         </div>
                     </div>
-                    <Button type = "submit" disabled variant = "ghost" className = "w-full text-white bg-blue-400">
+                    <Button type = "submit" onClick={handleProfileSubmit} variant = "ghost" className = "w-full text-white bg-blue-400">
                         Save Changes
                     </Button>
                     <Button type = "submit" disabled variant = "ghost" className = "w-full text-white bg-red-400">
