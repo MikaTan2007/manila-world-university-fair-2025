@@ -1,11 +1,8 @@
-import { useState, useEffect} from "react";
-
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
@@ -31,7 +28,7 @@ export function GenderOption({
 
   return (
     <Select value = {gender} onValueChange={handleGenderChange}>
-      <SelectTrigger className="w-50">
+      <SelectTrigger className="w-[120px]">
         <SelectValue placeholder="Gender" />
       </SelectTrigger>
       <SelectContent>
