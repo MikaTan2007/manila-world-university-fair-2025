@@ -26,47 +26,47 @@ export function StudentProfile() {
 
     const [student, setStudent] = useState<Student | null>(null);
 
+    const fetchStudentData = async () => {
+        try {
+            const response = await fetch("/api/homepage/students/profile", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: studentEmail
+                })
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                navigate("/error/forbidden");
+                return;
+            }
+
+            if (response.ok != true) {
+                navigate("/error");
+                return;
+            }
+
+            if (response.ok) {
+                const data = await response.json()
+                if (data.success) {
+                    setStudent(data.student)
+                }
+            }
+
+        } catch (error) {
+            navigate("/error");
+            return;
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         if (studentEmail == "") {
             navigate("/error/forbidden")
             return;
-        }
-
-        const fetchStudentData = async () => {
-            try {
-                const response = await fetch("/api/homepage/students/profile", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        email: studentEmail
-                    })
-                });
-
-                if (response.status === 401 || response.status === 403) {
-                    navigate("/error/forbidden");
-                    return;
-                }
-
-                if (response.ok != true) {
-                    navigate("/error");
-                    return;
-                }
-
-                if (response.ok) {
-                    const data = await response.json()
-                    if (data.success) {
-                        setStudent(data.student)
-                    }
-                }
-
-            } catch (error) {
-                navigate("/error");
-                return;
-            } finally {
-                setLoading(false);
-            }
         }
         
         fetchStudentData();

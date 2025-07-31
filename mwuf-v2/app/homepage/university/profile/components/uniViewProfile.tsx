@@ -27,47 +27,47 @@ export function UniProfile() {
 
     const [university, setUniversity] = useState<University | null>(null);
 
+    const fetchUniversityData = async () => {
+        try {
+            const response = await fetch("/api/homepage/universities/profile", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: universityEmail
+                })
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                navigate("/error/forbidden");
+                return;
+            }
+
+            if (response.ok != true) {
+                navigate("/error");
+                return;
+            }
+
+            if (response.ok) {
+                const data = await response.json()
+                if (data.success) {
+                    setUniversity(data.university)
+                }
+            }
+
+        } catch (error) {
+            navigate("/error");
+            return;
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         if (universityEmail == "") {
             navigate("/error/forbidden")
             return;
-        }
-
-        const fetchUniversityData = async () => {
-            try {
-                const response = await fetch("/api/homepage/universities/profile", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        email: universityEmail
-                    })
-                });
-
-                if (response.status === 401 || response.status === 403) {
-                    navigate("/error/forbidden");
-                    return;
-                }
-
-                if (response.ok != true) {
-                    navigate("/error");
-                    return;
-                }
-
-                if (response.ok) {
-                    const data = await response.json()
-                    if (data.success) {
-                        setUniversity(data.university)
-                    }
-                }
-
-            } catch (error) {
-                navigate("/error");
-                return;
-            } finally {
-                setLoading(false);
-            }
         }
         
         fetchUniversityData();
