@@ -19,10 +19,6 @@ const StudentSchema = new Schema(
             type: String,
             required: false
         },
-        birthday: {
-            type: Date,
-            required: false
-        },
         gender: {
             type: String,
             required: false

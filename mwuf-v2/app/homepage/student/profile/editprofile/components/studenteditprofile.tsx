@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 //Component Imports
-import { DatePicker } from "@/app/signup/student/components/datepicker";
 import { GenderOption } from "@/app/signup/student/components/genderoption";
 import { GradYearOption } from "@/app/signup/student/components/graduation-year-select";
 import { IdealMajor } from "@/app/signup/student/components/idealmajor";
@@ -27,7 +26,6 @@ interface Student {
     email: string;
     first_name: string;
     last_name: string;
-    birthday: Date;
     gender: string;
     citizenship: [string];
     graduation_year: string;
@@ -47,7 +45,7 @@ const StudentEditProfileForm: React.FC = () => {
     //Student Attributes
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [dateofBirth, setDateOfBirth] = useState<Date | undefined>(undefined);
+    const [newEmail, setNewEmail] = useState("");
     const [gender, setGender] = useState("");
     const [gradYear, setGradYear] = useState("");
     const [citizenship, setCitizenship] = useState<string[]>([]);
@@ -57,6 +55,7 @@ const StudentEditProfileForm: React.FC = () => {
     //Empty Checking Variables
     const [emptyFirstName, setEmptyFirstName] = useState(false);
     const [emptyLastName, setEmptyLastName] = useState(false);
+    const [emptyEmail, setEmptyEmail] = useState(false);
     const [dateChanged, setDateChanged] = useState(true);
     const [emptyGender, setEmptyGender] = useState(false);
     const [emptyGradYear, setEmptyGradYear] = useState(true);
@@ -73,6 +72,11 @@ const StudentEditProfileForm: React.FC = () => {
     const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLastName(e.target.value);
         setEmptyLastName(false);
+    }
+
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewEmail(e.target.value);
+        setEmptyEmail(false);
     }
 
     const fetchStudentData = async () => {
@@ -105,7 +109,7 @@ const StudentEditProfileForm: React.FC = () => {
 
                     setFirstName(studentData.first_name || "");
                     setLastName(studentData.last_name || "");
-                    setDateOfBirth(studentData.birthday ? new Date(studentData.birthday) : undefined);
+                    setNewEmail(studentData.email || "");
                     setGender(studentData.gender || "");
                     setGradYear(studentData.graduation_year || "");
                     setCitizenship(studentData.citizenship || []);
@@ -144,23 +148,22 @@ const StudentEditProfileForm: React.FC = () => {
         <Card className = "mx-auto max-w-sm">
             <CardHeader className = "space-y-1">
                 <CardTitle className = "text-2xl font-bold flex justify-center">
-                    Student Information
+                    Edit Profile
                 </CardTitle>
             </CardHeader>
 
             <CardContent>
                 <div className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="general_information">
-                            General Information
+                        <Label htmlFor="name">
+                            Name
                         </Label>
-                        <div className = "flex">
+                        <div className = "flex gap-2">
                         
                             <Input 
                                 id = "first_name" 
                                 type="text" 
                                 placeholder="First Name" 
-                                required
                                 onChange = {handleFirstNameChange}
                                 value = {firstName}
                                 >
@@ -170,13 +173,31 @@ const StudentEditProfileForm: React.FC = () => {
                                 id = "last_name" 
                                 type="text" 
                                 placeholder="Last Name" 
-                                required
                                 value = {lastName}
                                 onChange = {handleLastNameChange}
                                 >
                             </Input>
 
                         </div>
+
+                        <Label htmlFor="email">
+                            Email
+                        </Label>
+                        <div className = "flex">
+                            <Input 
+                                id = "first_name" 
+                                type="text" 
+                                placeholder="First Name" 
+                                onChange={handleEmailChange}
+                                value = {newEmail}
+                                >
+                            </Input> 
+                        </div>
+
+                        <Label htmlFor="general_information">
+                            Email
+                        </Label>
+                        
                     </div>
                 </div>
             </CardContent>

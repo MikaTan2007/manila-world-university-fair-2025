@@ -263,7 +263,7 @@ export function CountrySelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[335px] justify-between"
+          className="w-[245px] justify-between"
         >
           <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-2 text-left">
             {selectedValues.length > 0 ? displayString : "Citizenship (multiple allowed)"}

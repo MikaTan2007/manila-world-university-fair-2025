@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 //Component Imports
-import { DatePicker } from "./datepicker";
 import { GenderOption } from "./genderoption";
 import { GradYearOption } from "./graduation-year-select";
 import { IdealMajor } from "./idealmajor";
@@ -58,10 +57,6 @@ const StudentSignUpForm: React.FC = () => {
 
     const [emptyFirstName, setEmptyFirstName] = useState(true);
     const [emptyLastName, setEmptyLastName] = useState(true);
-
-    //Date
-    const [dateofBirth, setDateOfBirth] = useState<Date | undefined>(undefined);
-    const [dateChanged, setDateChanged] = useState(false);
 
     //Gender
     const [gender, setGender] = useState("");
@@ -122,10 +117,6 @@ const StudentSignUpForm: React.FC = () => {
             hasError = true;
         }
 
-        if (dateChanged == false) {
-            hasError = true;
-        }
-
         if (emptyGender == true) {
             hasError = true;
         }
@@ -160,7 +151,6 @@ const StudentSignUpForm: React.FC = () => {
                 password: userPassword,
                 first_name: firstName,
                 last_name: lastName,
-                birthday: dateofBirth,
                 gender: gender,
                 citizenship: citizenship,
                 graduation_year: gradYear,
