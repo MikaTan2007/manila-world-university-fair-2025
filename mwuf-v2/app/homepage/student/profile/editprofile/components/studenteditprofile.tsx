@@ -21,7 +21,7 @@ import { GradYearOption } from "@/app/signup/student/components/graduation-year-
 import { IdealMajor } from "@/app/signup/student/components/idealmajor";
 import { CountrySelect } from "@/app/signup/student/components/citizenship";
 import { HomepageSkeletonLoad } from "@/app/homepage/cardSkeletonLoad";
-import { CircleX } from "lucide-react";
+import { CircleX, Eraser } from "lucide-react";
 
 interface Student {
     email: string;
@@ -44,6 +44,7 @@ const StudentEditProfileForm: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [hasError, setHasError] = useState(false);
     const [anyChanges, setAnyChanges] = useState(false);
+    const [takenEmail, setTakenEmail] = useState(false);
 
     //Student Attributes
     const [firstName, setFirstName] = useState("");
@@ -84,8 +85,14 @@ const StudentEditProfileForm: React.FC = () => {
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewEmail(e.target.value);
         setNewEmailChanged(true);
+        setTakenEmail(false);
         setAnyChanges(true);
         setHasError(false);
+    }
+
+    const clearEmail = () => {
+        setNewEmail("");
+        setTakenEmail(true);
     }
 
     const handleSchoolNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -273,6 +280,66 @@ const StudentEditProfileForm: React.FC = () => {
                 toast.dismiss(toastId);
                 navigate("/error")
             }
+
+        } else {
+            const studentData: any = {
+                email: studentEmail,
+                new_email: newEmail
+            }; 
+
+            if (firstNameChanged) {
+                studentData.first_name = firstName;
+            }
+
+            if (lastNameChanged) {
+                studentData.last_name = lastName;
+            }
+
+            if (genderChanged) {
+                studentData.gender = gender;
+            }
+
+            if (gradYearChanged) {
+                studentData.graduation_year = gradYear;
+            }
+
+            if (citizenshipChanged) {
+                studentData.citizenship = citizenship;
+            }
+
+            if (schoolNameChanged) {
+                studentData.school_name = schoolName;
+            }
+
+            if (idealMajorChanged) {
+                studentData.ideal_major = idealMajor;
+            }
+
+            try {
+                const response = await fetch("/api/homepage/students/profile/editprofile/new_email", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(studentData)
+                });
+
+                if (response.status === 401 || response.status === 403 ) {
+                    navigate("/error/forbidden");
+                    return;
+                }
+
+                if (response.status === 409) {
+                    setNewEmail("Email has already been taken")
+                    setTakenEmail(true);
+                    toast.dismiss();
+                    return;
+                }
+
+            } catch {
+                toast.dismiss(toastId);
+                navigate("/error")
+            }
         }
 
         
@@ -323,14 +390,29 @@ const StudentEditProfileForm: React.FC = () => {
                             Email
                         </Label>
                         <div className = "flex">
-                            <Input 
-                                id = "email" 
-                                type="email" 
-                                placeholder="@example.com" 
-                                onChange={handleEmailChange}
-                                value = {newEmail}
-                                >
-                            </Input> 
+                            {takenEmail ?
+                                <Input 
+                                    id = "email" 
+                                    type="email" 
+                                    placeholder="@example.com" 
+                                    onChange={handleEmailChange}
+                                    className = "text-red-600"
+                                    value = {newEmail}
+                                    >
+                                </Input> 
+                                :
+                                <Input 
+                                    id = "email" 
+                                    type="email" 
+                                    placeholder="@example.com" 
+                                    onChange={handleEmailChange}
+                                    value = {newEmail}
+                                    >
+                                </Input> 
+                            }
+                        <Button onClick = {clearEmail} variant = "ghost" size = "icon">
+                            <Eraser></Eraser>
+                        </Button>
                         </div>
                     </div>
 
