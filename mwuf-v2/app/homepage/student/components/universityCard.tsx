@@ -34,7 +34,6 @@ export function UniversityCard({ university }: UniversityProps) {
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Email located in universityCard.tsx: ", university.email);
 
         try {
             const response = await fetch("/api/homepage/students/register", {
