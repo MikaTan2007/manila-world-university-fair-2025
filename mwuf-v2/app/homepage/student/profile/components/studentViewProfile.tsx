@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { HomepageSkeletonLoad } from "@/app/homepage/cardSkeletonLoad";
 import { useNavigation } from "@/hooks/useNavigation";
+import toast from "react-hot-toast";
 
 interface Student {
     email: string;
@@ -69,6 +70,8 @@ export function StudentProfile() {
     }
 
     useEffect(() => {
+        toast.dismiss();
+        
         if (studentEmail == "") {
             navigate("/error/forbidden")
             return;

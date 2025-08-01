@@ -54,24 +54,39 @@ const StudentEditProfileForm: React.FC = () => {
     const [schoolName, setSchoolName] = useState("");
     const [idealMajor, setIdealMajor] = useState<string[]>([]);
 
+    //Determining changed
+    const [firstNameChanged, setFirstNameChanged] = useState(false);
+    const [lastNameChanged, setLastNameChanged] = useState(false);
+    const [newEmailChanged, setNewEmailChanged] = useState(false);
+    const [genderChanged, setGenderChanged] = useState(false);
+    const [gradYearChanged, setGradYearChanged] = useState(false);
+    const [citizenshipChanged, setCitizenshipChanged] = useState(false);
+    const [schoolNameChanged, setSchoolNameChanged] = useState(false);
+    const [idealMajorChanged, setIdealMajorChanged] = useState(false);
+
+
     //Variable Handlers
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
+        setFirstNameChanged(true);
         setHasError(false);
     }
 
     const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLastName(e.target.value);
+        setLastNameChanged(true);
         setHasError(false);
     }
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewEmail(e.target.value);
+        setNewEmailChanged(true);
         setHasError(false);
     }
 
     const handleSchoolNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSchoolName(e.target.value);
+        setSchoolNameChanged(true);
         setHasError(false);
     }
 
@@ -139,6 +154,12 @@ const StudentEditProfileForm: React.FC = () => {
         )
     }
 
+    //Button Handlers
+    const handleBack = async() => {
+        navigate(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${firstName}`);
+        return;
+    }
+
     const handleProfileSubmit = async() => {
         let hasError = false;
 
@@ -150,7 +171,28 @@ const StudentEditProfileForm: React.FC = () => {
             setHasError(true);
             return;
         }
+
+        const toastId = toast.loading("Processing...")
+
+        let changedValues = [
+            firstNameChanged, 
+            lastNameChanged, 
+            newEmailChanged, 
+            genderChanged,
+            gradYearChanged,
+            citizenshipChanged,
+            schoolNameChanged,
+            idealMajorChanged
+        ]
+
+        changedValues = changedValues.filter(value => value === true);
         
+        if (changedValues.length == 0) {
+            handleBack();
+            return;
+        } else {
+            console.log(changedValues)
+        }
         
     }
 
@@ -218,6 +260,7 @@ const StudentEditProfileForm: React.FC = () => {
                                     setGender(value);
                                     setHasError(false);
                                 }}
+                                onGenderChange={()=> setGenderChanged(true)}
                             >
                             </GenderOption>
                             
@@ -227,6 +270,7 @@ const StudentEditProfileForm: React.FC = () => {
                                     setCitizenship(value);
                                     setHasError(false);
                                 }}
+                                onCitizenshipChange={() => setCitizenshipChanged(true)}
                             >
                             </CountrySelect>
                         </div>
@@ -253,6 +297,7 @@ const StudentEditProfileForm: React.FC = () => {
                                     setGradYear(value);
                                     setHasError(false);
                                 }}
+                                onGradYearChange={()=> setGradYearChanged(true)}
                             ></GradYearOption>
                         </div>
                     </div>
@@ -268,6 +313,7 @@ const StudentEditProfileForm: React.FC = () => {
                                     setIdealMajor(values)
                                     setHasError(false);
                                 }}
+                                onIdealMajorChange={()=> setIdealMajorChanged(true)}
                             ></IdealMajor>
                         </div>
                     </div>
@@ -279,7 +325,7 @@ const StudentEditProfileForm: React.FC = () => {
                     <Button type = "submit" onClick={handleProfileSubmit} variant = "ghost" className = "w-full text-white bg-blue-400">
                         Save Changes
                     </Button>
-                    <Button type = "submit" disabled variant = "ghost" className = "w-full text-white bg-red-400">
+                    <Button type = "submit" onClick={handleBack} variant = "ghost" className = "w-full text-white bg-red-400">
                         Back
                     </Button>
 
