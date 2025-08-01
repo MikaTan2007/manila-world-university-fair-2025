@@ -29,7 +29,7 @@ export const POST = async (req: Request) => {
         }
 
         const body = await req.json();
-        const {email} = body;
+        const email = body.email;
 
         if (session.email !== email) {
             return NextResponse.json({
@@ -49,9 +49,35 @@ export const POST = async (req: Request) => {
             }, {status: 404})
         } 
 
+        const {email: _, ...updateData} = body;
+
+        const fieldsToUpdate = Object.entries(updateData).reduce((acc, [key, value]) => {
+            if (value !== undefined && value !== null) {
+                acc[key] = value;
+            }
+            return acc;
+        }, {} as any);
+
+        const updatedStudent = await Student.findOneAndUpdate(
+            { email }, 
+            { $set: fieldsToUpdate }, 
+            { 
+                new: true, 
+                runValidators: true 
+            }
+        );
+
+        if (!updatedStudent) {
+            return NextResponse.json({
+                success: false,
+                message: "Failed to update student"
+            }, {status: 500})
+        }
+
         return NextResponse.json({
             success: true,
-            student: student
+            message: "Profile updated successfully",
+            student: updatedStudent
         }, {status: 200})
 
     } catch (error: any) {

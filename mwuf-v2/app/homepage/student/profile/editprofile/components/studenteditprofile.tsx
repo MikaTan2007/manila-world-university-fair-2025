@@ -181,24 +181,7 @@ const StudentEditProfileForm: React.FC = () => {
 
         const toastId = toast.loading("Processing...")
 
-        let changedValues = [
-            firstNameChanged, 
-            lastNameChanged, 
-            newEmailChanged, 
-            genderChanged,
-            gradYearChanged,
-            citizenshipChanged,
-            schoolNameChanged,
-            idealMajorChanged
-        ]
-
-        changedValues = changedValues.filter(value => value === true);
-        
-        if (changedValues.length == 0) {
-            handleBack();
-            return;
-        }
-
+        //If no email change
         if (studentEmail == newEmail) {
             const studentData: any = {
                 email: studentEmail
@@ -210,6 +193,51 @@ const StudentEditProfileForm: React.FC = () => {
 
             if (lastNameChanged) {
                 studentData.last_name = lastName;
+            }
+
+            if (genderChanged) {
+                studentData.gender = gender;
+            }
+
+            if (gradYearChanged) {
+                studentData.graduation_year = gradYear;
+            }
+
+            if (citizenshipChanged) {
+                studentData.citizenship = citizenship;
+            }
+
+            if (schoolNameChanged) {
+                studentData.school_name = schoolName;
+            }
+
+            if (idealMajorChanged) {
+                studentData.ideal_major = idealMajor;
+            }
+
+            try {
+                const response = await fetch("/api/homepage/students/profile/editprofile", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(studentData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    toast.dismiss(toastId)
+                    toast.success("Profile updated")
+                    navigate(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${firstName}`);
+                } else {
+                    toast.dismiss(toastId);
+                    navigate("/error")
+                }
+
+            } catch {
+                toast.dismiss(toastId);
+                navigate("/error")
             }
         }
 
