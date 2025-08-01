@@ -163,6 +163,40 @@ const StudentEditProfileForm: React.FC = () => {
 
     //Button Handlers
     const handleBack = async() => {
+        if (anyChanges == true) {
+            toast((t) => (
+                <div className="flex flex-col gap-2">
+                    <p className="font-bold flex justify-center">Unsaved Changes</p>
+                    <p className="text-sm items-center text-gray-600">
+                         Are you sure you want to leave?
+                    </p>
+                    <div className="flex justify-center gap-2">
+                        <Button
+                            className="px-3 py-1 text-green-600 rounded text-sm"
+                            onClick={() => toast.dismiss(t.id)}
+                            variant = "outline"
+                        >
+                            Stay
+                        </Button>
+
+                        <Button
+                            className="px-3 py-1 text-red-600 rounded text-sm"
+                            onClick={() => {
+                                toast.dismiss(t.id);
+                                navigate(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${firstName}`);
+                            }}
+                            variant = "outline"
+                        >
+                            Leave
+                        </Button>
+                        
+                    </div>
+                </div>
+            ), {
+                duration: Infinity, // Keep the toast open until user decides
+            });
+            return;
+        }
         navigate(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${firstName}`);
         return;
     }
