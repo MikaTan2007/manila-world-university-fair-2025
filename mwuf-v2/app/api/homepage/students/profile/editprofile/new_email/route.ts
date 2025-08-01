@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import Student from "@/lib/models/student";
+import University from "@/lib/models/university";
 import connect from "@/lib/db";
 import { createSession, deleteSession, getSession } from "@/lib/session";
 import { cookies } from "next/headers";
@@ -85,6 +86,15 @@ export const POST = async (req: Request) => {
                 message: "Failed to update student"
             }, {status: 500})
         }
+
+        const universityUpdateResult = await University.updateMany(
+            { registered_students: originalEmail }, // Find universities with old email
+            { 
+                $set: { 
+                    "registered_students.$": newEmail // Replace old email with new email
+                }
+            }
+        );
 
         const response = NextResponse.json({
             success: true,
