@@ -43,6 +43,7 @@ const StudentEditProfileForm: React.FC = () => {
     const [student, setStudent] = useState<Student>();
     const [loading, setLoading] = useState<boolean>(true);
     const [hasError, setHasError] = useState(false);
+    const [anyChanges, setAnyChanges] = useState(false);
 
     //Student Attributes
     const [firstName, setFirstName] = useState("");
@@ -69,24 +70,28 @@ const StudentEditProfileForm: React.FC = () => {
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
         setFirstNameChanged(true);
+        setAnyChanges(true);
         setHasError(false);
     }
 
     const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLastName(e.target.value);
         setLastNameChanged(true);
+        setAnyChanges(true);
         setHasError(false);
     }
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewEmail(e.target.value);
         setNewEmailChanged(true);
+        setAnyChanges(true);
         setHasError(false);
     }
 
     const handleSchoolNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSchoolName(e.target.value);
         setSchoolNameChanged(true);
+        setAnyChanges(true);
         setHasError(false);
     }
 
@@ -103,7 +108,7 @@ const StudentEditProfileForm: React.FC = () => {
             });
             
             if (response.status === 401 || response.status === 403) {
-                navigate("error/forbidden");
+                navigate("/error/forbidden");
                 return;
             }
 
@@ -144,6 +149,8 @@ const StudentEditProfileForm: React.FC = () => {
         }
         
         fetchStudentData();
+
+        
     }, [studentEmail]);
 
     if (loading == true) {
@@ -190,9 +197,25 @@ const StudentEditProfileForm: React.FC = () => {
         if (changedValues.length == 0) {
             handleBack();
             return;
-        } else {
-            console.log(changedValues)
         }
+
+        if (studentEmail == newEmail) {
+            const studentData: any = {
+                email: studentEmail
+            };
+
+            if (firstNameChanged) {
+                studentData.first_name = firstName;
+            }
+
+            if (lastNameChanged) {
+                studentData.last_name = lastName;
+            }
+        }
+
+        
+
+
         
     }
 
@@ -260,7 +283,10 @@ const StudentEditProfileForm: React.FC = () => {
                                     setGender(value);
                                     setHasError(false);
                                 }}
-                                onGenderChange={()=> setGenderChanged(true)}
+                                onGenderChange={()=> {
+                                    setGenderChanged(true)
+                                    setAnyChanges(true);
+                                }}
                             >
                             </GenderOption>
                             
@@ -270,7 +296,10 @@ const StudentEditProfileForm: React.FC = () => {
                                     setCitizenship(value);
                                     setHasError(false);
                                 }}
-                                onCitizenshipChange={() => setCitizenshipChanged(true)}
+                                onCitizenshipChange={() => {
+                                    setCitizenshipChanged(true);
+                                    setAnyChanges(true);
+                                }}
                             >
                             </CountrySelect>
                         </div>
@@ -297,7 +326,10 @@ const StudentEditProfileForm: React.FC = () => {
                                     setGradYear(value);
                                     setHasError(false);
                                 }}
-                                onGradYearChange={()=> setGradYearChanged(true)}
+                                onGradYearChange={()=> {
+                                    setGradYearChanged(true)
+                                    setAnyChanges(true);
+                                }}
                             ></GradYearOption>
                         </div>
                     </div>
@@ -313,7 +345,10 @@ const StudentEditProfileForm: React.FC = () => {
                                     setIdealMajor(values)
                                     setHasError(false);
                                 }}
-                                onIdealMajorChange={()=> setIdealMajorChanged(true)}
+                                onIdealMajorChange={()=> {
+                                    setIdealMajorChanged(true);
+                                    setAnyChanges(true);
+                                }}
                             ></IdealMajor>
                         </div>
                     </div>
@@ -322,7 +357,7 @@ const StudentEditProfileForm: React.FC = () => {
                         {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
                         {hasError && <p className = "text-red-600 ml-1">All fields are required</p>}
                     </div>
-                    <Button type = "submit" onClick={handleProfileSubmit} variant = "ghost" className = "w-full text-white bg-blue-400">
+                    <Button type = "submit" disabled = {!anyChanges} onClick={handleProfileSubmit} variant = "ghost" className = "w-full text-white bg-blue-400">
                         Save Changes
                     </Button>
                     <Button type = "submit" onClick={handleBack} variant = "ghost" className = "w-full text-white bg-red-400">
