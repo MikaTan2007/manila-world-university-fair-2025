@@ -8,7 +8,6 @@ export const POST = async (req: Request) => {
         const sessionId = (await cookieStore).get('sessionId')?.value;
 
         if (sessionId) {
-            // Delete the session from memory
             deleteSession(sessionId);
         }
 

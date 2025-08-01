@@ -336,6 +336,17 @@ const StudentEditProfileForm: React.FC = () => {
                     return;
                 }
 
+                if (!response.ok) {
+                    navigate("/error")
+                    return;
+                }
+
+                if (response.status === 200) {
+                    toast.success("Profile updated")
+                    navigate(`/homepage/student/profile?email=${encodeURIComponent(newEmail ?? "")}&firstName=${firstName}`);
+                    return;
+                }
+
             } catch {
                 toast.dismiss(toastId);
                 navigate("/error")

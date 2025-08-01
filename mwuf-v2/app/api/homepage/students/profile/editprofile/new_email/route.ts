@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import Student from "@/lib/models/student";
 import connect from "@/lib/db";
-import { getSession } from "@/lib/session";
+import { createSession, deleteSession, getSession } from "@/lib/session";
 import { cookies } from "next/headers";
 
 export const POST = async (req: Request) => {
@@ -48,17 +48,68 @@ export const POST = async (req: Request) => {
             }, {status: 404})
         }
 
-        if (newEmail !== originalEmail) {
-            // Check if new email already exists
-            const existingStudent = await Student.findOne({ email: newEmail });
-            if (existingStudent) {
-                return NextResponse.json({
-                    success: false,
-                    message: "Email already exists."
-                }, {status: 409})
-            }
+        const existingStudent = await Student.findOne({ email: newEmail });
+        
+        if (existingStudent) {
+            return NextResponse.json({
+                success: false,
+                message: "Email already exists."
+            }, {status: 409})
         }
 
+        const {email: _, new_email: __, ...updateData} = body;
+
+        if (newEmail && newEmail !== originalEmail) {
+            updateData.email = newEmail;
+        }
+
+        const fieldsToUpdate = Object.entries(updateData).reduce((acc, [key, value]) => {
+            if (value !== undefined && value !== null) {
+                acc[key] = value;
+            }
+            return acc;
+        }, {} as any);
+
+        const updatedStudent = await Student.findOneAndUpdate(
+            { email: originalEmail }, // Find by original email
+            { $set: fieldsToUpdate }, // Update fields including new email if provided
+            { 
+                new: true, 
+                runValidators: true 
+            }
+        );
+
+        if (!updatedStudent) {
+            return NextResponse.json({
+                success: false,
+                message: "Failed to update student"
+            }, {status: 500})
+        }
+
+        const response = NextResponse.json({
+            success: true,
+            message: "Profile updated successfully",
+            student: updatedStudent,
+        }, {status: 200})
+
+        deleteSession(sessionId);
+
+        response.cookies.set('sessionId', '', {
+            httpOnly: true,
+            secure: false,
+            maxAge: 0 
+        });
+
+        const newSessionId = createSession(newEmail, 'student');
+
+        response.cookies.set('sessionId', newSessionId, {
+            httpOnly: true,
+            secure: false, // Set to true in production with HTTPS
+            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        });
+
+        return response;
+        
     } catch (error: any) {
         console.error("Update error:", error);
         return NextResponse.json({
