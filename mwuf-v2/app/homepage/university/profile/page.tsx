@@ -12,7 +12,7 @@ export default function UniversityProfilePage() {
     
     
               <main className = "flex-1 flex flex-col">
-                <div className="flex items-center p-4">
+                <div className="sticky top-0 z-50 flex items-center p-4 bg-forest-green shadow-lg">
                   <SidebarTrigger/>
                     <h1 className="ml-4 text-xl font-semibold font-sans">University Profile</h1>
                 </div>
