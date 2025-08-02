@@ -33,6 +33,11 @@ interface University {
     registered_students: string[];
 }
 
+interface CityInput {
+    id: number;
+    value: string;
+}
+
 const UniversityEditProfileForm: React.FC = () => {
     const {navigate} = useNavigation();
     const searchParams = useSearchParams();
@@ -49,7 +54,7 @@ const UniversityEditProfileForm: React.FC = () => {
     const [uniName, setUniName] = useState("");
     const [uniRegion, setUniRegion] = useState<string[]>([]);
     const [uniCountries, setUniCountries] = useState<string[]>([]);
-    const [cities, setCities] = useState<string[]>([]);
+    const [cities, setCities] = useState<CityInput[]>([{ id: 1, value: "" }]);
     const [repFirstName, setRepFirstName] = useState("");
     const [repLastName, setRepLastName] = useState("");
     const [repContactEmail, setRepContactEmail] = useState("");
@@ -98,12 +103,40 @@ const UniversityEditProfileForm: React.FC = () => {
         setHasError(false);
     }
 
+    //City Input Handler
+    const handleCityChange = (id: number, value: string) => {
+        setCities(prevInputs =>
+            prevInputs.map(input =>
+                input.id === id ? {...input, value} : input
+            )
+        )
+        setHasError(false)
+    }
+    
+    //City Handler
+    const addCityInput = () => {
+        setCities((prevInputs) => [
+            ...prevInputs,
+            {id:prevInputs.length + 1, value: ""}
+        ]);
+    };
+
+    const removeCityInput = (id?: number) => {
+        setCities((prevInputs) => {
+            if (id) {
+                return prevInputs.filter(input => input.id !== id);
+            } else {
+                const updatedInputs = [...prevInputs];
+                updatedInputs.pop();
+                return updatedInputs;
+            }
+        });
+    };
+
     const clearEmail = () => {
         setNewEmail("");
         setTakenEmail(true);
     }
-
-    //Still need handling for regions, countries & cities
 
     const fetchUniversityData = async () => {
         try {
@@ -137,7 +170,16 @@ const UniversityEditProfileForm: React.FC = () => {
                     setNewEmail(universityData.email || "");
                     setUniRegion(universityData.region || []);
                     setUniCountries(universityData.countries || []);
-                    setCities(universityData.cities || []);
+                    
+                    const cityInputs = universityData.cities && universityData.cities.length > 0 
+                    ? universityData.cities.map((city: string, index: number) => ({
+                        id: index + 1,
+                        value: city
+                    }))
+                    : [{ id: 1, value: "" }];
+
+                    setCities(cityInputs);
+                    
                     setRepFirstName(universityData.rep_first_name || "");
                     setRepLastName(universityData.rep_last_name || "");
                     setRepContactEmail(universityData.rep_contact_email || "");
@@ -294,6 +336,54 @@ const UniversityEditProfileForm: React.FC = () => {
                                 }}
                             ></UniCountry>
 
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="uni_cities">
+                            University Cities
+                        </Label>
+                        
+                        
+                        <div className="space-y-2">
+                            {cities.map((input, index) => (
+                                <div key={input.id} className="flex items-center gap-2">
+                                    <Input
+                                        id={`city_name_${input.id}`}
+                                        type="text"
+                                        placeholder={`City ${index + 1}`}
+                                        required
+                                        value={input.value}
+                                        onChange={(e) => {
+                                            handleCityChange(input.id, e.target.value);
+                                            setCitiesChanged(true);
+                                            setAnyChanges(true);
+                                        }}
+                                        className="flex-1"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="flex gap-2">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={addCityInput}
+                                className="flex-1"
+                            >
+                                Add City
+                            </Button>
+                            {cities.length > 1 && (
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => removeCityInput()}
+                                    className="flex-1"
+                                >
+                                    Remove
+                                </Button>
+                            )}
                         </div>
                     </div>
                     

@@ -271,35 +271,40 @@ const UniversitySignUpForm: React.FC = () => {
                                 onUniCountryChange={setEmptyUniCountry}
                             ></UniCountry>
                         </div>
-                        {cityInputs.map((input) => (
-                            <div key={input.id}>
+                        {cityInputs.map((input, index) => (
+                            <div key={input.id} className="flex items-center gap-2">
                                 <Input
                                     id={`city_name_${input.id}`}
                                     type="text"
-                                    placeholder="City"
+                                    placeholder={`City ${index + 1}`}
                                     required
                                     value={input.value}
-                                    onChange={(e) => handleCityChange(input.id, e.target.value)}
+                                    onChange={(e) => {
+                                        handleCityChange(input.id, e.target.value);
+                                    }}
+                                    className="flex-1"
                                 />
                             </div>
                         ))}
-                        <div className = "flex">
+                        <div className="flex gap-2">
                             <Button
                                 type="button"
                                 variant="outline"
                                 onClick={addCityInput}
-                                className="w-full"
+                                className="flex-1"
                             >
                                 Add City
                             </Button>
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={removeCityInput}
-                                className="w-full"
-                            >
-                                Remove City
-                            </Button>
+                            {cityInputs.length > 1 && (
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => removeCityInput()}
+                                    className="flex-1"
+                                >
+                                    Remove
+                                </Button>
+                            )}
                         </div>
                     </div>
                     <div className = "space-y-2">
