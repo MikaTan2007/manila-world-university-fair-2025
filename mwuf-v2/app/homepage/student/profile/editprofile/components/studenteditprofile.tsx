@@ -350,10 +350,6 @@ const StudentEditProfileForm: React.FC = () => {
                 navigate("/error")
             }
         }
-
-        
-
-
         
     }
 

@@ -92,6 +92,12 @@ const UniversityEditProfileForm: React.FC = () => {
         setHasError(false);
     }
 
+    const handleNewEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewEmail(e.target.value);
+        setAnyChanges(true);
+        setHasError(false);
+    }
+
     const clearEmail = () => {
         setNewEmail("");
         setTakenEmail(true);
@@ -205,7 +211,21 @@ const UniversityEditProfileForm: React.FC = () => {
         return;
     }
 
-    //handleProfileSubmit
+    const handleProfileSubmit = async() => {
+        let hasError = false;
+
+        if (repContactEmail == "" || repFirstName == "" || repLastName == "" || newEmail == "" || uniName == "" || uniRegion.length == 0) {
+            hasError = true;
+        }
+
+        if (hasError == true) {
+            setHasError(true);
+            return;
+        }
+
+        const toastId = toast.loading("Processing...")
+
+    }
 
     return (
         <Card className = "mx-auto max-w-sm">
@@ -234,12 +254,33 @@ const UniversityEditProfileForm: React.FC = () => {
 
                         </div>
                     </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="uni_region">
+                            University Region
+                        </Label>
+                        <div className = "flex">
+                        
+                            <UniRegion
+                                uniRegion={uniRegion}
+                                setUniRegion={(values) => {
+                                    setUniRegion(values)
+                                    setHasError(false);
+                                }}
+                                onUniRegionChange={()=> {
+                                    setRegionsChanged(true);
+                                    setAnyChanges(true);
+                                }}
+                            ></UniRegion>
+
+                        </div>
+                    </div>
                     
                     <div className = "text-sm flex animate-pulse">
                         {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
                         {hasError && <p className = "text-red-600 ml-1">All fields are required</p>}
                     </div>
-                    <Button type = "submit" disabled = {!anyChanges} variant = "ghost" className = "w-full text-white bg-blue-400">
+                    <Button type = "submit" disabled = {!anyChanges} onClick={handleProfileSubmit} variant = "ghost" className = "w-full text-white bg-blue-400">
                         Save Changes
                     </Button>
                     <Button type = "submit" onClick={handleBack} variant = "ghost" className = "w-full text-white bg-red-400">
