@@ -229,32 +229,20 @@ interface uniCountryProps {
     onUniCountryChange
   } : uniCountryProps) {
     const [open, setOpen] = useState(false);
-    const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-    useEffect(() => {
-      setSelectedValues(uniCountry)
-    }, [uniCountry]);
-
-    useEffect(() => {
-      if (JSON.stringify(selectedValues) !== JSON.stringify(uniCountry)) {
-        setUniCountry(selectedValues);
-        onUniCountryChange?.(false);
-      }
-    })
+  const handleSelect = (currentValue: string) => {
+    const newUniCountry = uniCountry.includes(currentValue)
+      ? uniCountry.filter(value => value !== currentValue)
+      : [...uniCountry, currentValue];
+    
+    setUniCountry(newUniCountry);
+    onUniCountryChange?.(false);
+  };
   
-    const handleSelect = (currentValue: string) => {
-      setSelectedValues(prev => {
-        if (prev.includes(currentValue)) {
-          return prev.filter(value => value !== currentValue);
-        }
-        return [...prev, currentValue];
-      });
-    };
-  
-    const displayString = selectedValues
-      .map(value => countries.find(country => country.value === value)?.label)
-      .filter(Boolean)
-      .join(", ");
+  const displayString = uniCountry
+    .map(value => countries.find(country => country.value === value)?.label)
+    .filter(Boolean)
+    .join(", ");
   
     return (
       <Popover open={open} onOpenChange={setOpen}>
@@ -266,7 +254,7 @@ interface uniCountryProps {
             className="w-[335px] justify-between"
           >
             <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-2 text-left">
-              {selectedValues.length > 0 ? displayString : "Country (multiple allowed)"}
+              {uniCountry.length > 0 ? displayString : "Country (multiple allowed)"}
             </div>
             <ChevronsUpDown className="opacity-50 shrink-0" />
           </Button>
@@ -287,7 +275,7 @@ interface uniCountryProps {
                     <Check
                       className={cn(
                         "ml-auto",
-                        selectedValues.includes(country.value) ? "opacity-100" : "opacity-0"
+                        uniCountry.includes(country.value) ? "opacity-100" : "opacity-0"
                       )}
                     />
                   </CommandItem>

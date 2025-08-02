@@ -275,6 +275,27 @@ const UniversityEditProfileForm: React.FC = () => {
 
                         </div>
                     </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="uni_region">
+                            University Country
+                        </Label>
+                        <div className = "flex">
+                        
+                            <UniCountry
+                                uniCountry={uniCountries}
+                                setUniCountry={(values) => {
+                                    setUniCountries(values)
+                                    setHasError(false);
+                                }}
+                                onUniCountryChange={()=> {
+                                    setCountriesChanged(true);
+                                    setAnyChanges(true);
+                                }}
+                            ></UniCountry>
+
+                        </div>
+                    </div>
                     
                     <div className = "text-sm flex animate-pulse">
                         {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
