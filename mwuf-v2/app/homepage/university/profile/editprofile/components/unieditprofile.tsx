@@ -256,7 +256,7 @@ const UniversityEditProfileForm: React.FC = () => {
     const handleProfileSubmit = async() => {
         let hasError = false;
 
-        if (repContactEmail == "" || repFirstName == "" || repLastName == "" || newEmail == "" || uniName == "" || uniRegion.length == 0) {
+        if (repContactEmail == "" || repFirstName == "" || repLastName == "" || newEmail == "" || uniName == "" || uniRegion.length == 0 || cities.length == 0 || uniCountries.length == 0) {
             hasError = true;
         }
 
@@ -266,6 +266,60 @@ const UniversityEditProfileForm: React.FC = () => {
         }
 
         const toastId = toast.loading("Processing...")
+
+        //If no email change
+        if (universityEmail == newEmail) {
+            const universityData: any = {
+                email: universityEmail
+            };
+
+            if (uniNameChanged) {
+                universityData.uni_name = uniName;
+            }
+            if (regionsChanged) {
+                universityData.region = uniRegion;
+            }
+            if (countriesChanged) {
+                universityData.countries = uniCountries;
+            }
+            if (citiesChanged) {
+                universityData.cities = cities.map(city => city.value);
+            }
+            if (repFirstNameChanged) {
+                universityData.rep_first_name = repFirstName;
+            }
+            if (repLastNameChanged) {
+                universityData.rep_last_name = repLastName;
+            }
+            if (repContactEmailChanged) {
+                universityData.rep_contact_email = repContactEmail;
+            }
+
+            try {
+                const response = await fetch("/api/homepage/universities/profile/editprofile", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(universityData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    toast.dismiss(toastId)
+                    toast.success("Profile updated")
+                    navigate(`/homepage/university/profile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${repFirstName}`);
+                } else {
+                    toast.dismiss(toastId);
+                    navigate("/error")
+                }
+
+            } catch {
+                toast.dismiss(toastId);
+                navigate("/error")
+            }
+        }
 
     }
 
