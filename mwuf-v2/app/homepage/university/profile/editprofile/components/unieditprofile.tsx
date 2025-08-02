@@ -413,6 +413,40 @@ const UniversityEditProfileForm: React.FC = () => {
 
                         </div>
                     </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="contact_email">
+                            Contact Email
+                        </Label>
+                        <div className = "flex">
+                            <Input 
+                                id = "email" 
+                                type="email" 
+                                placeholder="contactme@email.com" 
+                                required
+                                onChange={handleContactEmailChange}
+                                value = {repContactEmail}
+                            >
+                            </Input>
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="account_email">
+                            Account Email
+                        </Label>
+                        <div className = "flex">
+                            <Input 
+                                id = "email" 
+                                type="email" 
+                                placeholder="contactme@email.com" 
+                                required
+                                onChange={handleNewEmailChange}
+                                value = {newEmail}
+                            >
+                            </Input>
+                        </div>
+                    </div>
                     
                     <div className = "text-sm flex animate-pulse">
                         {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
