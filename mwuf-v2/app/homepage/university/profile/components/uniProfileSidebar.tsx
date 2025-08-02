@@ -11,6 +11,8 @@ import {
   SidebarHeader,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar"
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 
 export function UniProfileSidebar() {
@@ -38,6 +40,10 @@ export function UniProfileSidebar() {
         navigate(`/homepage/university?email=${encodeURIComponent(universityEmail ?? "")}`);
         return;
     }
+
+    useEffect(() => {
+        toast.dismiss();
+    }, []);
 
     return (
         <Sidebar>
