@@ -99,6 +99,7 @@ const UniversityEditProfileForm: React.FC = () => {
 
     const handleNewEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewEmail(e.target.value);
+        setTakenEmail(false);
         setAnyChanges(true);
         setHasError(false);
     }
@@ -133,9 +134,13 @@ const UniversityEditProfileForm: React.FC = () => {
         });
     };
 
-    const clearEmail = () => {
+    const clearNewEmail = () => {
         setNewEmail("");
-        setTakenEmail(true);
+        setTakenEmail(false);
+    }
+
+    const clearContactEmail = () => {
+        setRepContactEmail("");
     }
 
     const fetchUniversityData = async () => {
@@ -256,7 +261,7 @@ const UniversityEditProfileForm: React.FC = () => {
     const handleProfileSubmit = async() => {
         let hasError = false;
 
-        if (repContactEmail == "" || repFirstName == "" || repLastName == "" || newEmail == "" || uniName == "" || uniRegion.length == 0 || cities.length == 0 || uniCountries.length == 0) {
+        if (repContactEmail == "" || repFirstName == "" || repLastName == "" || newEmail == "" || uniName == "" || uniRegion.length == 0 || cities.length == 0 || uniCountries.length == 0 || takenEmail == true) {
             hasError = true;
         }
 
@@ -313,6 +318,70 @@ const UniversityEditProfileForm: React.FC = () => {
                 } else {
                     toast.dismiss(toastId);
                     navigate("/error")
+                }
+
+            } catch {
+                toast.dismiss(toastId);
+                navigate("/error")
+            }
+        } else {
+            const universityData: any = {
+                email: universityEmail,
+                new_email: newEmail
+            }; 
+
+            if (uniNameChanged) {
+                universityData.uni_name = uniName;
+            }
+            if (regionsChanged) {
+                universityData.region = uniRegion;
+            }
+            if (countriesChanged) {
+                universityData.countries = uniCountries;
+            }
+            if (citiesChanged) {
+                universityData.cities = cities.map(city => city.value);
+            }
+            if (repFirstNameChanged) {
+                universityData.rep_first_name = repFirstName;
+            }
+            if (repLastNameChanged) {
+                universityData.rep_last_name = repLastName;
+            }
+            if (repContactEmailChanged) {
+                universityData.rep_contact_email = repContactEmail;
+            }
+
+            try {
+                const response = await fetch("/api/homepage/universities/profile/editprofile/new_email", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(universityData)
+                });
+
+                if (response.status === 401 || response.status === 403 ) {
+                    navigate("/error/forbidden");
+                    return;
+                }
+
+                if (response.status === 409) {
+                    setNewEmail("Email has already been taken")
+                    setTakenEmail(true);
+                    toast.dismiss();
+                    return;
+                }
+
+                if (!response.ok) {
+                    navigate("/error")
+                    return;
+                }
+
+                if (response.status === 200) {
+                    toast.success("Profile updated")
+                    navigate(`/homepage/university/profile?email=${encodeURIComponent(newEmail ?? "")}&firstName=${repFirstName}`);
+                    return;
                 }
 
             } catch {
@@ -482,6 +551,9 @@ const UniversityEditProfileForm: React.FC = () => {
                                 value = {repContactEmail}
                             >
                             </Input>
+                            <Button onClick = {clearContactEmail} variant = "ghost" size = "icon">
+                                <Eraser></Eraser>
+                            </Button>
                         </div>
                     </div>
 
@@ -489,17 +561,35 @@ const UniversityEditProfileForm: React.FC = () => {
                         <Label htmlFor="account_email">
                             Account Email
                         </Label>
+                        
                         <div className = "flex">
-                            <Input 
-                                id = "email" 
-                                type="email" 
-                                placeholder="contactme@email.com" 
-                                required
-                                onChange={handleNewEmailChange}
-                                value = {newEmail}
-                            >
-                            </Input>
+                            {takenEmail ?
+                                <Input 
+                                    id = "email" 
+                                    type="email" 
+                                    placeholder="contactme@email.com" 
+                                    required
+                                    onChange={handleNewEmailChange}
+                                    value = {newEmail}
+                                    className="text-red-600"
+                                >
+                                </Input>
+                                :
+                                <Input 
+                                    id = "email" 
+                                    type="email" 
+                                    placeholder="contactme@email.com" 
+                                    required
+                                    onChange={handleNewEmailChange}
+                                    value = {newEmail}
+                                >
+                                </Input>
+                            }
+                            <Button onClick = {clearNewEmail} variant = "ghost" size = "icon">
+                                <Eraser></Eraser>
+                            </Button>
                         </div>
+                        
                     </div>
                     
                     <div className = "text-sm flex animate-pulse">

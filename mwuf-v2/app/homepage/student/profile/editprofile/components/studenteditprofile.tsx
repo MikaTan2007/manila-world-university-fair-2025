@@ -97,7 +97,6 @@ const StudentEditProfileForm: React.FC = () => {
 
     const clearEmail = () => {
         setNewEmail("");
-        setTakenEmail(true);
     }
 
     const fetchStudentData = async () => {
@@ -209,7 +208,7 @@ const StudentEditProfileForm: React.FC = () => {
     const handleProfileSubmit = async() => {
         let hasError = false;
 
-        if (firstName == "" || lastName == "" || schoolName == "" || newEmail == "" || citizenship.length == 0 || idealMajor.length == 0) {
+        if (firstName == "" || lastName == "" || schoolName == "" || newEmail == "" || citizenship.length == 0 || idealMajor.length == 0 || takenEmail == true) {
             hasError = true;
         }
 
