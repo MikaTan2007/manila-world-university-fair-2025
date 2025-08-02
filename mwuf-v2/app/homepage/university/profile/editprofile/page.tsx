@@ -2,6 +2,7 @@
 import Image from "next/image"
 import { UniProfileSidebar } from "../components/uniProfileSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import UniversityEditProfileForm from "./components/unieditprofile";
 
 export default function UniversityProfilePage() {
     return (
@@ -29,7 +30,7 @@ export default function UniversityProfilePage() {
                       />
                   </div>
                   <div className = "pt-10">
-                    
+                    <UniversityEditProfileForm></UniversityEditProfileForm>
                   </div>
                 </div>
               </main>

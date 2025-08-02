@@ -16,10 +16,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 //Component Imports
-import { GenderOption } from "@/app/signup/student/components/genderoption";
-import { GradYearOption } from "@/app/signup/student/components/graduation-year-select";
-import { IdealMajor } from "@/app/signup/student/components/idealmajor";
-import { CountrySelect } from "@/app/signup/student/components/citizenship";
+import { UniCountry } from "@/app/signup/university/components/unicountry-select";
+import { UniRegion } from "@/app/signup/university/components/uniregion";
 import { HomepageSkeletonLoad } from "@/app/homepage/cardSkeletonLoad";
 import { CircleX, Eraser } from "lucide-react";
 
@@ -50,6 +48,7 @@ const UniversityEditProfileForm: React.FC = () => {
     const [newEmail, setNewEmail] = useState("");
     const [uniName, setUniName] = useState("");
     const [uniRegion, setUniRegion] = useState<string[]>([]);
+    const [uniCountries, setUniCountries] = useState<string[]>([]);
     const [cities, setCities] = useState<string[]>([]);
     const [repFirstName, setRepFirstName] = useState("");
     const [repLastName, setRepLastName] = useState("");
@@ -58,11 +57,13 @@ const UniversityEditProfileForm: React.FC = () => {
     //Determining changed
     const [uniNameChanged, setUniNameChanged] = useState(false);
     const [regionsChanged, setRegionsChanged] = useState(false);
+    const [countriesChanged, setCountriesChanged] = useState(false);
     const [citiesChanged, setCitiesChanged] = useState(false);
     const [repFirstNameChanged, setRepFirstNameChanged] = useState(false);
     const [repLastNameChanged, setRepLastNameChanged] = useState(false);
     const [repContactEmailChanged, setRepContactEmailChanged] = useState(false);
 
+    //Variable Handlers
     const handleUniNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUniName(e.target.value);
         setUniNameChanged(true);
@@ -96,8 +97,158 @@ const UniversityEditProfileForm: React.FC = () => {
         setTakenEmail(true);
     }
 
+    //Still need handling for regions, countries & cities
+
+    const fetchUniversityData = async () => {
+        try {
+            const response = await fetch("/api/homepage/universities/profile", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: universityEmail
+                })
+            })
+
+            if (response.status === 401 || response.status === 403) {
+                navigate("/error/forbidden");
+                return;
+            }
+
+            if (response.ok != true) {
+                navigate("/error");
+                return;
+            }
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    const universityData = data.university;
+                    setUniversity(universityData);
+                    
+                    setUniName(universityData.uni_name || "");
+                    setNewEmail(universityData.email || "");
+                    setUniRegion(universityData.region || []);
+                    setUniCountries(universityData.countries || []);
+                    setCities(universityData.cities || []);
+                    setRepFirstName(universityData.rep_first_name || "");
+                    setRepLastName(universityData.rep_last_name || "");
+                    setRepContactEmail(universityData.rep_contact_email || "");
+                }
+            }
+
+        } catch (error) {
+            navigate("/error");
+            return;
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        if (universityEmail=="") {
+            navigate("/error/forbidden");
+            return;
+        }
+        
+        fetchUniversityData();
+
+        
+    }, [universityEmail]);
+
+    if (loading == true) {
+        return (
+            <div className = "mx-auto max-w-sm">
+                <HomepageSkeletonLoad></HomepageSkeletonLoad>
+            </div>
+        )
+    }
+
+    //Button Handlers
+    const handleBack = async() => {
+        if (anyChanges == true) {
+            toast((t) => (
+                <div className="flex flex-col gap-2">
+                    <p className="font-bold flex justify-center">Unsaved Changes</p>
+                    <p className="text-sm items-center text-gray-600">
+                         Are you sure you want to leave?
+                    </p>
+                    <div className="flex justify-center gap-2">
+                        <Button
+                            className="px-3 py-1 text-green-600 rounded text-sm"
+                            onClick={() => toast.dismiss(t.id)}
+                            variant = "outline"
+                        >
+                            Stay
+                        </Button>
+
+                        <Button
+                            className="px-3 py-1 text-red-600 rounded text-sm"
+                            onClick={() => {
+                                toast.dismiss(t.id);
+                                navigate(`/homepage/university/profile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${repFirstName}`);
+                            }}
+                            variant = "outline"
+                        >
+                            Leave
+                        </Button>
+                        
+                    </div>
+                </div>
+            ), {
+                duration: Infinity, 
+            });
+            return;
+        }
+        navigate(`/homepage/university/profile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${repFirstName}`);
+        return;
+    }
+
+    //handleProfileSubmit
+
     return (
-        null
+        <Card className = "mx-auto max-w-sm">
+            <CardHeader className = "space-y-1">
+                <CardTitle className = "text-2xl font-bold flex justify-center">
+                    Edit Profile
+                </CardTitle>
+            </CardHeader>
+
+            <CardContent>
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="uni_name">
+                            University Name
+                        </Label>
+                        <div className = "flex">
+                        
+                            <Input 
+                                id = "university_name" 
+                                type="text" 
+                                placeholder="University Name" 
+                                onChange = {handleUniNameChange}
+                                value = {uniName}
+                                >
+                            </Input> 
+
+                        </div>
+                    </div>
+                    
+                    <div className = "text-sm flex animate-pulse">
+                        {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
+                        {hasError && <p className = "text-red-600 ml-1">All fields are required</p>}
+                    </div>
+                    <Button type = "submit" disabled = {!anyChanges} variant = "ghost" className = "w-full text-white bg-blue-400">
+                        Save Changes
+                    </Button>
+                    <Button type = "submit" onClick={handleBack} variant = "ghost" className = "w-full text-white bg-red-400">
+                        Back
+                    </Button>
+
+                </div>
+            </CardContent>
+        </Card>
     )
 }
 

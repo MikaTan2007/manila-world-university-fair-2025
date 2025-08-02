@@ -198,7 +198,7 @@ const StudentEditProfileForm: React.FC = () => {
                     </div>
                 </div>
             ), {
-                duration: Infinity, // Keep the toast open until user decides
+                duration: Infinity,
             });
             return;
         }

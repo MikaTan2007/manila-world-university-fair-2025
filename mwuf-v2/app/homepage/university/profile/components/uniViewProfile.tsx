@@ -27,6 +27,11 @@ export function UniProfile() {
 
     const [university, setUniversity] = useState<University | null>(null);
 
+    const handleSendToEditProfile = () => {
+        navigate(`/homepage/university/profile/editprofile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${university?.rep_first_name}`)
+        return;
+    }
+
     const fetchUniversityData = async () => {
         try {
             const response = await fetch("/api/homepage/universities/profile", {
@@ -125,6 +130,7 @@ export function UniProfile() {
                 <CardFooter className="flex justify-end font-sans">
                         <Button 
                             variant="outline"
+                            onClick={handleSendToEditProfile}
                         >
                             Edit Profile
                         </Button>
