@@ -59,7 +59,6 @@ const StudentEditProfileForm: React.FC = () => {
     //Determining changed
     const [firstNameChanged, setFirstNameChanged] = useState(false);
     const [lastNameChanged, setLastNameChanged] = useState(false);
-    const [newEmailChanged, setNewEmailChanged] = useState(false);
     const [genderChanged, setGenderChanged] = useState(false);
     const [gradYearChanged, setGradYearChanged] = useState(false);
     const [citizenshipChanged, setCitizenshipChanged] = useState(false);
@@ -84,15 +83,9 @@ const StudentEditProfileForm: React.FC = () => {
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewEmail(e.target.value);
-        setNewEmailChanged(true);
         setTakenEmail(false);
         setAnyChanges(true);
         setHasError(false);
-    }
-
-    const clearEmail = () => {
-        setNewEmail("");
-        setTakenEmail(true);
     }
 
     const handleSchoolNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,6 +93,11 @@ const StudentEditProfileForm: React.FC = () => {
         setSchoolNameChanged(true);
         setAnyChanges(true);
         setHasError(false);
+    }
+
+    const clearEmail = () => {
+        setNewEmail("");
+        setTakenEmail(true);
     }
 
     const fetchStudentData = async () => {
