@@ -386,6 +386,33 @@ const UniversityEditProfileForm: React.FC = () => {
                             )}
                         </div>
                     </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="rep_name">
+                            Representative Name
+                        </Label>
+                        <div className = "flex">
+                        
+                            <Input 
+                                id = "first_name" 
+                                type="text" 
+                                placeholder="First Name" 
+                                onChange = {handleFirstNameChange}
+                                value = {repFirstName}
+                                >
+                            </Input> 
+
+                            <Input 
+                                id = "last_name" 
+                                type="text" 
+                                placeholder="Last Name" 
+                                onChange = {handleLastNameChange}
+                                value = {repLastName}
+                                >
+                            </Input> 
+
+                        </div>
+                    </div>
                     
                     <div className = "text-sm flex animate-pulse">
                         {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
