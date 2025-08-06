@@ -112,10 +112,10 @@ export function UniversityList() {
         return (
             <div className="space-y-6">
                 {/* Loading state for search bar */}
-                <div className="flex justify-center">
-                    <div className="w-full max-w-md">
-                        <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 p-4">
+                    <div></div>
+                    <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+                    <div></div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
@@ -132,29 +132,31 @@ export function UniversityList() {
 
     return (
         <div className = "space-y-6">
-            <div className="flex justify-center px-4">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 p-4">
+                <div></div>
                 <div className="w-full max-w-md relative">
-                    <div className="relative text-white">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white font-sans h-4 w-4" />
+                    <div className="relative text-forest-green">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-forest-green font-sans h-4 w-4" />
                         <Input
                             type="text"
                             placeholder="Search universities by name, location, or representative..."
                             value={searchQuery}
                             onChange={handleSearchChange}
-                            className="pl-10 pr-10 font-sans text-white placeholder:text-white"
+                            className="pl-10 pr-10 font-sans bg-white placeholder:text-forest-green"
                         />
                         {searchQuery && (
                             <Button
                                 variant="link"
                                 size="sm"
                                 onClick={clearSearch}
-                                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 !text-white"
+                                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 !text-forest-green"
                             >
                                 <X className="h-4 w-4" />
                             </Button>
                         )}
                     </div>
                 </div>
+                <div></div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
