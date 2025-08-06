@@ -1,4 +1,4 @@
-import { LogOut, User, RefreshCcw, HomeIcon} from "lucide-react"
+import { LogOut, User, RefreshCcw, HomeIcon, Download} from "lucide-react"
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation"
 import { useNavigation } from "@/hooks/useNavigation";
@@ -26,6 +26,18 @@ interface University {
     registered_students: string[];
 }
 
+interface Student {
+    email: string;
+    first_name: string;
+    last_name: string;
+    gender: string;
+    citizenship: [string];
+    graduation_year: string;
+    school_name: string;
+    ideal_major: [string];
+    registered_universitites: [string];
+}
+
 //Refreshing
 interface UniversitySidebarProps {
     onRefreshStudents: () => void;
@@ -44,6 +56,107 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
     const handleProfile = async() => {
         navigate(`/homepage/university/profile?email=${encodeURIComponent(universityEmail ?? "")}&firstName=${university?.rep_first_name}`);
         return;
+    }
+
+    const handleExportCSV = async() => {
+        const toastId = toast.loading("Preparing student data for export...");
+
+        try {
+            const response = await fetch("/api/homepage/universities", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    universityEmail: universityEmail
+                })
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                toast.dismiss(toastId);
+                toast.error("Unauthorized access");
+                return;
+            }
+
+            if (!response.ok) {
+                toast.dismiss(toastId);
+                toast.error("Failed to fetch student data");
+                return;
+            }
+
+            const reply = await response.json();
+
+            if (reply.message === "No students registered") {
+                toast.dismiss(toastId);
+                toast.error("No students to export");
+                return;
+            }
+
+            const students: Student[] = reply.students;
+
+            //Convert to CSV
+            const csvContent = convertToCSV(students);
+            
+            //Create and download file
+            const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8'});
+            const link = document.createElement('a');
+
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `${university?.uni_name || 'university'}_students_${new Date().toISOString().split('T')[0]}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                toast.dismiss(toastId);
+                toast.success(`Exported ${students.length} students to CSV`);
+            }
+        } catch (error) {
+            toast.dismiss(toastId);
+            toast.error("Failed to export student data");
+            console.error("Export error:", error);
+        }
+    }
+
+    const convertToCSV = (students: Student[]): string => {
+        if (students.length === 0) return '';
+
+        const headers = [
+            'Email',
+            'First Name',
+            'Last Name',
+            'Gender',
+            'Citizenship',
+            'Graduation Year',
+            'School Name',
+            'Ideal Major',
+        ];
+
+        const csvRows = students.map(student => [
+            student.email,
+            student.first_name,
+            student.last_name,
+            student.gender,
+            Array.isArray(student.citizenship) ? student.citizenship.join('; ') : student.citizenship,
+            student.graduation_year,
+            student.school_name,
+            Array.isArray(student.ideal_major) ? student.ideal_major.join('; ') : student.ideal_major,
+        ]);
+
+        const escapeCSVValue = (value: string): string => {
+            if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+                return `"${value.replace(/"/g, '""')}"`;
+            }
+            return value;
+        };
+
+        const csvContent = [
+            headers.map(escapeCSVValue).join(','),
+            ...csvRows.map(row => row.map(String).map(escapeCSVValue).join(','))
+        ].join('\n');
+
+        return csvContent;
     }
 
     //Logout function
@@ -139,6 +252,15 @@ export function UniversitySidebar({onRefreshStudents} : UniversitySidebarProps) 
                                 <a onClick={onRefreshStudents} className="flex items-center">
                                     <RefreshCcw className="!w-6 !h-6" />
                                     <span className = "text-lg">Refresh Students</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
+
+                        <SidebarMenuItem className="font-sans">
+                            <SidebarMenuSubButton asChild>
+                                <a onClick={handleExportCSV} className="flex items-center">
+                                    <Download className="!w-6 !h-6" />
+                                    <span className = "text-lg">Export Students</span>
                                 </a>
                             </SidebarMenuSubButton>
                         </SidebarMenuItem>
