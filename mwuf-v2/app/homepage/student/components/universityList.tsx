@@ -131,7 +131,7 @@ export function UniversityList() {
     }
 
     return (
-        <div className = "space-y-1">
+        <div className = "space-y-6">
             <div className="flex justify-center px-4">
                 <div></div>
                 <div className="w-full max-w-md relative">
