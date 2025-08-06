@@ -1,9 +1,12 @@
 "use client"
-import { useState, useEffect} from "react";
+import { useState, useEffect, useMemo} from "react";
 import { UniversityCard } from "./universityCard";
 import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
 import { useSearchParams} from "next/navigation";
 import { useNavigation } from "@/hooks/useNavigation";
+import { Input } from "@/components/ui/input";
+import { Search, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import React from "react";
 
 interface University {
@@ -21,10 +24,40 @@ interface University {
 export function UniversityList() {
     const [universitites, setUniversitites] = useState<University[]>([]);
     const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState("");
     const {navigate} = useNavigation();
 
     const searchParams = useSearchParams();
     const studentEmail = searchParams.get('email');
+
+    const filteredUniversities = useMemo(() => {
+        if (!searchQuery.trim()) {
+            return universitites;
+        }
+        
+        const query = searchQuery.toLowerCase();
+
+        return universitites.filter(university => 
+            // Search by university name
+            university.uni_name.toLowerCase().includes(query) ||
+            // Search by cities
+            university.cities.some(city => city.toLowerCase().includes(query)) ||
+            // Search by countries
+            university.countries.some(country => country.toLowerCase().includes(query)) ||
+            // Search by regions
+            university.region.some(region => region.toLowerCase().includes(query)) ||
+            // Search by representative name
+            `${university.rep_first_name} ${university.rep_last_name}`.toLowerCase().includes(query)
+        );
+    }, [universitites, searchQuery])
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    }
+
+    const clearSearch = () => {
+        setSearchQuery("");
+    }
 
     useEffect(() => {
         if (studentEmail == "") {
@@ -77,25 +110,76 @@ export function UniversityList() {
 
     if (loading == true) {
         return (
-            <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-                <HomepageSkeletonLoad></HomepageSkeletonLoad>
-                <HomepageSkeletonLoad></HomepageSkeletonLoad>
-                <HomepageSkeletonLoad></HomepageSkeletonLoad>
-                <HomepageSkeletonLoad></HomepageSkeletonLoad>
-                <HomepageSkeletonLoad></HomepageSkeletonLoad>
-                <HomepageSkeletonLoad></HomepageSkeletonLoad>
+            <div className="space-y-6">
+                {/* Loading state for search bar */}
+                <div className="flex justify-center">
+                    <div className="w-full max-w-md">
+                        <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+                    <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                    <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                    <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                    <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                    <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                    <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                </div>
             </div>
         )
     }
 
     return (
-        <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-            {universitites.map((university) => (
-                <UniversityCard
-                    key = {university.email}
-                    university={university}
-                /> 
-            ))}
+        <div className = "space-y-6">
+            <div className="flex justify-center px-4">
+                <div className="w-full max-w-md relative">
+                    <div className="relative text-white">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white font-sans h-4 w-4" />
+                        <Input
+                            type="text"
+                            placeholder="Search universities by name, location, or representative..."
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            className="pl-10 pr-10 font-sans text-white placeholder:text-white"
+                        />
+                        {searchQuery && (
+                            <Button
+                                variant="link"
+                                size="sm"
+                                onClick={clearSearch}
+                                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 !text-white"
+                            >
+                                <X className="h-4 w-4" />
+                            </Button>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+                {filteredUniversities.length === 0 && !searchQuery ? (
+                    <div className="col-span-full text-center text-white py-8">
+                        No universities available
+                    </div>
+                ) : (
+                    filteredUniversities.map((university) => (
+                        <UniversityCard
+                            key={university.email}
+                            university={university}
+                        /> 
+                    ))
+                )}
+            </div>
         </div>
+
+        // <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+        //     {universitites.map((university) => (
+        //         <UniversityCard
+        //             key = {university.email}
+        //             university={university}
+        //         /> 
+        //     ))}
+        // </div>
     )
 }
