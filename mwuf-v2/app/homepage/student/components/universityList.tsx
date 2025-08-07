@@ -21,23 +21,38 @@ interface University {
     registered_students: string[];
 }
 
+type FilterType = 'all' | 'registered' | 'unregistered';
+
 export function UniversityList() {
     const [universitites, setUniversitites] = useState<University[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
+    const [filterType, setFilterType] = useState<FilterType>('all');
     const {navigate} = useNavigation();
 
     const searchParams = useSearchParams();
     const studentEmail = searchParams.get('email');
 
     const filteredUniversities = useMemo(() => {
+        let filtered = universitites;
+
+        if (filterType === 'registered') {
+            filtered = universitites.filter(university =>
+                university.registered_students.includes(studentEmail || '')
+            );
+        } else if (filterType === 'unregistered') {
+            filtered = universitites.filter(university =>
+                !university.registered_students.includes(studentEmail || '')
+            )
+        }
+
         if (!searchQuery.trim()) {
-            return universitites;
+            return filtered
         }
         
         const query = searchQuery.toLowerCase();
 
-        return universitites.filter(university => 
+        return filtered.filter(university => 
             // Search by university name
             university.uni_name.toLowerCase().includes(query) ||
             // Search by cities
@@ -49,7 +64,7 @@ export function UniversityList() {
             // Search by representative name
             `${university.rep_first_name} ${university.rep_last_name}`.toLowerCase().includes(query)
         );
-    }, [universitites, searchQuery])
+    }, [universitites, searchQuery, filterType, studentEmail])
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
@@ -58,6 +73,25 @@ export function UniversityList() {
     const clearSearch = () => {
         setSearchQuery("");
     }
+
+    const handleFilterChange = (newFilter: FilterType) => {
+        setFilterType(newFilter)
+    }
+
+    const getCounts = useMemo(() => {
+        const registered = universitites.filter(uni => 
+            uni.registered_students.includes(studentEmail || '')
+        ).length;
+        const unregistered = universitites.filter(uni => 
+            !uni.registered_students.includes(studentEmail || '')
+        ).length;
+        
+        return {
+            all: universitites.length,
+            registered,
+            unregistered
+        };
+    }, [universitites, studentEmail]);
 
     useEffect(() => {
         if (studentEmail == "") {
@@ -132,8 +166,9 @@ export function UniversityList() {
 
     return (
         <div className = "space-y-6">
-            <div className="flex justify-center px-4">
-                <div></div>
+            <div className="flex flex-col items-center space-y-4">
+                <div className="w-full max-w-md relative">
+                    <div className="relative text-forest-green"></div>
                 <div className="w-full max-w-md relative">
                     <div className="relative text-forest-green">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-forest-green font-sans h-4 w-4" />
@@ -156,8 +191,48 @@ export function UniversityList() {
                         )}
                     </div>
                 </div>
-                <div></div>
+                <div>
+                </div>
             </div>
+            <div className="inline-flex justify-center bg-white/10 rounded-lg p-1">
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleFilterChange('all')}
+                    className={`${filterType === 'all' 
+                        ? 'bg-white text-forest-green shadow-sm' 
+                        : 'text-white hover:bg-white/20'
+                    } transition-all duration-200`}
+                >
+                    All {getCounts.all}
+                </Button>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleFilterChange('registered')}
+                    className={`${filterType === 'registered' 
+                        ? 'bg-white text-forest-green shadow-sm' 
+                        : 'text-white hover:bg-white/20'
+                    } transition-all duration-200`}
+                >
+                    Registered {getCounts.registered}
+                </Button>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleFilterChange('unregistered')}
+                    className={`${filterType === 'unregistered' 
+                        ? 'bg-white text-forest-green shadow-sm' 
+                        : 'text-white hover:bg-white/20'
+                    } transition-all duration-200`}
+                >
+                    Available {getCounts.unregistered}
+                </Button>
+            </div>
+            </div>
+            
+
+            
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
                 {filteredUniversities.length === 0 && !searchQuery ? (
