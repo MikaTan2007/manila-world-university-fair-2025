@@ -102,18 +102,15 @@ const LoginForm: React.FC = () => {
                     password: password
                 })
             })
-            const reply = await response.json();
 
-            let message = reply.message
-
-            if (message == "Student not found") {
+            if (response.status === 404) {
                 toast.dismiss();
                 noEmail = true;
                 setNoEmail(noEmail)
                 return;
             }
-            
-            if (message == "Password does not match") {
+
+            if (response.status === 401) {
                 toast.dismiss();
                 wrongPassword = true;
                 setWrongPassword(wrongPassword)
@@ -128,7 +125,7 @@ const LoginForm: React.FC = () => {
                 return;
             }
             
-            if (message == "Login successful") {
+            if (response.status === 200) {
                 navigate(`/homepage/student?email=${encodeURIComponent(email)}`);
             }
             
@@ -177,18 +174,15 @@ const LoginForm: React.FC = () => {
                     password: password
                 })
             })
-            const reply = await response.json();
-
-            let message = reply.message
-
-            if (message == "University not found") {
+            
+            if (response.status === 404) {
                 toast.dismiss();
                 noEmail = true;
                 setNoEmail(noEmail)
                 return;
             }
-            
-            if (message == "Password does not match") {
+
+            if (response.status === 401) {
                 toast.dismiss();
                 wrongPassword = true;
                 setWrongPassword(wrongPassword)
@@ -202,8 +196,8 @@ const LoginForm: React.FC = () => {
                 navigate("/error")
                 return;
             }
-
-            if (message == "Login successful") {
+            
+            if (response.status === 200) {
                 navigate(`/homepage/university?email=${encodeURIComponent(email)}`);
             }
 
