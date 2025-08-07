@@ -18,5 +18,5 @@ const AdminSchema = new Schema(
     
 );
 
-const Admin = models.Admin || model("Student", AdminSchema);
+const Admin = models.Admin || model("Admin", AdminSchema);
 export default Admin;

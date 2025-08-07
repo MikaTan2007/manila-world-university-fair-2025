@@ -102,18 +102,15 @@ const AdminLoginForm: React.FC = () => {
                     password: password
                 })
             })
-            const reply = await response.json();
 
-            let message = reply.message
-
-            if (message == "Admin not found") {
+            if (response.status === 404) {
                 toast.dismiss();
                 noUsername = true;
                 setNoUsername(noUsername)
                 return;
             }
-            
-            if (message == "Password does not match") {
+
+            if (response.status === 401) {
                 toast.dismiss();
                 wrongPassword = true;
                 setWrongPassword(wrongPassword)
@@ -127,9 +124,10 @@ const AdminLoginForm: React.FC = () => {
                 navigate("/error")
                 return;
             }
-            
-            if (message == "Login successful") {
-                navigate(`/homepage/admin?username=${encodeURIComponent(username)}`);
+
+            if (response.status === 200) {
+                console.log("Admin successfully logged in")
+                //navigate(`/homepage/admin?username=${encodeURIComponent(username)}`);
             }
             
         } catch (error) {
@@ -197,7 +195,7 @@ const AdminLoginForm: React.FC = () => {
 
                         <div className = "text-sm flex animate-pulse">
                             {noUsername ? <CircleX color="red" className="size-5" /> : null}
-                            {noUsername ? <p className = "text-red-600 ml-1">username does not exist</p> : null}
+                            {noUsername ? <p className = "text-red-600 ml-1">Username does not exist</p> : null}
                         </div>
 
                         <div className = "text-sm flex animate-pulse">
