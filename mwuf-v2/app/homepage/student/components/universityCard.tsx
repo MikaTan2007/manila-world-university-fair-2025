@@ -16,7 +16,7 @@ interface UniversityProps {
         rep_contact_email: string;
         registered_students: string[];
     };
-    onRegistrationSuccess?: () => void;
+    onRegistrationSuccess?: (universityEmail: string, isRegistered: boolean) => void;
 }
 
 export function UniversityCard({ university, onRegistrationSuccess }: UniversityProps) {
@@ -28,6 +28,8 @@ export function UniversityCard({ university, onRegistrationSuccess }: University
     useEffect(() => {
         if (studentEmail && university.registered_students.includes(studentEmail)) {
             setRegistered(true);
+        } else {
+            setRegistered(false);
         }
     }, [studentEmail, university.registered_students]);
 
@@ -50,7 +52,7 @@ export function UniversityCard({ university, onRegistrationSuccess }: University
 
             if (response.ok == true) {
                 setRegistered(true);
-                onRegistrationSuccess?.();
+                onRegistrationSuccess?.(university.email, true);
             } else {
                 navigate("/error");
             }

@@ -133,9 +133,22 @@ export function UniversityList() {
         };
     }, [universitites, studentEmail]);
 
-    const handleRegistrationSuccess = useCallback(() => {
-        refreshUniversities();
-    }, [refreshUniversities]);
+    const handleRegistrationSuccess = useCallback((universityEmail: string, isRegistered: boolean) => {
+        // ✅ Update the local state instead of refreshing
+        setUniversitites(prevUniversities => 
+            prevUniversities.map(uni => {
+                if (uni.email === universityEmail) {
+                    return {
+                        ...uni,
+                        registered_students: isRegistered 
+                            ? [...uni.registered_students, studentEmail || '']
+                            : uni.registered_students.filter(email => email !== studentEmail)
+                    };
+                }
+                return uni;
+            })
+        );
+    }, [studentEmail]);
 
     useEffect(() => {
         if (studentEmail == "") {
