@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useMemo} from "react";
+import { useState, useEffect, useMemo, useCallback} from "react";
 import { UniversityCard } from "./universityCard";
 import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
 import { useSearchParams} from "next/navigation";
@@ -32,6 +32,46 @@ export function UniversityList() {
 
     const searchParams = useSearchParams();
     const studentEmail = searchParams.get('email');
+
+    const refreshUniversities = useCallback(async () => {
+        if (!studentEmail) return;
+        
+        setLoading(true);
+        try {
+            const response = await fetch("/api/homepage/students", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    studentEmail: studentEmail
+                })
+            });
+            
+            if (response.status === 401 || response.status === 403) {
+                navigate("/error/forbidden");
+                return;
+            }
+
+            if (!response.ok) {
+                navigate("/error");
+                return;
+            }
+
+            const data = await response.json();
+            
+            if (data.success && data.universities) {
+                setUniversitites(data.universities);
+            } else {
+                setUniversitites(data);
+            }
+
+        } catch(error) {
+            navigate("/error");
+        } finally {
+            setLoading(false);
+        }
+    }, [studentEmail, navigate]);
 
     const filteredUniversities = useMemo(() => {
         let filtered = universitites;
@@ -93,6 +133,10 @@ export function UniversityList() {
         };
     }, [universitites, studentEmail]);
 
+    const handleRegistrationSuccess = useCallback(() => {
+        refreshUniversities();
+    }, [refreshUniversities]);
+
     useEffect(() => {
         if (studentEmail == "") {
             navigate("/error/forbidden")
@@ -148,7 +192,14 @@ export function UniversityList() {
                 {/* Loading state for search bar */}
                 <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 p-4">
                     <div></div>
-                    <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="space-y-3">
+                        <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+                        <div className="flex gap-2 justify-center">
+                            <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div>
+                            <div className="h-8 w-20 bg-gray-200 rounded animate-pulse"></div>
+                            <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+                        </div>
+                    </div>
                     <div></div>
                 </div>
                 
@@ -250,13 +301,5 @@ export function UniversityList() {
             </div>
         </div>
 
-        // <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-        //     {universitites.map((university) => (
-        //         <UniversityCard
-        //             key = {university.email}
-        //             university={university}
-        //         /> 
-        //     ))}
-        // </div>
     )
 }
