@@ -492,7 +492,9 @@ const UniversityEditProfileForm: React.FC = () => {
                             <Button
                                 type="button"
                                 variant="outline"
-                                onClick={addCityInput}
+                                onClick={() => {
+                                    addCityInput();
+                                }}
                                 className="flex-1"
                             >
                                 Add City
@@ -501,7 +503,11 @@ const UniversityEditProfileForm: React.FC = () => {
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    onClick={() => removeCityInput()}
+                                    onClick={() => {
+                                        removeCityInput();
+                                        setCitiesChanged(true);
+                                        setAnyChanges(true);
+                                    }}
                                     className="flex-1"
                                 >
                                     Remove
