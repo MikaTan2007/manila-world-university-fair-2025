@@ -141,49 +141,11 @@ export function UniversityList() {
         if (studentEmail == "") {
             navigate("/error/forbidden")
             return;
+        } else {
+            refreshUniversities();
         }
         
-        const fetchUniversities = async () => {
-            try {
-                const response = await fetch("/api/homepage/students", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        studentEmail: studentEmail
-                    })
-
-                });
-                
-                if (response.status === 401 || response.status === 403) {
-                    navigate("/error/forbidden");
-                    return;
-                }
-
-                if (response.ok != true) {
-                    navigate("/error");
-                    return;
-                }
-
-                const data = await response.json();
-                
-                if (data.success && data.universities) {
-                    setUniversitites(data.universities);
-                } else {
-                    setUniversitites(data)
-                }
-
-            } catch(error) {
-                navigate("/error")
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (studentEmail) {
-            fetchUniversities();
-        }
+        
     }, [studentEmail]);
 
     if (loading == true) {
@@ -295,6 +257,7 @@ export function UniversityList() {
                         <UniversityCard
                             key={university.email}
                             university={university}
+                            onRegistrationSuccess={handleRegistrationSuccess} // ✅ Add this line
                         /> 
                     ))
                 )}

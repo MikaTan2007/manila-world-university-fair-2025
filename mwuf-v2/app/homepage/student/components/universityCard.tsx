@@ -15,10 +15,11 @@ interface UniversityProps {
         rep_last_name: string;
         rep_contact_email: string;
         registered_students: string[];
-    }
+    };
+    onRegistrationSuccess?: () => void;
 }
 
-export function UniversityCard({ university }: UniversityProps) {
+export function UniversityCard({ university, onRegistrationSuccess }: UniversityProps) {
 
     const searchParams = useSearchParams();
     const studentEmail = searchParams.get('email');
@@ -49,6 +50,7 @@ export function UniversityCard({ university }: UniversityProps) {
 
             if (response.ok == true) {
                 setRegistered(true);
+                onRegistrationSuccess?.();
             } else {
                 navigate("/error");
             }
