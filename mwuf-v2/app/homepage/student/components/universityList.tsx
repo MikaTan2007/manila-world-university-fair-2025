@@ -119,22 +119,42 @@ export function UniversityList() {
     }
 
     const getCounts = useMemo(() => {
-        const registered = universitites.filter(uni => 
+        let baseUniversities = universitites;
+        
+        // If there's a search query, filter the base list first
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase();
+            baseUniversities = universitites.filter(university => 
+                // Search by university name
+                university.uni_name.toLowerCase().includes(query) ||
+                // Search by cities
+                university.cities.some(city => city.toLowerCase().includes(query)) ||
+                // Search by countries
+                university.countries.some(country => country.toLowerCase().includes(query)) ||
+                // Search by regions
+                university.region.some(region => region.toLowerCase().includes(query)) ||
+                // Search by representative name
+                `${university.rep_first_name} ${university.rep_last_name}`.toLowerCase().includes(query)
+            );
+        }
+    
+        // Calculate counts from the search-filtered results
+        const registered = baseUniversities.filter(uni => 
             uni.registered_students.includes(studentEmail || '')
         ).length;
-        const unregistered = universitites.filter(uni => 
+        
+        const unregistered = baseUniversities.filter(uni => 
             !uni.registered_students.includes(studentEmail || '')
         ).length;
         
         return {
-            all: universitites.length,
+            all: baseUniversities.length,
             registered,
             unregistered
         };
-    }, [universitites, studentEmail]);
+    }, [universitites, studentEmail, searchQuery]);
 
     const handleRegistrationSuccess = useCallback((universityEmail: string, isRegistered: boolean) => {
-        // ✅ Update the local state instead of refreshing
         setUniversitites(prevUniversities => 
             prevUniversities.map(uni => {
                 if (uni.email === universityEmail) {
