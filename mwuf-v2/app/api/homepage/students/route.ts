@@ -19,7 +19,7 @@ export const POST = async (req: Request) => {
 
         const session = getSession(sessionId);
 
-        if (!session || session.userType !== 'student') {
+        if (!session || (session.userType !== 'student' && session.userType !== 'admin')) {
             return NextResponse.json({
                 success: false,
                 error: "Unauthorized: Invalid session"
@@ -29,7 +29,7 @@ export const POST = async (req: Request) => {
         const body = await req.json();
         const {studentEmail} = body;
 
-        if (session.email !== studentEmail) {
+        if (session.userType !== 'admin' && session.email !== studentEmail) {
             return NextResponse.json({
                 success: false,
                 error: "Forbidden: Cannot access other student's data"
