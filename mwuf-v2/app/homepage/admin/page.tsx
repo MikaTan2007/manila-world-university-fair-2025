@@ -13,7 +13,7 @@ export default function AdminHomePage() {
         <main className = "flex-1 flex flex-col">
           <div className = "sticky top-0 z-50 flex items-center p-4 bg-forest-green shadow-lg">
               <SidebarTrigger/>
-              <h1 className="ml-4 text-xl font-semibold font-sans">Student Homepage</h1>
+              <h1 className="ml-4 text-xl font-semibold font-sans">Admin Dashboard</h1>
           </div>
 
           {/* Page Content*/ }
@@ -28,6 +28,9 @@ export default function AdminHomePage() {
                 alt = "logo"
                 priority={true}
                 />
+            </div>
+            <div className="pt-10">
+
             </div>
 
           </div>
