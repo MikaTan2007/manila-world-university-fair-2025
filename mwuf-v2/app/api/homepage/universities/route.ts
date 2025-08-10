@@ -24,7 +24,7 @@ export const POST = async (req: Request) => {
             return NextResponse.json({
                 success: false,
                 error: "Unauthorized: Invalid session"
-            }, {status: 401})
+            }, {status: 403})
         }
 
         const body = await req.json();
