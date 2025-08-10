@@ -1,4 +1,4 @@
-import { LogOut, User, HomeIcon } from "lucide-react"
+import { LogOut, User, HomeIcon, School, UserPen  } from "lucide-react"
 import { useState, useEffect } from "react";
 import {
   Sidebar,
@@ -57,6 +57,26 @@ export function AdminSidebar() {
                                 <a onClick = {handleLogout} className="flex items-center">
                                     <LogOut className="!w-6 !h-6"/>
                                     <span className = "text-lg">Logout</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
+
+                        <SidebarMenuItem className="font-sans">
+                            {/* Students */}
+                            <SidebarMenuSubButton asChild>
+                                <a onClick = {handleLogout} className="flex items-center">
+                                    <UserPen className="!w-6 !h-6"/>
+                                    <span className = "text-lg">Students</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
+
+                        <SidebarMenuItem className="font-sans">
+                            {/* University */}
+                            <SidebarMenuSubButton asChild>
+                                <a onClick = {handleLogout} className="flex items-center">
+                                    <School className="!w-6 !h-6"/>
+                                    <span className = "text-lg">University</span>
                                 </a>
                             </SidebarMenuSubButton>
                         </SidebarMenuItem>
