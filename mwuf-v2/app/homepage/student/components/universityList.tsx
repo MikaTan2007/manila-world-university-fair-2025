@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useMemo, useCallback} from "react";
+import { useState, useEffect, useMemo, useCallback, forwardRef, useImperativeHandle} from "react";
 import { UniversityCard } from "./universityCard";
 import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
 import { useSearchParams} from "next/navigation";
@@ -21,9 +21,13 @@ interface University {
     registered_students: string[];
 }
 
+export interface UniversityListRefresh {
+    refreshUniversities: () => void;
+}
+
 type FilterType = 'all' | 'registered' | 'unregistered';
 
-export function UniversityList() {
+export const UniversityList = forwardRef<UniversityListRefresh>((props, refresh) => {
     const [universitites, setUniversitites] = useState<University[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
@@ -105,6 +109,10 @@ export function UniversityList() {
             `${university.rep_first_name} ${university.rep_last_name}`.toLowerCase().includes(query)
         );
     }, [universitites, searchQuery, filterType, studentEmail])
+
+    useImperativeHandle(refresh, () => ({
+        refreshUniversities: refreshUniversities
+    }));
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
@@ -298,4 +306,4 @@ export function UniversityList() {
         </div>
 
     )
-}
+});

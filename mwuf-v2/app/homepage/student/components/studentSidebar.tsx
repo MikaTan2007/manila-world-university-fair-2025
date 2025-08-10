@@ -1,4 +1,4 @@
-import { LogOut, User, HomeIcon } from "lucide-react"
+import { LogOut, User, HomeIcon, RefreshCcw } from "lucide-react"
 import { useState, useEffect } from "react";
 import {
   Sidebar,
@@ -26,7 +26,11 @@ interface Student {
     registered_universitites: [string];
 }
 
-export function StudentSidebar() {
+interface StudentSideBarProps {
+    onRefreshUniversities: () => void;
+}
+
+export function StudentSidebar({onRefreshUniversities} : StudentSideBarProps) {
     const {navigate} = useNavigation();
     const searchParams = useSearchParams()
     const studentEmail = searchParams.get('email')
@@ -123,6 +127,16 @@ export function StudentSidebar() {
                                 <a onClick={handleProfile} className="flex items-center">
                                     <User className="!w-6 !h-6" />
                                     <span className = "text-lg">Profile</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
+
+                        <SidebarMenuItem className="font-sans">
+                            {/* Refresh */}
+                            <SidebarMenuSubButton asChild>
+                                <a onClick={onRefreshUniversities} className="flex items-center">
+                                    <RefreshCcw className="!w-6 !h-6" />
+                                    <span className = "text-lg">Refresh Universities</span>
                                 </a>
                             </SidebarMenuSubButton>
                         </SidebarMenuItem>
