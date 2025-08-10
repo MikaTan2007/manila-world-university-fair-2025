@@ -11,21 +11,21 @@ export const GET = async (req: Request) => {
         const cookieStore = cookies();
         const sessionId = (await cookieStore).get('sessionId')?.value;
 
-        // if (!sessionId) {
-        //     return NextResponse.json({
-        //         success: false,
-        //         error: "Unauthorized: Please log in"
-        //     }, {status: 401})
-        // }
+        if (!sessionId) {
+            return NextResponse.json({
+                success: false,
+                error: "Unauthorized: Please log in"
+            }, {status: 401})
+        }
 
-        // const session = getSession(sessionId)
+        const session = getSession(sessionId)
 
-        // if (!session || (session.userType !== "admin")) {
-        //     return NextResponse.json({
-        //         success: false,
-        //         error: "Unauthorized: Invalid session"
-        //     }, {status: 403})
-        // }
+        if (!session || (session.userType !== "admin")) {
+            return NextResponse.json({
+                success: false,
+                error: "Unauthorized: Invalid session"
+            }, {status: 403})
+        }
 
         await connect();
 
