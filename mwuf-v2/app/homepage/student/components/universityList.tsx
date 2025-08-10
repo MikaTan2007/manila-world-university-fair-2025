@@ -75,7 +75,7 @@ export const UniversityList = forwardRef<UniversityListRefresh>((props, refresh)
         } finally {
             setLoading(false);
         }
-    }, [studentEmail, navigate]);
+    }, [studentEmail]);
 
     const filteredUniversities = useMemo(() => {
         let filtered = universitites;
