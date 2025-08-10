@@ -1,4 +1,4 @@
-import { LogOut, User, HomeIcon, School, UserPen  } from "lucide-react"
+import { LogOut, School, UserPen, LayoutDashboard  } from "lucide-react"
 import { useState, useEffect } from "react";
 import {
   Sidebar,
@@ -52,11 +52,11 @@ export function AdminSidebar() {
                     <SidebarMenu className="space-y-2">
 
                         <SidebarMenuItem className="font-sans">
-                            {/* Logout */}
+                            {/* Dashboard */}
                             <SidebarMenuSubButton asChild>
                                 <a onClick = {handleLogout} className="flex items-center">
-                                    <LogOut className="!w-6 !h-6"/>
-                                    <span className = "text-lg">Logout</span>
+                                    <LayoutDashboard className="!w-6 !h-6"/>
+                                    <span className = "text-lg">Dashboard</span>
                                 </a>
                             </SidebarMenuSubButton>
                         </SidebarMenuItem>
@@ -77,6 +77,16 @@ export function AdminSidebar() {
                                 <a onClick = {handleLogout} className="flex items-center">
                                     <School className="!w-6 !h-6"/>
                                     <span className = "text-lg">University</span>
+                                </a>
+                            </SidebarMenuSubButton>
+                        </SidebarMenuItem>
+
+                        <SidebarMenuItem className="font-sans">
+                            {/* Logout */}
+                            <SidebarMenuSubButton asChild>
+                                <a onClick = {handleLogout} className="flex items-center">
+                                    <LogOut className="!w-6 !h-6"/>
+                                    <span className = "text-lg">Logout</span>
                                 </a>
                             </SidebarMenuSubButton>
                         </SidebarMenuItem>
