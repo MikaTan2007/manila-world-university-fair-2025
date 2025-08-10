@@ -6,7 +6,7 @@ import { useNavigation } from "@/hooks/useNavigation";
 import React from "react";
 
 import toast from "react-hot-toast";
-import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
+import { HomepageSkeletonLoad } from "../../../cardSkeletonLoad";
 import { Activity, AlertCircle, Building2, GraduationCap, TrendingUp, Users } from "lucide-react";
 
 interface DashboardStats {

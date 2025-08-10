@@ -20,6 +20,12 @@ export function AdminSidebar() {
 
     const username = searchParams.get('username')
 
+    //Dashboard function
+    const handleDashboard = async() => {
+        navigate(`/homepage/admin/dashboard?username=${encodeURIComponent(username ?? "")}`)
+        return;
+    }
+
     //Logout function
     const handleLogout = async() => {
         try {
@@ -32,6 +38,8 @@ export function AdminSidebar() {
             navigate("/error")
         }
     }
+
+    
 
     useEffect(() => {
         toast.dismiss();
@@ -54,7 +62,7 @@ export function AdminSidebar() {
                         <SidebarMenuItem className="font-sans">
                             {/* Dashboard */}
                             <SidebarMenuSubButton asChild>
-                                <a onClick = {handleLogout} className="flex items-center">
+                                <a onClick = {handleDashboard} className="flex items-center">
                                     <LayoutDashboard className="!w-6 !h-6"/>
                                     <span className = "text-lg">Dashboard</span>
                                 </a>

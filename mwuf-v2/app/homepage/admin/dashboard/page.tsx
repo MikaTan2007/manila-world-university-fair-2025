@@ -1,6 +1,6 @@
 'use client';
 import Image from "next/image"
-import { AdminSidebar } from "./components/adminsidebar";
+import { AdminSidebar } from "../components/adminsidebar";
 import { AdminDashboard } from "./components/admindashboard";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
