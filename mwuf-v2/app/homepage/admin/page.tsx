@@ -1,6 +1,7 @@
 'use client';
 import Image from "next/image"
 import { AdminSidebar } from "./components/adminsidebar";
+import { AdminDashboard } from "./components/admindashboard";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function AdminHomePage() {
@@ -30,7 +31,7 @@ export default function AdminHomePage() {
                 />
             </div>
             <div className="pt-10">
-
+              <AdminDashboard></AdminDashboard>
             </div>
 
           </div>
