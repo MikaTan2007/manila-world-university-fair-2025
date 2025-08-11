@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { useNavigation } from "@/hooks/useNavigation";
 import React from "react";
 
-import toast from "react-hot-toast";
 import { HomepageSkeletonLoad } from "../../../cardSkeletonLoad";
 import { Activity, AlertCircle, Building2, GraduationCap, TrendingUp, Users } from "lucide-react";
 
@@ -25,7 +24,6 @@ interface DashboardStats {
 export function AdminDashboard() {
     const [stats, setStats] = useState<DashboardStats | null>(null);
     const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(true);
     const searchParams = useSearchParams();
     const username = searchParams.get("username")
     const {navigate} = useNavigation();
@@ -64,15 +62,12 @@ export function AdminDashboard() {
             return;
         } finally {
             setLoading(false);
-            setRefreshing(false);
         }
     } 
 
     const handleRefresh = async () => {
-        setRefreshing(true);
         setLoading(true);
         await fetchDashboardStats();
-        setRefreshing(false);
         setLoading(false);
     }
 
@@ -133,11 +128,10 @@ export function AdminDashboard() {
                     <Button
                         onClick={handleRefresh}
                         variant="ghost"
-                        disabled={refreshing}
                         className="flex items-center gap-2"
                     >
                         <Activity className="h-4 w-4" />
-                        {refreshing ? "Refreshing..." : "Refresh"}
+                        Refresh
                     </Button>
                 </div>
             </div>
