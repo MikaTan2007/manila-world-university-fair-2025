@@ -39,6 +39,12 @@ export function AdminSidebar() {
         }
     }
 
+    //Route to student page
+    const handleStudentPage = async() => {
+        navigate(`/homepage/admin/students?username=${encodeURIComponent(username ?? "")}`)
+        return;
+    }
+
     
 
     useEffect(() => {
@@ -72,7 +78,7 @@ export function AdminSidebar() {
                         <SidebarMenuItem className="font-sans">
                             {/* Students */}
                             <SidebarMenuSubButton asChild>
-                                <a onClick = {handleLogout} className="flex items-center">
+                                <a onClick = {handleStudentPage} className="flex items-center">
                                     <UserPen className="!w-6 !h-6"/>
                                     <span className = "text-lg">Students</span>
                                 </a>

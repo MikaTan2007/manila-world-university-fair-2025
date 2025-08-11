@@ -30,6 +30,12 @@ export function AdminDashboard() {
     const username = searchParams.get("username")
     const {navigate} = useNavigation();
 
+    //Route to student page
+    const handleStudentPage = async() => {
+        navigate(`/homepage/admin/students?username=${encodeURIComponent(username ?? "")}`)
+        return;
+    }
+
     const fetchDashboardStats = async () => {
         try {
             const response = await fetch("/api/admin/dashboard", {
@@ -138,7 +144,7 @@ export function AdminDashboard() {
 
             {/* Key Statistics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={handleStudentPage}>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Total Students</CardTitle>
                         <Users className="h-4 w-4 text-blue-600" />
