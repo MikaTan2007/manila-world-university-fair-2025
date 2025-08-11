@@ -2,6 +2,7 @@
 import Image from "next/image"
 import { AdminSidebar } from "../components/adminsidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AdminStudentList } from "./components/adminStudentList";
 
 export default function AdminStudentPage() {
 
@@ -30,7 +31,7 @@ export default function AdminStudentPage() {
                 />
             </div>
             <div className = "pt-10">
-
+                <AdminStudentList></AdminStudentList>
             </div>
           </div>
         </main>
