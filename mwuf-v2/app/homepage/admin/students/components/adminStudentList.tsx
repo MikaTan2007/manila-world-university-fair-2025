@@ -5,11 +5,10 @@ import { useSearchParams } from "next/navigation"
 import { AdminStudentCard } from "./adminStudentCard"
 import { useNavigation } from "@/hooks/useNavigation"
 import { Input } from "@/components/ui/input"
-import { Search, X } from "lucide-react"
+import { Search, X, Activity } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import React from "react"
 import { NoStudentCard } from "@/app/homepage/university/components/noStudent"
-import Admin from "@/lib/models/admin"
 
 interface Student {
     email: string;
@@ -32,6 +31,12 @@ export const AdminStudentList = () => {
     const [students, setStudents] = useState<Student[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [searchQuery, setSearchQuery] = useState("");
+
+    const handleRefresh = async () => {
+        setLoading(true);
+        await fetchStudents();
+        setLoading(false);
+    }
 
     const filteredStudents = useMemo(() => {
         if (!searchQuery.trim()) {
@@ -111,12 +116,16 @@ export const AdminStudentList = () => {
 
     if (loading == true) {
         return (
-            <div className="space-y-6">
+            <div className="space-y-2">
                 {/* Loading state for search bar */}
                 <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 p-4">
                     <div></div>
                     <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
                     <div></div>
+                </div>
+
+                <div className="flex justify-center">
+                    <div className="h-8 bg-gray-200 rounded w-60 animate-pulse"></div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
@@ -135,7 +144,16 @@ export const AdminStudentList = () => {
         return (
             <div className="space-y-8">
                 <div className="flex justify-center px-4">
-                    <div></div>
+                    <div>
+                        <Button
+                            onClick={handleRefresh}
+                            variant="ghost"
+                            className="flex items-center gap-2"
+                        >
+                            <Activity className="h-4 w-4" />
+                            Refresh
+                        </Button>
+                    </div>
                     <div className="w-full max-w-md relative">
                         <div className="relative text-forest-green">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-forest-green font-sans h-4 w-4" />
@@ -171,7 +189,6 @@ export const AdminStudentList = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-center px-4">
-                <div></div>
                 <div className="w-full max-w-md relative">
                     <div className="relative text-forest-green">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-forest-green font-sans h-4 w-4" />
@@ -195,6 +212,16 @@ export const AdminStudentList = () => {
                     </div>
                 </div>
                 <div></div>
+            </div>
+            <div className="flex justify-center">
+                <Button
+                    onClick={handleRefresh}
+                    variant="ghost"
+                    className="flex items-center gap-2"
+                >
+                    <Activity className="h-4 w-4" />
+                    Refresh
+                </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
