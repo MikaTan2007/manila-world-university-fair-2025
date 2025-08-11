@@ -293,7 +293,13 @@ export const UniversityList = forwardRef<UniversityListRefresh>((props, refresh)
                     <div className="col-span-full text-center text-white py-8">
                         No universities available
                     </div>
-                ) : (
+                ) : filteredUniversities.length === 0 && searchQuery ? (
+                    <div className="col-span-full text-center text-white py-8">
+                        No universities found matching "{searchQuery}"
+                    </div>
+                ) 
+                :
+                (
                     filteredUniversities.map((university) => (
                         <UniversityCard
                             key={university.email}
