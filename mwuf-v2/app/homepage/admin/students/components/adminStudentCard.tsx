@@ -1,4 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button";
+import { useSearchParams } from "next/navigation";
+import { useNavigation } from "@/hooks/useNavigation";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface StudentProps {
     student: {
@@ -15,6 +18,15 @@ interface StudentProps {
 }
 
 export function AdminStudentCard({student}: StudentProps) {
+    const {navigate} = useNavigation();
+    const searchParams = useSearchParams();
+    const adminUsername = searchParams.get('username')
+
+    const handleSendToEditProfile = () => {
+        navigate(`/homepage/admin/students/editprofile?email=${encodeURIComponent(student.email ?? "")}&username=${adminUsername}`)
+        return;
+    }
+
     return (
         <Card className="w-full hover:shadow-lg transition-shadow font-sans">
             <CardHeader>
@@ -63,8 +75,15 @@ export function AdminStudentCard({student}: StudentProps) {
                         </CardDescription>
                     </div>
                 </div>
-                
             </CardContent>
+            <CardFooter className="flex justify-end font-sans">
+                <Button 
+                    variant="outline"
+                    onClick={handleSendToEditProfile}
+                >   
+                Edit Profile
+                </Button>
+            </CardFooter>
         </Card>
     )
 }

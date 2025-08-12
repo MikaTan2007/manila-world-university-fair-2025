@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, forwardRef, useMemo } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { HomepageSkeletonLoad } from "@/app/homepage/cardSkeletonLoad"
 import { useSearchParams } from "next/navigation"
 import { AdminStudentCard } from "./adminStudentCard"
