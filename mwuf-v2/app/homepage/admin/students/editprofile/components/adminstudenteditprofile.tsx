@@ -187,7 +187,7 @@ const AdminStudentEditProfileForm: React.FC = () => {
                             className="px-3 py-1 text-red-600 rounded text-sm"
                             onClick={() => {
                                 toast.dismiss(t.id);
-                                navigate(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${firstName}`);
+                                navigate(`/homepage/admin/students?username=${adminUsername}`);
                             }}
                             variant = "outline"
                         >
@@ -201,7 +201,7 @@ const AdminStudentEditProfileForm: React.FC = () => {
             });
             return;
         }
-        navigate(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${firstName}`);
+        navigate(`/homepage/admin/students?username=${adminUsername}`);
         return;
     }
 
@@ -267,7 +267,7 @@ const AdminStudentEditProfileForm: React.FC = () => {
                 if (response.ok && result.success) {
                     toast.dismiss(toastId)
                     toast.success("Profile updated")
-                    navigate(`/homepage/student/profile?email=${encodeURIComponent(studentEmail ?? "")}&firstName=${firstName}`);
+                    navigate(`/homepage/admin/students?username=${adminUsername}`);
                 } else {
                     toast.dismiss(toastId);
                     navigate("/error")
@@ -313,7 +313,7 @@ const AdminStudentEditProfileForm: React.FC = () => {
             }
 
             try {
-                const response = await fetch("/api/homepage/students/profile/editprofile/new_email", {
+                const response = await fetch("/api/homepage/students/profile/editprofile/new_email", { //Need to edit
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -340,7 +340,7 @@ const AdminStudentEditProfileForm: React.FC = () => {
 
                 if (response.status === 200) {
                     toast.success("Profile updated")
-                    navigate(`/homepage/student/profile?email=${encodeURIComponent(newEmail ?? "")}&firstName=${firstName}`);
+                    navigate(`/homepage/admin/students?username=${adminUsername}`);
                     return;
                 }
 
