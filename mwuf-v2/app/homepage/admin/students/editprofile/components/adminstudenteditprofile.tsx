@@ -278,7 +278,7 @@ const AdminStudentEditProfileForm: React.FC = () => {
                 navigate("/error")
             }
 
-        } else {
+        } else { //Email Change
             const studentData: any = {
                 email: studentEmail,
                 new_email: newEmail
@@ -313,7 +313,7 @@ const AdminStudentEditProfileForm: React.FC = () => {
             }
 
             try {
-                const response = await fetch("/api/homepage/students/profile/editprofile/new_email", { //Need to edit
+                const response = await fetch("/api/admin/students/editprofile/new_email", { //Need to edit
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
