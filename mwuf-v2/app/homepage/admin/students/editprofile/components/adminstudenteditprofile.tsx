@@ -223,8 +223,46 @@ const AdminStudentEditProfileForm: React.FC = () => {
 
                     <Button
                         className="px-3 py-1 text-red-700 rounded text-sm"
-                        onClick={() => {
+                        onClick={async () => {
                             toast.dismiss(t.id);
+                            const toastId = toast.loading("Processing...")
+
+                            try {
+                                const response = await fetch("/api/admin/students/editprofile/deleteprofile", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        email: studentEmail
+                                    })
+                                });
+
+                                if (response.status === 401 || response.status === 403) {
+                                    navigate("/error/forbidden");
+                                    return;
+                                }
+
+                                if (response.ok != true) {
+                                    navigate("/error");
+                                    return;
+                                }
+
+                                const result = await response.json();
+
+                                if (response.ok && result.success) {
+                                    toast.dismiss(toastId)
+                                    toast.success("Profile deleted")
+                                    navigate(`/homepage/admin/students?username=${adminUsername}`);
+                                } else {
+                                    toast.dismiss(toastId);
+                                    navigate("/error")
+                                }
+
+                            } catch {
+                                toast.dismiss(toastId);
+                                navigate("/error")
+                            }
                             
                         }}
                         variant = "outline"

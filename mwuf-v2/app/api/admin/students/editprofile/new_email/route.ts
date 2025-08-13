@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import Student from "@/lib/models/student";
 import University from "@/lib/models/university";
 import connect from "@/lib/db";
-import { createSession, deleteSession, getSession } from "@/lib/session";
+import { getSession } from "@/lib/session";
 import { cookies } from "next/headers";
 
 export const POST = async (req: Request) => {
