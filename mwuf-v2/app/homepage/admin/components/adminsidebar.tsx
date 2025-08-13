@@ -33,7 +33,7 @@ export function AdminSidebar() {
                 method: "POST"
             })
 
-            navigate("/login");
+            navigate("/login/admin");
         } catch (error) {
             navigate("/error")
         }
