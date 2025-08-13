@@ -1,14 +1,18 @@
 'use client';
+import { Suspense } from "react";
 import Image from "next/image";
 import { StudentProfileSidebar } from "./components/studentProfileSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { StudentProfile } from "./components/studentViewProfile";
+import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
 
 export default function StudentProfilePage() {
     return (
         <SidebarProvider>
             <div className = "flex min-h-screen w-full">
-            <StudentProfileSidebar></StudentProfileSidebar>
+            <Suspense fallback={<div className="w-64 bg-gray-100 animate-pulse"></div>}>
+              <StudentProfileSidebar></StudentProfileSidebar>
+            </Suspense>
     
     
                 <main className = "flex-1 flex flex-col">
@@ -30,7 +34,15 @@ export default function StudentProfilePage() {
                         />
                     </div>
                     <div className = "pt-10">
+                      <Suspense fallback={
+                        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 p-4">
+                          <div></div>
+                          <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                          <div></div>
+                        </div>
+                      }>
                         <StudentProfile></StudentProfile>
+                      </Suspense>
                     </div>
                 </div>
                 </main>

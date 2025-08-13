@@ -1,14 +1,18 @@
 'use client';
+import { Suspense } from "react";
 import Image from "next/image"
 import { UniProfileSidebar } from "../components/uniProfileSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import UniversityEditProfileForm from "./components/unieditprofile";
+import { HomepageSkeletonLoad } from "../../../cardSkeletonLoad";
 
 export default function UniversityProfilePage() {
     return (
         <SidebarProvider>
           <div className = "flex min-h-screen w-full">
-            <UniProfileSidebar></UniProfileSidebar>
+            <Suspense fallback={<div className="w-64 bg-gray-100 animate-pulse"></div>}>
+              <UniProfileSidebar></UniProfileSidebar>
+            </Suspense>
     
     
               <main className = "flex-1 flex flex-col">
@@ -30,12 +34,17 @@ export default function UniversityProfilePage() {
                       />
                   </div>
                   <div className = "pt-10">
-                    <UniversityEditProfileForm></UniversityEditProfileForm>
+                    <Suspense fallback={
+                      <div className="mx-auto max-w-sm">
+                        <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                      </div>
+                    }>
+                      <UniversityEditProfileForm></UniversityEditProfileForm>
+                    </Suspense>
                   </div>
                 </div>
               </main>
             </div>
         </SidebarProvider>
-        
       );
 }

@@ -1,14 +1,18 @@
 'use client';
+import { Suspense } from "react";
 import Image from "next/image";
 import { AdminSidebar } from "../../components/adminsidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AdminStudentEditProfileForm from "./components/adminstudenteditprofile";
+import { HomepageSkeletonLoad } from "../../../cardSkeletonLoad";
 
 export default function StudentProfilePage() {
     return (
         <SidebarProvider>
             <div className = "flex min-h-screen w-full">
-            <AdminSidebar></AdminSidebar>
+            <Suspense fallback={<div className="w-64 bg-gray-100 animate-pulse"></div>}>
+              <AdminSidebar></AdminSidebar>
+            </Suspense>
     
     
                 <main className = "flex-1 flex flex-col">
@@ -30,12 +34,17 @@ export default function StudentProfilePage() {
                         />
                     </div>
                     <div className = "pt-10">
+                      <Suspense fallback={
+                        <div className="mx-auto max-w-sm">
+                          <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                        </div>
+                      }>
                         <AdminStudentEditProfileForm></AdminStudentEditProfileForm>
+                      </Suspense>
                     </div>
                 </div>
                 </main>
             </div>
         </SidebarProvider>
-
     );
 }

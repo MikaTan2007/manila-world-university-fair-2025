@@ -1,14 +1,18 @@
 'use client';
+import { Suspense } from "react";
 import Image from "next/image"
 import { AdminSidebar } from "../components/adminsidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminUniList } from "./components/adminUniList";
+import { HomepageSkeletonLoad } from "../../cardSkeletonLoad";
 
 export default function AdminUniversityPage() {
     return (
         <SidebarProvider>
           <div className="flex min-h-screen w-full">
-            <AdminSidebar/>
+            <Suspense fallback={<div className="w-64 bg-gray-100 animate-pulse"></div>}>
+              <AdminSidebar/>
+            </Suspense>
     
             <main className = "flex-1 flex flex-col">
               <div className = "sticky top-0 z-50 flex items-center p-4 bg-forest-green shadow-lg">
@@ -30,7 +34,22 @@ export default function AdminUniversityPage() {
                     />
                 </div>
                 <div className = "pt-10">
+                  <Suspense fallback={
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 p-4">
+                        <div></div>
+                        <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+                        <div></div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+                        <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                        <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                        <HomepageSkeletonLoad></HomepageSkeletonLoad>
+                      </div>
+                    </div>
+                  }>
                     <AdminUniList></AdminUniList>
+                  </Suspense>
                 </div>
               </div>
             </main>
