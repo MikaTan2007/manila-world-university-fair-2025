@@ -251,6 +251,75 @@ const AdminUniversityEditProfileForm: React.FC = () => {
         return;
     }
 
+    const handleProfileSubmit = async() => {
+        let hasError = false;
+
+        if (repContactEmail == "" || repFirstName == "" || repLastName == "" || newEmail == "" || uniName == "" || uniRegion.length == 0 || cities.length == 0 || uniCountries.length == 0 || takenEmail == true) {
+            hasError = true;
+        }
+
+        if (hasError == true) {
+            setHasError(true);
+            return;
+        }
+
+        const toastId = toast.loading("Processing...")
+
+        //If no email change
+        if (universityEmail == newEmail) {
+            const universityData: any = {
+                email: universityEmail
+            };
+
+            if (uniNameChanged) {
+                universityData.uni_name = uniName;
+            }
+            if (regionsChanged) {
+                universityData.region = uniRegion;
+            }
+            if (countriesChanged) {
+                universityData.countries = uniCountries;
+            }
+            if (citiesChanged) {
+                universityData.cities = cities.map(city => city.value);
+            }
+            if (repFirstNameChanged) {
+                universityData.rep_first_name = repFirstName;
+            }
+            if (repLastNameChanged) {
+                universityData.rep_last_name = repLastName;
+            }
+            if (repContactEmailChanged) {
+                universityData.rep_contact_email = repContactEmail;
+            }
+
+            try {
+                const response = await fetch("/api/homepage/universities/profile/editprofile", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(universityData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    toast.dismiss(toastId)
+                    toast.success("Profile updated")
+                    navigate(`/homepage/admin/universities?username=${adminUsername}`);
+                } else {
+                    toast.dismiss(toastId);
+                    navigate("/error")
+                }
+
+            } catch {
+                toast.dismiss(toastId);
+                navigate("/error")
+            }
+        }
+    }
+
     if (loading == true) {
         return (
             <div className = "mx-auto max-w-sm">
@@ -469,7 +538,7 @@ const AdminUniversityEditProfileForm: React.FC = () => {
                         {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
                         {hasError && <p className = "text-red-600 ml-1">All fields are required</p>}
                     </div>
-                    <Button type = "submit" disabled = {!anyChanges} variant = "ghost" className = "w-full text-white bg-blue-400">
+                    <Button type = "submit" onClick = {handleProfileSubmit} disabled = {!anyChanges} variant = "ghost" className = "w-full text-white bg-blue-400">
                         Save Changes
                     </Button>
                     <Button type = "submit" onClick={handleBack} variant = "ghost" className = "w-full text-white bg-red-400">
