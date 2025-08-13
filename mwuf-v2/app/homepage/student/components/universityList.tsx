@@ -28,14 +28,15 @@ export interface UniversityListRefresh {
 type FilterType = 'all' | 'registered' | 'unregistered';
 
 export const UniversityList = forwardRef<UniversityListRefresh>((props, refresh) => {
-    const [universitites, setUniversitites] = useState<University[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [filterType, setFilterType] = useState<FilterType>('all');
     const {navigate} = useNavigation();
-
     const searchParams = useSearchParams();
     const studentEmail = searchParams.get('email');
+    
+    const [universitites, setUniversitites] = useState<University[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [filterType, setFilterType] = useState<FilterType>('all');
+    const [searchQuery, setSearchQuery] = useState("");
+    
 
     const refreshUniversities = useCallback(async () => {
         if (!studentEmail) return;
@@ -246,7 +247,7 @@ export const UniversityList = forwardRef<UniversityListRefresh>((props, refresh)
                     </div>
                 </div>
                 <div>
-                </div>
+            </div>
             </div>
             <div className="inline-flex justify-center bg-white/10 rounded-lg p-1">
                 <Button
