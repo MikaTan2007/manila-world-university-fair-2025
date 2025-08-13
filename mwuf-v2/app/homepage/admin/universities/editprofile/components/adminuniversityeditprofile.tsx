@@ -251,6 +251,79 @@ const AdminUniversityEditProfileForm: React.FC = () => {
         return;
     }
 
+    const handleProfileDelete = async() => {
+        toast((t) => (
+            <div className="flex flex-col gap-2">
+                <p className="font-bold flex justify-center">Confirm Delete</p>
+                <p className="text-sm items-center text-gray-600">
+                        Are you sure you want to delete this profile? This action cannot be undone.
+                </p>
+                <div className="flex justify-center gap-2">
+                    <Button
+                        className="px-3 py-1 text-green-600 rounded text-sm"
+                        onClick={() => toast.dismiss(t.id)}
+                        variant = "outline"
+                    >
+                        Stay
+                    </Button>
+
+                    <Button
+                        className="px-3 py-1 text-red-700 rounded text-sm"
+                        onClick={async () => {
+                            toast.dismiss(t.id);
+                            const toastId = toast.loading("Processing...")
+
+                            try {
+                                const response = await fetch("/api/admin/universities/editprofile/deleteprofile", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        email: universityEmail
+                                    })
+                                });
+
+                                if (response.status === 401 || response.status === 403) {
+                                    navigate("/error/forbidden");
+                                    return;
+                                }
+
+                                if (response.ok != true) {
+                                    navigate("/error");
+                                    return;
+                                }
+
+                                const result = await response.json();
+
+                                if (response.ok && result.success) {
+                                    toast.dismiss(toastId)
+                                    toast.success("Profile deleted")
+                                    navigate(`/homepage/admin/universities?username=${adminUsername}`);
+                                } else {
+                                    toast.dismiss(toastId);
+                                    navigate("/error")
+                                }
+
+                            } catch {
+                                toast.dismiss(toastId);
+                                navigate("/error")
+                            }
+                            
+                        }}
+                        variant = "outline"
+                    >
+                        Delete
+                    </Button>
+                    
+                </div>
+            </div>
+        ), {
+            duration: Infinity,
+        });
+        return;
+    }
+
     const handleProfileSubmit = async() => {
         let hasError = false;
 
@@ -607,6 +680,9 @@ const AdminUniversityEditProfileForm: React.FC = () => {
                     </Button>
                     <Button type = "submit" onClick={handleBack} variant = "ghost" className = "w-full text-white bg-red-400">
                         Back
+                    </Button>
+                    <Button type = "submit" onClick={handleProfileDelete} variant = "ghost" className = "w-full text-white bg-red-700">
+                        Delete                       
                     </Button>
 
                 </div>

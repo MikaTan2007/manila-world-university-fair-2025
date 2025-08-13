@@ -28,47 +28,49 @@ export const POST = async (req: Request) => {
         }
 
         const body = await req.json();
-        const studentEmail = body.email;
+        const universityEmail = body.email;
 
-        if (!studentEmail) {
+        if (!universityEmail) {
             return NextResponse.json({
                 success: false,
-                error: "Student email is required"
+                error: "University email is required"
             }, { status: 400 });
         }
 
         await connect();
 
-        const student = await Student.findOne({ email: studentEmail });
+        const university = await University.findOne({ email: universityEmail });
+        if (!university) {
+            return NextResponse.json({
+                success: false,
+                error: "University not found"
+            }, { status: 404 });
+        }
 
-        const universitiesUpdateResult = await University.updateMany(
-            { 
-                registered_students: { $in: [studentEmail] } // Find universities that have this student
-            },
-            { 
-                $pull: { registered_students: studentEmail } // Remove the student email
-            }
+        const studentsUpdateResult = await Student.updateMany(
+            { registered_universities: { $in: [universityEmail] } },
+            { $pull: { registered_universities: universityEmail } }
         );
 
-        const deleteResult = await Student.findOneAndDelete({ email: studentEmail });
+        const deleteResult = await University.findOneAndDelete({ email: universityEmail });
 
         if (!deleteResult) {
             return NextResponse.json({
                 success: false,
-                error: "Failed to delete student profile"
+                error: "Failed to delete university profile"
             }, { status: 500 });
         }
 
         return NextResponse.json({
             success: true,
-            message: "Student profile deleted successfully",
+            message: "University profile deleted successfully",
             details: {
-                deletedStudent: {
+                deletedUniversity: {
                     email: deleteResult.email,
-                    name: `${deleteResult.first_name} ${deleteResult.last_name}`
+                    name: deleteResult.uni_name
                 },
-                universitiesUpdated: universitiesUpdateResult.modifiedCount,
-                totalRegistrationsRemoved: universitiesUpdateResult.modifiedCount
+                studentsUpdated: studentsUpdateResult.modifiedCount,
+                totalRegistrationsRemoved: studentsUpdateResult.modifiedCount
             }
         }, { status: 200 });
 
@@ -79,5 +81,4 @@ export const POST = async (req: Request) => {
             error: error.message,
         }, {status: 500});
     }
-
 }
