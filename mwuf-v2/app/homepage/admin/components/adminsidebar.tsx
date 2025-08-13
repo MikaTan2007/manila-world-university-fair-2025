@@ -45,6 +45,12 @@ export function AdminSidebar() {
         return;
     }
 
+    //Route to student page
+    const handleUniversityPage = async() => {
+        navigate(`/homepage/admin/universities?username=${encodeURIComponent(username ?? "")}`)
+        return;
+    }
+
     
 
     useEffect(() => {
@@ -88,7 +94,7 @@ export function AdminSidebar() {
                         <SidebarMenuItem className="font-sans">
                             {/* University */}
                             <SidebarMenuSubButton asChild>
-                                <a onClick = {handleLogout} className="flex items-center">
+                                <a onClick = {handleUniversityPage} className="flex items-center">
                                     <School className="!w-6 !h-6"/>
                                     <span className = "text-lg">University</span>
                                 </a>
