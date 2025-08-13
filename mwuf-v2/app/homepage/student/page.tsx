@@ -18,7 +18,6 @@ export default function StudentHomePage() {
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
         <StudentSidebar onRefreshUniversities={refreshUnis}/>
-
         <main className = "flex-1 flex flex-col">
           <div className = "sticky top-0 z-50 flex items-center p-4 bg-forest-green shadow-lg">
               <SidebarTrigger/>
