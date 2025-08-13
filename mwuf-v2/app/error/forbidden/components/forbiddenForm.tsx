@@ -1,4 +1,6 @@
 import { useNavigation } from "@/hooks/useNavigation";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 //Shadcn
 import { Card, 
@@ -12,6 +14,10 @@ import { Button } from "@/components/ui/button";
 const ForbiddenForm: React.FC = () => {
     //Initialization of router
     const {navigate} = useNavigation();
+
+    useEffect(() => {
+        toast.dismiss();
+    }, []);
 
     const goToHome = async (e: React.FormEvent) => {
         e.preventDefault();
