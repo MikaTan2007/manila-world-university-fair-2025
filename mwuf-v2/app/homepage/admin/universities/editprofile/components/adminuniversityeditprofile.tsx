@@ -317,6 +317,70 @@ const AdminUniversityEditProfileForm: React.FC = () => {
                 toast.dismiss(toastId);
                 navigate("/error")
             }
+        } else {
+            const universityData: any = {
+                email: universityEmail,
+                new_email: newEmail
+            }; 
+
+            if (uniNameChanged) {
+                universityData.uni_name = uniName;
+            }
+            if (regionsChanged) {
+                universityData.region = uniRegion;
+            }
+            if (countriesChanged) {
+                universityData.countries = uniCountries;
+            }
+            if (citiesChanged) {
+                universityData.cities = cities.map(city => city.value);
+            }
+            if (repFirstNameChanged) {
+                universityData.rep_first_name = repFirstName;
+            }
+            if (repLastNameChanged) {
+                universityData.rep_last_name = repLastName;
+            }
+            if (repContactEmailChanged) {
+                universityData.rep_contact_email = repContactEmail;
+            }
+
+            try {
+                const response = await fetch("/api/admin/universities/editprofile/new_email", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(universityData)
+                });
+
+                if (response.status === 401 || response.status === 403 ) {
+                    navigate("/error/forbidden");
+                    return;
+                }
+
+                if (response.status === 409) {
+                    setNewEmail("Email has already been taken")
+                    setTakenEmail(true);
+                    toast.dismiss();
+                    return;
+                }
+
+                if (!response.ok) {
+                    navigate("/error")
+                    return;
+                }
+
+                if (response.status === 200) {
+                    toast.success("Profile updated")
+                    navigate(`/homepage/admin/universities?username=${adminUsername}`);
+                    return;
+                }
+
+            } catch {
+                toast.dismiss(toastId);
+                navigate("/error")
+            }
         }
     }
 

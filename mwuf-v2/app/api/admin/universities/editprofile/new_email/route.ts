@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import Student from "@/lib/models/student";
 import University from "@/lib/models/university";
+import Student from "@/lib/models/student";
 import connect from "@/lib/db";
-import { getSession } from "@/lib/session";
+import { getSession, deleteSession, createSession } from "@/lib/session";
 import { cookies } from "next/headers";
 
 export const POST = async (req: Request) => {
@@ -33,18 +33,18 @@ export const POST = async (req: Request) => {
 
         await connect();
 
-        const student = await Student.findOne({ email: originalEmail });
+        const university = await University.findOne({ email: originalEmail });
 
-        if (!student) {
+        if (!university) {
             return NextResponse.json({
                 success: false,
-                message: "Student not found"
+                message: "University not found"
             }, {status: 404})
-        }
+        } 
 
-        const existingStudent = await Student.findOne({ email: newEmail });
+        const existingUniversity = await University.findOne({ email: newEmail });
         
-        if (existingStudent) {
+        if (existingUniversity) {
             return NextResponse.json({
                 success: false,
                 message: "Email already exists."
@@ -64,39 +64,40 @@ export const POST = async (req: Request) => {
             return acc;
         }, {} as any);
 
-        const updatedStudent = await Student.findOneAndUpdate(
-            { email: originalEmail }, // Find by original email
-            { $set: fieldsToUpdate }, // Update fields including new email if provided
+        const updatedUniversity = await University.findOneAndUpdate(
+            { email: originalEmail }, 
+            { $set: fieldsToUpdate }, 
             { 
                 new: true, 
                 runValidators: true 
             }
         );
 
-        if (!updatedStudent) {
+        if (!updatedUniversity) {
             return NextResponse.json({
                 success: false,
-                message: "Failed to update student"
+                message: "Failed to update university"
             }, {status: 500})
         }
 
-        const universityUpdateResult = await University.updateMany(
-            { registered_students: originalEmail }, // Find universities with old email
-            { 
-                $set: { 
-                    "registered_students.$": newEmail // Replace old email with new email
+        const studentUpdateResult = Student.updateMany(
+            { registered_universities: originalEmail },
+            {
+                $set: {
+                    "registered_universities.$": newEmail
                 }
             }
-        );
+        )
 
         const response = NextResponse.json({
             success: true,
             message: "Profile updated successfully",
-            student: updatedStudent,
+            university: updatedUniversity
         }, {status: 200})
 
         return response;
-        
+
+
     } catch (error: any) {
         console.error("Update error:", error);
         return NextResponse.json({
