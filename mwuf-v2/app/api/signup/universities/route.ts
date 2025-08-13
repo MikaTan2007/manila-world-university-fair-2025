@@ -40,7 +40,7 @@ export const POST = async (req: Request) => {
 
             response.cookies.set('sessionId', sessionId, {
                 httpOnly: true,
-                secure: false,
+                secure: true,
                 maxAge: 24 * 60 * 60 * 1000
             });
 
