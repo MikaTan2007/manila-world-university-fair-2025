@@ -45,7 +45,7 @@ export function AdminSidebar() {
         return;
     }
 
-    //Route to student page
+    //Route to uni page
     const handleUniversityPage = async() => {
         navigate(`/homepage/admin/universities?username=${encodeURIComponent(username ?? "")}`)
         return;

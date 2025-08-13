@@ -34,6 +34,12 @@ export function AdminDashboard() {
         return;
     }
 
+    //Route to uni page
+    const handleUniversityPage = async() => {
+        navigate(`/homepage/admin/universities?username=${encodeURIComponent(username ?? "")}`)
+        return;
+    }
+
     const fetchDashboardStats = async () => {
         try {
             const response = await fetch("/api/admin/dashboard", {
@@ -149,7 +155,7 @@ export function AdminDashboard() {
                     </CardContent>
                 </Card>
 
-                <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={handleUniversityPage}>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Total Universities</CardTitle>
                         <Building2 className="h-4 w-4 text-green-600" />
