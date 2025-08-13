@@ -4,9 +4,7 @@ import connect from "@/lib/db";
 import { getSession } from "@/lib/session";
 import { cookies } from "next/headers";
 
-
 export const POST = async (req: Request) => {
-
     try {
         //Checking session
         const cookieStore = cookies();
@@ -21,7 +19,7 @@ export const POST = async (req: Request) => {
 
         const session = getSession(sessionId);
 
-        if (!session || (session.userType !== 'university' && session.userType !== 'admin')) {
+        if (!session || session.userType !== 'admin') {
             return NextResponse.json({
                 success: false,
                 error: "Unauthorized: Invalid session"
@@ -29,14 +27,7 @@ export const POST = async (req: Request) => {
         }
 
         const body = await req.json();
-        const email = body.email;
-
-        if (session.userType !== 'admin' && session.email !== email) {
-            return NextResponse.json({
-                success: false,
-                error: "Forbidden: Cannot access other university's data"
-            }, {status: 403});
-        }
+        const email = body.email
 
         await connect();
 
@@ -79,7 +70,7 @@ export const POST = async (req: Request) => {
             message: "University profile updated successfully",
             university: updatedUniversity
         }, {status: 200})
-
+        
     } catch (error: any) {
         console.error("University update error:", error);
         return NextResponse.json({
@@ -87,5 +78,4 @@ export const POST = async (req: Request) => {
             error: error.message,
         }, {status: 500});
     }
-
 }

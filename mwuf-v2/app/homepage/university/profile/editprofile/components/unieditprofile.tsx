@@ -210,14 +210,6 @@ const UniversityEditProfileForm: React.FC = () => {
         
     }, [universityEmail]);
 
-    if (loading == true) {
-        return (
-            <div className = "mx-auto max-w-sm">
-                <HomepageSkeletonLoad></HomepageSkeletonLoad>
-            </div>
-        )
-    }
-
     //Button Handlers
     const handleBack = async() => {
         if (anyChanges == true) {
@@ -390,6 +382,14 @@ const UniversityEditProfileForm: React.FC = () => {
             }
         }
 
+    }
+
+    if (loading == true) {
+        return (
+            <div className = "mx-auto max-w-sm">
+                <HomepageSkeletonLoad></HomepageSkeletonLoad>
+            </div>
+        )
     }
 
     return (

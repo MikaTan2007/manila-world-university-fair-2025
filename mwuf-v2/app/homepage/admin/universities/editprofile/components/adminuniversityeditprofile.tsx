@@ -69,7 +69,417 @@ const AdminUniversityEditProfileForm: React.FC = () => {
     const [repLastNameChanged, setRepLastNameChanged] = useState(false);
     const [repContactEmailChanged, setRepContactEmailChanged] = useState(false);
 
+    //Variable Handlers
+    const handleUniNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUniName(e.target.value);
+        setUniNameChanged(true);
+        setAnyChanges(true);
+        setHasError(false);
+    }
+
+    const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRepFirstName(e.target.value);
+        setRepFirstNameChanged(true);
+        setAnyChanges(true);
+        setHasError(false);
+    }
+
+    const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRepLastName(e.target.value);
+        setRepLastNameChanged(true);
+        setAnyChanges(true);
+        setHasError(false);
+    }
+
+    const handleContactEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRepContactEmail(e.target.value);
+        setRepContactEmailChanged(true);
+        setAnyChanges(true);
+        setHasError(false);
+    }
+
+    const handleNewEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewEmail(e.target.value);
+        setTakenEmail(false);
+        setAnyChanges(true);
+        setHasError(false);
+    }
+
+    //City Input Handler
+    const handleCityChange = (id: number, value: string) => {
+        setCities(prevInputs =>
+            prevInputs.map(input =>
+                input.id === id ? {...input, value} : input
+            )
+        )
+        setHasError(false)
+    }
+    
+    //City Handler
+    const addCityInput = () => {
+        setCities((prevInputs) => [
+            ...prevInputs,
+            {id:prevInputs.length + 1, value: ""}
+        ]);
+    };
+
+    const removeCityInput = (id?: number) => {
+        setCities((prevInputs) => {
+            if (id) {
+                return prevInputs.filter(input => input.id !== id);
+            } else {
+                const updatedInputs = [...prevInputs];
+                updatedInputs.pop();
+                return updatedInputs;
+            }
+        });
+    };
+
+    const clearNewEmail = () => {
+        setNewEmail("");
+        setTakenEmail(false);
+    }
+
+    const clearContactEmail = () => {
+        setRepContactEmail("");
+    }
+
+    const fetchUniversityData = async () => {
+        try {
+            const response = await fetch("/api/admin/universities/profile", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: universityEmail
+                })
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                navigate("/error/forbidden");
+                return;
+            }
+
+            if (response.ok != true) {
+                navigate("/error");
+                return;
+            }
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    const universityData = data.university;
+                    setUniversity(universityData);
+                    
+                    setUniName(universityData.uni_name || "");
+                    setNewEmail(universityData.email || "");
+                    setUniRegion(universityData.region || []);
+                    setUniCountries(universityData.countries || []);
+                    
+                    const cityInputs = universityData.cities && universityData.cities.length > 0 
+                    ? universityData.cities.map((city: string, index: number) => ({
+                        id: index + 1,
+                        value: city
+                    }))
+                    : [{ id: 1, value: "" }];
+
+                    setCities(cityInputs);
+                    
+                    setRepFirstName(universityData.rep_first_name || "");
+                    setRepLastName(universityData.rep_last_name || "");
+                    setRepContactEmail(universityData.rep_contact_email || "");
+                }
+            }
+        
+        } catch (error) {
+            navigate("/error");
+            return;
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        if (universityEmail=="") {
+            navigate("/error/forbidden");
+            return;
+        }
+        
+        fetchUniversityData();
+
+        
+    }, [universityEmail]);
+
+    //Button Handlers
+    const handleBack = async() => {
+        if (anyChanges == true) {
+            toast((t) => (
+                <div className="flex flex-col gap-2">
+                    <p className="font-bold flex justify-center">Unsaved Changes</p>
+                    <p className="text-sm items-center text-gray-600">
+                         Are you sure you want to leave?
+                    </p>
+                    <div className="flex justify-center gap-2">
+                        <Button
+                            className="px-3 py-1 text-green-600 rounded text-sm"
+                            onClick={() => toast.dismiss(t.id)}
+                            variant = "outline"
+                        >
+                            Stay
+                        </Button>
+
+                        <Button
+                            className="px-3 py-1 text-red-600 rounded text-sm"
+                            onClick={() => {
+                                toast.dismiss(t.id);
+                                navigate(`/homepage/admin/universities?username=${adminUsername}`);
+                            }}
+                            variant = "outline"
+                        >
+                            Leave
+                        </Button>
+                        
+                    </div>
+                </div>
+            ), {
+                duration: Infinity, 
+            });
+            return;
+        }
+        navigate(`/homepage/admin/universities?username=${adminUsername}`);
+        return;
+    }
+
+    if (loading == true) {
+        return (
+            <div className = "mx-auto max-w-sm">
+                <HomepageSkeletonLoad></HomepageSkeletonLoad>
+            </div>
+        )
+    }
+
     return (
-        null
+        <Card className = "mx-auto max-w-sm">
+            <CardHeader className = "space-y-1">
+                <CardTitle className = "text-2xl font-bold flex justify-center">
+                    Edit Profile
+                </CardTitle>
+            </CardHeader>
+
+            <CardContent>
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="uni_name">
+                            University Name
+                        </Label>
+                        <div className = "flex">
+                        
+                            <Input 
+                                id = "university_name" 
+                                type="text" 
+                                placeholder="University Name" 
+                                onChange = {handleUniNameChange}
+                                value = {uniName}
+                                >
+                            </Input> 
+
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="uni_region">
+                            University Region
+                        </Label>
+                        <div className = "flex">
+                        
+                            <UniRegion
+                                uniRegion={uniRegion}
+                                setUniRegion={(values) => {
+                                    setUniRegion(values)
+                                    setHasError(false);
+                                }}
+                                onUniRegionChange={()=> {
+                                    setRegionsChanged(true);
+                                    setAnyChanges(true);
+                                }}
+                            ></UniRegion>
+
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="uni_region">
+                            University Country
+                        </Label>
+                        <div className = "flex">
+                        
+                            <UniCountry
+                                uniCountry={uniCountries}
+                                setUniCountry={(values) => {
+                                    setUniCountries(values)
+                                    setHasError(false);
+                                }}
+                                onUniCountryChange={()=> {
+                                    setCountriesChanged(true);
+                                    setAnyChanges(true);
+                                }}
+                            ></UniCountry>
+
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="uni_cities">
+                            University Cities
+                        </Label>
+                        
+                        
+                        <div className="space-y-2">
+                            {cities.map((input, index) => (
+                                <div key={input.id} className="flex items-center gap-2">
+                                    <Input
+                                        id={`city_name_${input.id}`}
+                                        type="text"
+                                        placeholder={`City ${index + 1}`}
+                                        required
+                                        value={input.value}
+                                        onChange={(e) => {
+                                            handleCityChange(input.id, e.target.value);
+                                            setCitiesChanged(true);
+                                            setAnyChanges(true);
+                                        }}
+                                        className="flex-1"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="flex gap-2">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => {
+                                    addCityInput();
+                                }}
+                                className="flex-1"
+                            >
+                                Add City
+                            </Button>
+                            {cities.length > 1 && (
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => {
+                                        removeCityInput();
+                                        setCitiesChanged(true);
+                                        setAnyChanges(true);
+                                    }}
+                                    className="flex-1"
+                                >
+                                    Remove
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="rep_name">
+                            Representative Name
+                        </Label>
+                        <div className = "flex">
+                        
+                            <Input 
+                                id = "first_name" 
+                                type="text" 
+                                placeholder="First Name" 
+                                onChange = {handleFirstNameChange}
+                                value = {repFirstName}
+                                >
+                            </Input> 
+
+                            <Input 
+                                id = "last_name" 
+                                type="text" 
+                                placeholder="Last Name" 
+                                onChange = {handleLastNameChange}
+                                value = {repLastName}
+                                >
+                            </Input> 
+
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="contact_email">
+                            Contact Email
+                        </Label>
+                        <div className = "flex">
+                            <Input 
+                                id = "email" 
+                                type="email" 
+                                placeholder="contactme@email.com" 
+                                required
+                                onChange={handleContactEmailChange}
+                                value = {repContactEmail}
+                            >
+                            </Input>
+                            <Button onClick = {clearContactEmail} variant = "ghost" size = "icon">
+                                <Eraser></Eraser>
+                            </Button>
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="account_email">
+                            Account Email
+                        </Label>
+                        
+                        <div className = "flex">
+                            {takenEmail ?
+                                <Input 
+                                    id = "email" 
+                                    type="email" 
+                                    placeholder="contactme@email.com" 
+                                    required
+                                    onChange={handleNewEmailChange}
+                                    value = {newEmail}
+                                    className="text-red-600"
+                                >
+                                </Input>
+                                :
+                                <Input 
+                                    id = "email" 
+                                    type="email" 
+                                    placeholder="contactme@email.com" 
+                                    required
+                                    onChange={handleNewEmailChange}
+                                    value = {newEmail}
+                                >
+                                </Input>
+                            }
+                            <Button onClick = {clearNewEmail} variant = "ghost" size = "icon">
+                                <Eraser></Eraser>
+                            </Button>
+                        </div>
+                        
+                    </div>
+                    
+                    <div className = "text-sm flex animate-pulse">
+                        {hasError && <CircleX color = "red" className = "size-5"></CircleX>}
+                        {hasError && <p className = "text-red-600 ml-1">All fields are required</p>}
+                    </div>
+                    <Button type = "submit" disabled = {!anyChanges} variant = "ghost" className = "w-full text-white bg-blue-400">
+                        Save Changes
+                    </Button>
+                    <Button type = "submit" onClick={handleBack} variant = "ghost" className = "w-full text-white bg-red-400">
+                        Back
+                    </Button>
+
+                </div>
+            </CardContent>
+        </Card>
     )
 }
+
+export default AdminUniversityEditProfileForm;

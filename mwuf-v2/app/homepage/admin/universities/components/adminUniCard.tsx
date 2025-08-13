@@ -22,6 +22,11 @@ export function AdminUniversityCard({university} : UniversityProps) {
     const searchParams = useSearchParams();
     const adminUsername = searchParams.get('username')
 
+    const handleSendToEditProfile = () => {
+        navigate(`/homepage/admin/universities/editprofile?email=${encodeURIComponent(university.email ?? "")}&username=${adminUsername}`)
+        return;
+    }
+
     return (
         <Card className="w-full hover:shadow-lg transition-shadow font-sans">
             <CardHeader>
@@ -61,7 +66,7 @@ export function AdminUniversityCard({university} : UniversityProps) {
             <CardFooter className="flex justify-end font-sans">
                 <Button 
                     variant="outline"
-                    //onClick={handleSendToEditProfile}
+                    onClick={handleSendToEditProfile}
                 >   
                 Edit Profile
                 </Button>
