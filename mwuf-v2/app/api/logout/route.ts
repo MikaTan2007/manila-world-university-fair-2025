@@ -19,7 +19,7 @@ export const POST = async (req: Request) => {
         //Clear cookie session
         response.cookies.set('sessionId', '', {
             httpOnly: true,
-            secure: true,
+            secure: false,
             maxAge: 0 
         });
 

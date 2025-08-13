@@ -5,7 +5,7 @@ import connect from "@/lib/db";
 import { getSession } from "@/lib/session";
 import { cookies } from "next/headers";
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
     try {
         //Checking admin session
         const cookieStore = cookies();
