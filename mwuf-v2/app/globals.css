@@ -5,6 +5,13 @@
 html {
   background-color: #165D21;
   color: white;
+  overflow:hidden;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  overflow: auto;
 }
 
 @layer base {
