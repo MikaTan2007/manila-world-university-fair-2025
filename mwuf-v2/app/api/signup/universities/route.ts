@@ -25,7 +25,7 @@ export const POST = async (req: Request) => {
     }
     else {
         try {
-            const sessionId = createSession(email, 'university');
+            const sessionId = await createSession(email, 'university');
 
             await connect();
     

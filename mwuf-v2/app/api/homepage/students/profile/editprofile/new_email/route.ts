@@ -18,7 +18,7 @@ export const POST = async (req: Request) => {
             }, {status: 401})
         }
 
-        const session = getSession(sessionId);
+        const session = await getSession(sessionId);
 
         if (!session || (session.userType !== 'student' && session.userType !== 'admin')) {
             return NextResponse.json({
@@ -102,7 +102,7 @@ export const POST = async (req: Request) => {
             student: updatedStudent,
         }, {status: 200})
 
-        deleteSession(sessionId);
+        await deleteSession(sessionId);
 
         response.cookies.set('sessionId', '', {
             httpOnly: true,
@@ -110,12 +110,14 @@ export const POST = async (req: Request) => {
             maxAge: 0 
         });
 
-        const newSessionId = createSession(newEmail, 'student');
+        const newSessionId = await createSession(newEmail, 'student');
 
         response.cookies.set('sessionId', newSessionId, {
             httpOnly: true,
             secure: true, // Set to true in production with HTTPS
-            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+            maxAge: 24 * 60 * 60 * 1000, // 24 hours
+            sameSite: 'lax',
+            path: "/"
         });
 
         return response;

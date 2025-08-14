@@ -29,7 +29,7 @@ export const POST = async (req: Request) => {
         }
 
         //Creating Session
-        const sessionId = createSession(email, 'university');
+        const sessionId = await createSession(email, 'university');
 
         const response = NextResponse.json({
             success: true,
@@ -40,7 +40,9 @@ export const POST = async (req: Request) => {
         response.cookies.set('sessionId', sessionId, {
             httpOnly: true,
             secure: true,
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: 24 * 60 * 60 * 1000, // 24 hours
+            sameSite: 'lax',
+            path: '/'
         });
 
         return response;

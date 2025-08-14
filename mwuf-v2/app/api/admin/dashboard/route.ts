@@ -18,7 +18,7 @@ export const GET = async () => {
             }, {status: 401})
         }
 
-        const session = getSession(sessionId)
+        const session = await getSession(sessionId)
 
         if (!session || (session.userType !== "admin")) {
             return NextResponse.json({

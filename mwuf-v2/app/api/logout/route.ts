@@ -8,7 +8,7 @@ export const POST = async (req: Request) => {
         const sessionId = (await cookieStore).get('sessionId')?.value;
 
         if (sessionId) {
-            deleteSession(sessionId);
+            await deleteSession(sessionId);
         }
 
         const response = NextResponse.json({
