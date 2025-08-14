@@ -45,7 +45,7 @@ export function StudentProfileSidebar() {
     }
 
     return (
-        <Sidebar>
+        <Sidebar className="min-h-screen">
             <SidebarHeader className="p-5">
                 <div className="flex items-center space-x-2">
                 <div>
