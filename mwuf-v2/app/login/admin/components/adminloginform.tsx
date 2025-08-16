@@ -126,7 +126,6 @@ const AdminLoginForm: React.FC = () => {
             }
 
             if (response.status === 200) {
-                console.log("Admin successfully logged in")
                 navigate(`/homepage/admin/dashboard?username=${encodeURIComponent(username)}`);
             }
             

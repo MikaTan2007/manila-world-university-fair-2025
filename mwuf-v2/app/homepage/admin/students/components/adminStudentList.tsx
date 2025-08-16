@@ -5,10 +5,11 @@ import { useSearchParams } from "next/navigation"
 import { AdminStudentCard } from "./adminStudentCard"
 import { useNavigation } from "@/hooks/useNavigation"
 import { Input } from "@/components/ui/input"
-import { Search, X, Activity } from "lucide-react"
+import { Search, X, Activity, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import React from "react"
 import { NoStudentCard } from "@/app/homepage/university/components/noStudent"
+import toast from "react-hot-toast"
 
 interface Student {
     email: string;
@@ -62,6 +63,58 @@ export const AdminStudentList = () => {
             student.gender.toLowerCase().includes(query)
         );
     }, [students, searchQuery]);
+
+    const handleExportCSV = () => {
+        const toastId = toast.loading("Preparing student data for export...");
+
+        const headers = [
+            'First Name',
+            'Last Name',
+            'Email',
+            'Gender',
+            'Citizenship',
+            'Graduation Year',
+            'School Name',
+            'Ideal Major',
+        ];
+
+        const csvRows = [
+            headers.join(','), // Header row
+            ...filteredStudents.map(student => [
+                `"${student.first_name}"`,
+                `"${student.last_name}"`,
+                `"${student.email}"`,
+                `"${student.gender}"`,
+                `"${student.citizenship.join('; ')}"`, // Join array with semicolon
+                `"${student.graduation_year}"`,
+                `"${student.school_name}"`,
+                `"${student.ideal_major.join('; ')}"`, // Join array with semicolon
+            ].join(','))
+        ];
+
+        const csvContent = csvRows.join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+
+        if (link.download !== undefined) {
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            
+            // Generate filename with current date and filter info
+            const date = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+            const filterText = searchQuery ? `_filtered_${searchQuery.replace(/[^a-zA-Z0-9]/g, '_')}` : '';
+            const filename = `students_export_${date}${filterText}.csv`;
+            
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            toast.dismiss(toastId);
+            toast.success(`Exported ${filteredStudents.length} students to CSV`);
+        }
+    }
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
@@ -221,6 +274,16 @@ export const AdminStudentList = () => {
                 >
                     <Activity className="h-4 w-4" />
                     Refresh
+                </Button>
+
+                <Button
+                    onClick={handleExportCSV}
+                    variant="ghost"
+                    className="flex items-center gap-2"
+                    disabled = {filteredStudents.length === 0}
+                >
+                    <Download className="h-4 w-4" />
+                    Export Students
                 </Button>
             </div>
 
